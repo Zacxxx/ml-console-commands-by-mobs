@@ -1,6 +1,6 @@
-private/
-artifacts/
-release/
+/private/
+/artifacts/
+/release/
 __pycache__/
 *.pyc
 *.dll
