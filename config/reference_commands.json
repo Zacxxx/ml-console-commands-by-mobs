@@ -1,0 +1,600 @@
+{
+    "provenance": "Command identifiers, help strings and selected handler behavior inspected in the user-supplied Psiae 1.0.4-a.4 DLL; no implementation source was available or copied.",
+    "commands": [
+        {
+            "command": "k.addDepositAtCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.resource add <iron|clay|salt> <amount> [preview]",
+            "group": "resource_spawn",
+            "status": "covered",
+            "scope_note": "Reference handler adds to the nearest surface mineral clump. Native registered clump edit, positive amounts up to one million total; expands capacity if necessary. Underground reserves are a separate mobs.deposit tool."
+        },
+        {
+            "command": "k.addInfluence",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.influence add <amount>",
+            "group": "influence",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.addItemToSelectedBuildings",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.inventory_add <item|id> <amount> [preview]",
+            "group": "building_goods",
+            "status": "covered",
+            "scope_note": "Up to 32 selected owned buildings including production/housing, native inventory addition and readback. Completed-building storage caps can be bypassed; construction receives needed materials only. Livestock use mobs.animal."
+        },
+        {
+            "command": "k.addRegionalWealth",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.wealth add <amount>",
+            "group": "wealth",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.addResourceToSelectedBuildings",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.inventory_add <item|id> <amount> [preview]",
+            "group": "building_goods",
+            "status": "covered",
+            "scope_note": "Broader native goods inventories including completed production/housing, preflight/deduplication, 10000 per target. Construction accepts only missing materials; ordinary mobs.give retains storage checks."
+        },
+        {
+            "command": "k.addTreasury",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.treasury add <amount>",
+            "group": "treasury",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.boopMode",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.boop [on|off|status]",
+            "group": "automation",
+            "status": "covered",
+            "scope_note": "Reflected debugBoopMode and native updateBoopMode refresh; replaces OG quick-settings button dependency."
+        },
+        {
+            "command": "k.dbg.doTask",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.debug_task",
+            "group": "automation",
+            "status": "covered",
+            "scope_note": "Inspection of the supplied reference handler found only context acquisition/validation, with no gameplay task body. Diagnostic counterpart reports loaded player availability; no arbitrary SMUnit job/task assignment."
+        },
+        {
+            "command": "k.dbg.printBuildingPlants",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.plants",
+            "group": "automation",
+            "status": "covered",
+            "scope_note": "Native planted arrays: counts plus first 100 type/position/growth/yield/cell records; read only."
+        },
+        {
+            "command": "k.demolishSelectedBuildings",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.demolish selected [preview]",
+            "group": "demolition",
+            "status": "covered",
+            "scope_note": "Selected owned buildings only; native eligibility and refund rules, maximum 32; no undo."
+        },
+        {
+            "command": "k.emptyRegionResource",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.empty_resources [kind] [preview]",
+            "group": "resource_amounts",
+            "status": "covered",
+            "scope_note": "Reference messages identify berries/mushrooms/fish/eel scope; implemented plus iron/clay/salt/stone. Retains existing actors, preview and guarded undo; wildlife/underground amounts are separate scopes."
+        },
+        {
+            "command": "k.enterCommandsFromFile",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.run <filename.txt> [preview]",
+            "group": "automation",
+            "status": "covered",
+            "scope_note": "Commands/*.txt, <=64 KiB and <=100 lines; no script execution/path traversal/recursion; stop on first error."
+        },
+        {
+            "command": "k.finalizeClaimOnAllRegion",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.claim finish all [preview]",
+            "group": "territory",
+            "status": "covered",
+            "scope_note": "Only your already active claims, not arbitrary ownership reassignment."
+        },
+        {
+            "command": "k.finalizeClaimOnRegion",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.claim finish [region-id] [preview]",
+            "group": "territory",
+            "status": "covered",
+            "scope_note": "Only a region in the local pawn own claim records."
+        },
+        {
+            "command": "k.followUnitAtCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.follow",
+            "group": "units",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.growRegionPopulation",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.grow_population [attempts]",
+            "group": "population",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.growStageToRegionPlantedTrees",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.grow_stage [preview]",
+            "group": "forestry",
+            "status": "covered",
+            "scope_note": "One native growth update per registered tree; mature all stages with mobs.grow_saplings."
+        },
+        {
+            "command": "k.growStageToRegionPlantedTreesAtWorkArea",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.grow_stage area [preview]",
+            "group": "forestry",
+            "status": "covered",
+            "scope_note": "One update per registered tree inside one selected building limited work-area circle; outside trees stay growing."
+        },
+        {
+            "command": "k.instaBuild",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.instant_build <on|off|status> [preview]",
+            "group": "instant_build",
+            "status": "covered",
+            "scope_note": "Native engine instaBuild flag used by building creation, replaces the older timed preparation loop. Global/session scope; existing constructions still use the user-confirmed finish_constructions path. Gameplay pending."
+        },
+        {
+            "command": "k.isInGame",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.is_in_game",
+            "group": "diagnostics",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.layClaimOnRegion",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.claim start [region-id] [preview]",
+            "group": "territory",
+            "status": "covered",
+            "scope_note": "Selected map region or explicit ID; no influence cost, rejects duplicate own claims."
+        },
+        {
+            "command": "k.makeDrought",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.weather drought [preview]",
+            "group": "weather",
+            "status": "covered",
+            "scope_note": "Writes the current temporal component weather targets; instant also updates current values. Simulation may later select new weather; no undo."
+        },
+        {
+            "command": "k.makeDroughtInstantly",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.weather drought instant [preview]",
+            "group": "weather",
+            "status": "covered",
+            "scope_note": "Writes the current temporal component weather targets; instant also updates current values. Simulation may later select new weather; no undo."
+        },
+        {
+            "command": "k.makeRain",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.weather rain [preview]",
+            "group": "weather",
+            "status": "covered",
+            "scope_note": "Writes the current temporal component weather targets; instant also updates current values. Simulation may later select new weather; no undo."
+        },
+        {
+            "command": "k.makeRainInstantly",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.weather rain instant [preview]",
+            "group": "weather",
+            "status": "covered",
+            "scope_note": "Writes the current temporal component weather targets; instant also updates current values. Simulation may later select new weather; no undo."
+        },
+        {
+            "command": "k.markNormalDepositAtCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.resource normal <iron|clay|salt|stone> [preview]",
+            "group": "resource_richness",
+            "status": "covered",
+            "scope_note": "Surface mineral group richness, native normal capacity, proportional remaining amount, map/decal refresh and spatial-index refresh. Underground DepositDecal flags are separately edited by mobs.deposit normal."
+        },
+        {
+            "command": "k.markNormalResourceClumpAtCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.resource normal [kind|all] [preview]",
+            "group": "resource_richness",
+            "status": "covered",
+            "scope_note": "Targets the nearest owned surface group, adjusts flag/capacities and map materials through the current native path. Eight supported kinds; 2500-unit click radius."
+        },
+        {
+            "command": "k.markRichDepositAtCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.resource rich <iron|clay|salt|stone> [preview]",
+            "group": "resource_richness",
+            "status": "covered",
+            "scope_note": "Surface mineral group richness and native rich capacity, preserving depletion proportion, map/decal and spatial-index refresh. Does not grant separate underground reserves; use spawn_deposit/deposit for those."
+        },
+        {
+            "command": "k.markRichResourceClumpAtCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.resource rich [kind|all] [preview]",
+            "group": "resource_richness",
+            "status": "covered",
+            "scope_note": "Targets the nearest owned surface group, native rich flag/capacities/map materials, proportional remaining amounts. No wildlife or automatic underground-reserve grant."
+        },
+        {
+            "command": "k.ping",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.ping",
+            "group": "diagnostics",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.placeFishingPond",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.pond place [preview]",
+            "group": "fishing",
+            "status": "covered",
+            "scope_note": "Native placement for reflected EBuildingType::FishingPond=39; validates loaded definition and respects placement rules."
+        },
+        {
+            "command": "k.printArmyConsoleCommands",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.help army",
+            "group": "help",
+            "status": "covered",
+            "scope_note": "Explicit army category in the dynamic registry."
+        },
+        {
+            "command": "k.printCommands",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "help [search]",
+            "group": "help",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.printConsoleCommands",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "help [search]",
+            "group": "help",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.printForeignSupply",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.foreign_supply [search]",
+            "group": "building_goods",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.printLordConsoleCommands",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.help lord",
+            "group": "help",
+            "status": "covered",
+            "scope_note": "Explicit lord category in the dynamic registry."
+        },
+        {
+            "command": "k.printMiscConsoleCommands",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.help misc",
+            "group": "help",
+            "status": "covered",
+            "scope_note": "Explicit miscellaneous category in the dynamic registry."
+        },
+        {
+            "command": "k.printModInfo",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.version",
+            "group": "diagnostics",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.printRegionConsoleCommands",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.help region",
+            "group": "help",
+            "status": "covered",
+            "scope_note": "Explicit region category in the dynamic registry."
+        },
+        {
+            "command": "k.refillRegionResource",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.refill_resources [kind] [preview]",
+            "group": "resource_amounts",
+            "status": "covered",
+            "scope_note": "Reference messages identify berries/mushrooms/fish/eel scope; implemented plus mineral clumps. Refills surviving clumps to capacity; creating removed nodes is a separate spawn command."
+        },
+        {
+            "command": "k.removeDepositAtCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.resource remove <iron|clay|salt|stone> [preview]",
+            "group": "resource_remove",
+            "status": "covered",
+            "scope_note": "Remove a surface mineral group via native clump depletion and node/spatial/UI cleanup. Underground decals/reserves use the distinct mobs.remove_deposit command."
+        },
+        {
+            "command": "k.removeFishingPondAtCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.pond remove [preview]",
+            "group": "fishing",
+            "status": "covered",
+            "scope_note": "One-shot click selects nearest owned Fishing Pond within 1500 game units and requests native demolition; no refund."
+        },
+        {
+            "command": "k.removeResourceAtCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.resource remove_clump [kind|all] [preview]",
+            "group": "resource_remove",
+            "status": "covered",
+            "scope_note": "Remove one nearest surface clump through the native depletion path, retiring work references and removing an exhausted normal parent node. Attached pond fish excluded."
+        },
+        {
+            "command": "k.removeResourceClumpAtCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.resource remove [kind|all] [preview]",
+            "group": "resource_remove",
+            "status": "covered",
+            "scope_note": "Remove the whole nearest surface group using native clump retirement followed by registered parent-node retirement; maximum 2500-unit targeting distance, preview, no undo."
+        },
+        {
+            "command": "k.renameUnitAtCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.rename_unit <new name>",
+            "group": "units",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.rerollHireMercenaries",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.mercenaries reroll",
+            "group": "encounters",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.restoreFertilityAtBuildingPlantPlots",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.soil restore <wheat|flax|barley|all> selected [preview]",
+            "group": "fertility",
+            "status": "covered",
+            "scope_note": "Restore current grid fertility from baseline at selected buildings planted cells; shared rye/oat channels follow native behavior."
+        },
+        {
+            "command": "k.restoreFertilityAtWorkArea",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.soil restore <wheat|flax|barley|all> area [preview]",
+            "group": "fertility",
+            "status": "covered",
+            "scope_note": "Restore owned grid cells inside selected buildings explicit limited work areas; guarded soil undo."
+        },
+        {
+            "command": "k.setFertilityAtBuildingPlantPlots",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.soil set <wheat|flax|barley|all> <0..100> selected [preview]",
+            "group": "fertility",
+            "status": "covered",
+            "scope_note": "Set baseline and current soil channels for planted cells; does not retroactively replace already captured planted-crop yield factors."
+        },
+        {
+            "command": "k.setFertilityAtWorkArea",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.soil set <wheat|flax|barley|all> <0..100> area [preview]",
+            "group": "fertility",
+            "status": "covered",
+            "scope_note": "Set baseline/current soil inside explicit limited owned work areas; overlay refresh is separate from the logical grid edit."
+        },
+        {
+            "command": "k.setGameSpeed",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.speed <0..12>",
+            "group": "time",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.setHomeForHoveredUnitFamilyToSelectedBuilding",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.rehouse selected [preview]",
+            "group": "population",
+            "status": "covered",
+            "scope_note": "Same owned region only; living hovered/followed member, completed destination housing and capacity checks."
+        },
+        {
+            "command": "k.setInfluence",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.influence set <amount>",
+            "group": "influence",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.setRegionalApproval",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.approval set <0..100>",
+            "group": "approval",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.setRegionalWealth",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.wealth set <amount>",
+            "group": "wealth",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.setTreasury",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.treasury set <amount>",
+            "group": "treasury",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.skipDay",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.skip_day [1..30] [preview]",
+            "group": "time",
+            "status": "covered",
+            "scope_note": "Native date update once per day; scheduled side effects are not undoable."
+        },
+        {
+            "command": "k.skipDrought",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.weather end_drought [preview]",
+            "group": "weather",
+            "status": "covered",
+            "scope_note": "Writes the current temporal component weather targets; instant also updates current values. Simulation may later select new weather; no undo."
+        },
+        {
+            "command": "k.skipDroughtInstantly",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.weather end_drought instant [preview]",
+            "group": "weather",
+            "status": "covered",
+            "scope_note": "Writes the current temporal component weather targets; instant also updates current values. Simulation may later select new weather; no undo."
+        },
+        {
+            "command": "k.skipLivestockOrderIntervalForRegion",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.livestock_cooldown reset",
+            "group": "animals",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.skipMourningForRegionBuildings",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.skip_mourning [preview]",
+            "group": "approval",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.skipRain",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.weather end_rain [preview]",
+            "group": "weather",
+            "status": "covered",
+            "scope_note": "Writes the current temporal component weather targets; instant also updates current values. Simulation may later select new weather; no undo."
+        },
+        {
+            "command": "k.skipRainInstantly",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.weather end_rain instant [preview]",
+            "group": "weather",
+            "status": "covered",
+            "scope_note": "Writes the current temporal component weather targets; instant also updates current values. Simulation may later select new weather; no undo."
+        },
+        {
+            "command": "k.spawnAnimalAtCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.animal <type> [1..20] [preview]",
+            "group": "animals",
+            "status": "covered",
+            "scope_note": "One-shot click placement, native livestock registration; supported animal roles only, owned region."
+        },
+        {
+            "command": "k.spawnBanditCamp",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.bandits [preview]",
+            "group": "encounters",
+            "status": "covered",
+            "scope_note": "Request native random camp spawning; no valid location may mean no camp."
+        },
+        {
+            "command": "k.spawnBanditCampAtCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.bandit_camp [preview]",
+            "group": "encounters",
+            "status": "covered",
+            "scope_note": "Click clear unclaimed ground; native brigands spawn, camp squad state/order and bandit/camp registries. Resume simulation for camp construction. Ownership restrictions are intentional; gameplay/save-load pending."
+        },
+        {
+            "command": "k.spawnConstructionResourcesToRegionBuildings",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.supply_construction [preview]",
+            "group": "construction_materials",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.spawnConstructionResourcesToSelectedBuildings",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.supply_construction selected [preview]",
+            "group": "construction_materials",
+            "status": "covered",
+            "scope_note": "Practical counterpart implemented; identical internals and complete gameplay validation are not claimed."
+        },
+        {
+            "command": "k.spawnDepositAtCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.spawn_resource <iron|clay|salt|stone> [amount] [clumps] [rich] [preview]",
+            "group": "resource_spawn",
+            "status": "covered",
+            "scope_note": "Reference spawnDeposit covers surface minerals including stone. Current implementation uses native clump factory plus registered ResourceNode/region index; underground spawning is an additional distinct spawn_deposit command."
+        },
+        {
+            "command": "k.spawnRaiderRallyAtCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.raiders [1..6] [preview]",
+            "group": "encounters",
+            "status": "covered",
+            "scope_note": "One-shot click requests native hostile raider squads; no gameplay proof yet."
+        },
+        {
+            "command": "k.spawnResourceAtCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.spawn_resource <kind> [amount] [clumps] [rich] [preview]",
+            "group": "resource_spawn",
+            "status": "covered",
+            "scope_note": "Eight resource kinds, up to 64 clumps, loaded native templates, explicit capacity, native region/node registration. Place fish/eel in water; command does not create water."
+        },
+        {
+            "command": "k.spawnShoalOfFishToFishingPondAtCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.pond_fish [amount] [rich] [preview]",
+            "group": "fishing",
+            "status": "covered",
+            "scope_note": "Nearest completed owned Fishing Pond, one registered fish shoal linked to its building/region/group. Rejects an existing attached shoal; refilling is a separate command. Gameplay pending."
+        },
+        {
+            "command": "k.teleportFollowingUnitToCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.teleport unit [preview]",
+            "group": "units",
+            "status": "covered",
+            "scope_note": "Hovered/followed living unit with owned home; actor, simulation and interpolation positions updated; existing orders remain."
+        },
+        {
+            "command": "k.teleportSelectedSquadsToCursor",
+            "implemented_in_mobs": true,
+            "mobs_equivalent": "mobs.teleport squads [preview]",
+            "group": "units",
+            "status": "covered",
+            "scope_note": "Selected owned squads, up to 1000 living units, relative formation offsets; existing orders remain; experimental."
+        }
+    ],
+    "baseline_version": "Psiae 1.0.4-a.4 (user-supplied binary)",
+    "reviewed_mobs_version": "0.13.0-alpha.1",
+    "status_definition": "covered = practical implemented counterpart, not full behavioral or gameplay proof; partial = related but incomplete; missing = absent; research = original behavior unresolved. implemented_in_mobs is true only for covered."
+}

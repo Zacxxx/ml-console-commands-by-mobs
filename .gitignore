@@ -1,0 +1,13 @@
+private/
+artifacts/
+release/
+__pycache__/
+*.pyc
+*.dll
+*.request
+*.response
+*.sav
+src/mobs_console/Native/State/
+.env
+.env.*
+!.env.example

@@ -1,0 +1,329 @@
+{
+    "baseline": "Psiae 1.0.4-a.4 (user-supplied binary)",
+    "groups": [
+        {
+            "id": "help",
+            "title": "Help and command discovery",
+            "original_commands": [
+                "k.printCommands",
+                "k.printConsoleCommands",
+                "k.printArmyConsoleCommands",
+                "k.printLordConsoleCommands",
+                "k.printMiscConsoleCommands",
+                "k.printRegionConsoleCommands"
+            ],
+            "current": "mobs.help [army|lord|region|misc|search]",
+            "next_step": "Maintain category membership as commands are added.",
+            "priority": "Validate",
+            "gameplay": "Dynamic general help visible in earlier user screenshots. New explicit categories verified offline; gameplay pending."
+        },
+        {
+            "id": "diagnostics",
+            "title": "Version and session checks",
+            "original_commands": [
+                "k.ping",
+                "k.isInGame",
+                "k.printModInfo"
+            ],
+            "current": "mobs.ping; mobs.is_in_game; mobs.version",
+            "next_step": "Retain version and session checks as new features are added.",
+            "priority": "Maintain",
+            "gameplay": "Gameplay confirmation not recorded for the full group."
+        },
+        {
+            "id": "treasury",
+            "title": "Treasury",
+            "original_commands": [
+                "k.addTreasury",
+                "k.setTreasury"
+            ],
+            "current": "mobs.treasury <set|add> <amount>; mobs.undo",
+            "next_step": "Keep guarded undo and clear before/after reporting.",
+            "priority": "Maintain",
+            "gameplay": "Gameplay confirmation not recorded for the full group."
+        },
+        {
+            "id": "influence",
+            "title": "Influence",
+            "original_commands": [
+                "k.addInfluence",
+                "k.setInfluence"
+            ],
+            "current": "mobs.influence <set|add> <amount>; mobs.undo",
+            "next_step": "Keep guarded undo and clear before/after reporting.",
+            "priority": "Maintain",
+            "gameplay": "Gameplay confirmation not recorded for the full group."
+        },
+        {
+            "id": "wealth",
+            "title": "Regional wealth",
+            "original_commands": [
+                "k.addRegionalWealth",
+                "k.setRegionalWealth"
+            ],
+            "current": "mobs.wealth <set|add> <amount>; mobs.region; mobs.undo",
+            "next_step": "Keep explicit region targeting and guarded undo.",
+            "priority": "Maintain",
+            "gameplay": "Wealth edit visible in user screenshot; full set/add/undo matrix not recorded."
+        },
+        {
+            "id": "approval",
+            "title": "Approval and mourning",
+            "original_commands": [
+                "k.setRegionalApproval",
+                "k.skipMourningForRegionBuildings"
+            ],
+            "current": "mobs.approval <set|add> <amount>; mobs.skip_mourning [preview]",
+            "next_step": "Confirm approval recalculation and mourning behavior in gameplay.",
+            "priority": "Maintain",
+            "gameplay": "Gameplay confirmation not recorded for the full group."
+        },
+        {
+            "id": "construction_materials",
+            "title": "Construction materials",
+            "original_commands": [
+                "k.spawnConstructionResourcesToRegionBuildings",
+                "k.spawnConstructionResourcesToSelectedBuildings"
+            ],
+            "current": "mobs.supply_construction [selected] [preview]; mobs.construction_needs [region]",
+            "next_step": "Keep selected-site and whole-region targeting with incoming deliveries accounted for.",
+            "priority": "Maintain",
+            "gameplay": "User confirmed construction completion; selected/preview material variants not separately confirmed."
+        },
+        {
+            "id": "instant_build",
+            "title": "Construction completion and instant building",
+            "original_commands": [
+                "k.instaBuild"
+            ],
+            "current": "mobs.instant_build <on|off|status> [preview]; mobs.finish_constructions [preview]",
+            "next_step": "Confirm new-site instant completion and turning the native flag off; global session scope, existing completion path preserved.",
+            "priority": "Validate",
+            "gameplay": "User confirmed finish_constructions earlier. 0.13 native instaBuild flag implementation and entry fingerprints checked offline; new placement behavior pending."
+        },
+        {
+            "id": "building_goods",
+            "title": "Selected-building goods and trade supply",
+            "original_commands": [
+                "k.addItemToSelectedBuildings",
+                "k.addResourceToSelectedBuildings",
+                "k.printForeignSupply"
+            ],
+            "current": "mobs.inventory_add <item|id> <amount> [preview]; mobs.give; mobs.drop; mobs.inventory; mobs.foreign_supply [search]",
+            "next_step": "Test production/housing inventories and native stock changes; construction remains limited to missing materials.",
+            "priority": "Validate",
+            "gameplay": "Broader production-building addition, preview, deduplication and mixed-owner rejection checked offline; gameplay pending. Earlier Supplies placement confirmed separately."
+        },
+        {
+            "id": "demolition",
+            "title": "Selected-building removal",
+            "original_commands": [
+                "k.demolishSelectedBuildings"
+            ],
+            "current": "mobs.demolish selected [preview]; supply-pile cleanup remains available",
+            "next_step": "Confirm normal demolition refunds and mixed eligible selections in a disposable save.",
+            "priority": "Validate",
+            "gameplay": "Supplies cleanup was user-confirmed previously. New general demolition is offline checked only; gameplay pending."
+        },
+        {
+            "id": "resource_amounts",
+            "title": "Resource refill and depletion",
+            "original_commands": [
+                "k.refillRegionResource",
+                "k.emptyRegionResource"
+            ],
+            "current": "mobs.resources [kind]; mobs.refill_resources [kind] [preview]; mobs.empty_resources [kind] [preview]; mobs.undo_resources",
+            "next_step": "Test the reference berry/mushroom/fish/eel scope plus mineral extensions. Creation, underground reserves and wildlife are separate tools.",
+            "priority": "Validate",
+            "gameplay": "Offline amount/preview/undo checks; reference messages establish the original limited plant/fish scope. Gameplay confirmation not recorded for full group."
+        },
+        {
+            "id": "resource_spawn",
+            "title": "Spawn resource nodes and deposits",
+            "original_commands": [
+                "k.addDepositAtCursor",
+                "k.spawnDepositAtCursor",
+                "k.spawnResourceAtCursor"
+            ],
+            "current": "mobs.spawn_resource <kind> [amount] [clumps] [rich] [preview]; mobs.resource add <kind> <amount>; mobs.spawn_deposit; mobs.deposit add",
+            "next_step": "Confirm gathering, resource markers and persistence after save/reload for new surface groups and underground reserves.",
+            "priority": "Validate",
+            "gameplay": "0.13 native clump/node/decal factories and 26 entry fingerprints checked against local 0.8.117. Command plans checked offline. Gameplay/save-load pending; pile confirmation is separate."
+        },
+        {
+            "id": "resource_remove",
+            "title": "Remove resource nodes and deposits",
+            "original_commands": [
+                "k.removeDepositAtCursor",
+                "k.removeResourceAtCursor",
+                "k.removeResourceClumpAtCursor"
+            ],
+            "current": "mobs.resource remove [kind|all] [preview]; mobs.resource remove_clump [kind|all] [preview]; mobs.remove_deposit [kind|all] [preview]",
+            "next_step": "Confirm nearest-single versus whole-group deletion, miners/foragers releasing retired references, map UI and save/reload.",
+            "priority": "Validate",
+            "gameplay": "0.13 native clump depletion, node retirement and decal/spatial unregister paths implemented; offline validation only, gameplay pending."
+        },
+        {
+            "id": "resource_richness",
+            "title": "Normal and rich deposits",
+            "original_commands": [
+                "k.markNormalDepositAtCursor",
+                "k.markNormalResourceClumpAtCursor",
+                "k.markRichDepositAtCursor",
+                "k.markRichResourceClumpAtCursor"
+            ],
+            "current": "mobs.resource <rich|normal> [kind|all] [preview]; mobs.deposit <rich|normal> <iron|clay|salt>; mobs.undo_deposit",
+            "next_step": "Confirm rich/normal capacity, map labels and depletion proportion. Surface richness and underground reserves are separate.",
+            "priority": "Validate",
+            "gameplay": "0.13 native group flag/capacity/decal/spatial refresh implemented; proportional amount edge cases checked in C. Gameplay/save-load pending."
+        },
+        {
+            "id": "fishing",
+            "title": "Fishing ponds and fish stocks",
+            "original_commands": [
+                "k.placeFishingPond",
+                "k.removeFishingPondAtCursor",
+                "k.spawnShoalOfFishToFishingPondAtCursor"
+            ],
+            "current": "mobs.pond <place|remove> [preview]; mobs.pond_fish [amount] [rich] [preview]; mobs.refill_resources fish",
+            "next_step": "Confirm a new shoal can be fished, duplicate creation is refused, pond removal and save/reload work.",
+            "priority": "Validate",
+            "gameplay": "0.13 registered fish factory and pond resource link implemented; owned/completed pond selection checked offline. Gameplay pending."
+        },
+        {
+            "id": "animals",
+            "title": "Animal spawning and livestock cooldown",
+            "original_commands": [
+                "k.spawnAnimalAtCursor",
+                "k.skipLivestockOrderIntervalForRegion"
+            ],
+            "current": "mobs.animal <type> [1..20] [preview]; mobs.livestock_cooldown [reset]",
+            "next_step": "Confirm native housing, pasture and livestock registration after spawning.",
+            "priority": "Validate",
+            "gameplay": "0.12 additions: offline checks only; gameplay and save/reload confirmation pending. Gameplay confirmation not recorded for the full group."
+        },
+        {
+            "id": "population",
+            "title": "Population and family housing",
+            "original_commands": [
+                "k.growRegionPopulation",
+                "k.setHomeForHoveredUnitFamilyToSelectedBuilding"
+            ],
+            "current": "mobs.grow_population [attempts]; mobs.rehouse selected [preview]",
+            "next_step": "Confirm whole-family home updates and destination occupancy in gameplay.",
+            "priority": "Validate",
+            "gameplay": "0.12 additions: offline checks only; gameplay and save/reload confirmation pending. Gameplay confirmation not recorded for the full group."
+        },
+        {
+            "id": "forestry",
+            "title": "Forestry growth and work areas",
+            "original_commands": [
+                "k.growStageToRegionPlantedTrees",
+                "k.growStageToRegionPlantedTreesAtWorkArea"
+            ],
+            "current": "mobs.grow_stage [area] [preview]; mobs.grow_saplings [area] [preview]; existing grow/replant/regrow tools",
+            "next_step": "Confirm one-update growth and limited-work-area behavior; latest broad-tree repair still needs user confirmation.",
+            "priority": "Validate",
+            "gameplay": "0.12 additions: offline checks only; gameplay and save/reload confirmation pending. Earlier registered-tree growth observed; latest broad-tree scan and grow_saplings still await user confirmation."
+        },
+        {
+            "id": "fertility",
+            "title": "Soil fertility restoration and editing",
+            "original_commands": [
+                "k.restoreFertilityAtBuildingPlantPlots",
+                "k.restoreFertilityAtWorkArea",
+                "k.setFertilityAtBuildingPlantPlots",
+                "k.setFertilityAtWorkArea"
+            ],
+            "current": "mobs.soil <set|restore> <wheat|flax|barley|all> [percent for set] [selected|area] [preview]; mobs.undo_soil [preview]",
+            "next_step": "Confirm logical fertility, guarded undo and save/reload; overlay freshness and planted-crop captured yield factors are separate.",
+            "priority": "Validate",
+            "gameplay": "0.12 logical grid editing implemented and offline checked; no in-game/save-load proof. Overlay and planted-crop captured yield factors are separate."
+        },
+        {
+            "id": "weather",
+            "title": "Rain and drought controls",
+            "original_commands": [
+                "k.makeDrought",
+                "k.makeDroughtInstantly",
+                "k.makeRain",
+                "k.makeRainInstantly",
+                "k.skipDrought",
+                "k.skipDroughtInstantly",
+                "k.skipRain",
+                "k.skipRainInstantly"
+            ],
+            "current": "mobs.weather <rain|drought|clear|end_rain|end_drought> [instant] [damaging] [preview]",
+            "next_step": "Confirm transitions, seasonal interactions and native later weather changes in gameplay.",
+            "priority": "Validate",
+            "gameplay": "0.12 transitions implemented; offline target/current-value checks pass. Seasonal/gameplay behavior pending."
+        },
+        {
+            "id": "time",
+            "title": "Simulation speed and day skipping",
+            "original_commands": [
+                "k.setGameSpeed",
+                "k.skipDay"
+            ],
+            "current": "mobs.speed [0..12]; mobs.skip_day [1..30] [preview]",
+            "next_step": "Confirm dates and daily events in a disposable save.",
+            "priority": "Validate",
+            "gameplay": "0.12 additions: offline checks only; gameplay and save/reload confirmation pending. Gameplay confirmation not recorded for the full group."
+        },
+        {
+            "id": "territory",
+            "title": "Region claims and claim completion",
+            "original_commands": [
+                "k.layClaimOnRegion",
+                "k.finalizeClaimOnRegion",
+                "k.finalizeClaimOnAllRegion"
+            ],
+            "current": "mobs.map_regions; mobs.claim <start|finish> [region-id|all] [preview]",
+            "next_step": "Confirm native claim UI and ownership after completion; all only means existing own claims.",
+            "priority": "Validate",
+            "gameplay": "0.12 implementation uses only own claim records; offline selection and ownership checks pass. Gameplay pending."
+        },
+        {
+            "id": "encounters",
+            "title": "Mercenaries and hostile encounters",
+            "original_commands": [
+                "k.rerollHireMercenaries",
+                "k.spawnBanditCamp",
+                "k.spawnBanditCampAtCursor",
+                "k.spawnRaiderRallyAtCursor"
+            ],
+            "current": "mobs.mercenaries reroll; mobs.bandits [preview]; mobs.bandit_camp [preview]; mobs.raiders [1..6] [preview]",
+            "next_step": "Confirm native camp construction on clear unclaimed ground, camp visibility/rewards and save/reload.",
+            "priority": "Validate",
+            "gameplay": "0.13 cursor camp follows native camp squad/order/registry path, unclaimed-only preflight checked offline. Gameplay pending for new encounter commands."
+        },
+        {
+            "id": "units",
+            "title": "Unit follow, names and teleportation",
+            "original_commands": [
+                "k.followUnitAtCursor",
+                "k.renameUnitAtCursor",
+                "k.teleportFollowingUnitToCursor",
+                "k.teleportSelectedSquadsToCursor"
+            ],
+            "current": "mobs.teleport <unit|squads> [preview]; existing inspect/follow/rename/undo tools",
+            "next_step": "Confirm squad visuals, pathing, region updates and formation after relocation.",
+            "priority": "Validate",
+            "gameplay": "0.12 additions: offline checks only; gameplay and save/reload confirmation pending. Gameplay confirmation not recorded for the full group."
+        },
+        {
+            "id": "automation",
+            "title": "Command files and developer tools",
+            "original_commands": [
+                "k.enterCommandsFromFile",
+                "k.dbg.doTask",
+                "k.dbg.printBuildingPlants",
+                "k.boopMode"
+            ],
+            "current": "mobs.run <filename.txt> [preview]; mobs.plants; mobs.boop [on|off|status]; mobs.debug_task",
+            "next_step": "Gameplay-check command files/Boop/plant reports. debug_task is intentionally diagnostic because the reference handler has no gameplay body.",
+            "priority": "Validate",
+            "gameplay": "Command-file guards/soil parser checked offline. Reference dbg.doTask handler reviewed privately: context validation and cleanup only; no unit-task setter. Gameplay pending for new tools."
+        }
+    ]
+}

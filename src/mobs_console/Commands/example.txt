@@ -1,0 +1,4 @@
+# A read-only starting example. Preview with: mobs.run example.txt preview
+mobs.version
+mobs.status
+mobs.help region

@@ -1,0 +1,17 @@
+ML Console Commands by Mobs — permissions text
+
+The original source code and original promotional graphics included with this
+release are available under the MIT license. You may use, copy, modify and
+redistribute them, including commercially, provided you retain the copyright and
+license notice. Please identify modified versions clearly so users know who to
+contact for support.
+
+No Manor Lords game assets, UE4SS loader binaries, saves or third-party mod binaries
+are included. This license grants no rights over third-party content. The original
+MLConsoleCommandsMod was a behavioral feature reference; this release does not
+redistribute its implementation and does not require it.
+
+Nexus permission choices should be consistent with these MIT terms: permit reuse,
+modification and redistribution with the license notice. Do not select a restrictive
+preset that contradicts the included license. Donation/reward-program participation
+is an account decision and has not been selected by this preparation kit.
