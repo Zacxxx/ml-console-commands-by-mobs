@@ -27,7 +27,12 @@ def install(archive_path, win64, backup_directory):
             if len(path.parts) < 2 or path.parts[0] != MOD or entry.is_dir():
                 continue
             relative = Path(*path.parts[1:])
-            assert relative.parts[0] in {'Scripts', 'Native', 'Commands', 'enabled.txt'}, 'Unexpected mod content'
+            managed = len(relative.parts) >= 2 and relative.parts[0] in {'Scripts', 'Native', 'Commands'}
+            guide = len(relative.parts) == 1 and relative.name in {
+                'enabled.txt', 'LICENSE', 'README.md', 'COMMANDS.md', 'KNOWN_ISSUES.md',
+                'CHANGELOG.md', 'TUTORIAL.md', 'ITEM_IDS.csv',
+            }
+            assert managed or guide, 'Unexpected mod content'
             assert entry.file_size < 16 * 1024 * 1024, 'Oversized mod entry'
             assert relative.as_posix() not in files, 'Duplicate mod entry'
             files[relative.as_posix()] = archive.read(entry)
@@ -75,7 +80,7 @@ def install(archive_path, win64, backup_directory):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--archive', type=Path, default=ROOT / 'artifacts/ML-Console-Commands-by-Mobs-0.14.0-alpha.1.zip')
+    parser.add_argument('--archive', type=Path, required=True, help='The built -Nexus.zip runtime archive to install')
     parser.add_argument('--win64', type=Path, required=True)
     parser.add_argument('--backup', type=Path)
     parser.add_argument('--receipt', type=Path, default=ROOT / 'private/completion-pass-install.json')

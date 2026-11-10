@@ -36,6 +36,22 @@ class InstallerTests(unittest.TestCase):
             self.assertEqual(receipt['custom_commands_preserved'], ['Commands/example.txt'])
             self.assertEqual(len(receipt['files_verified']), 3)
 
+    def test_installs_the_shipped_nexus_layout_with_offline_guides(self):
+        spec = importlib.util.spec_from_file_location('nexus', ROOT / 'scripts/prepare_nexus.py')
+        nexus = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(nexus)
+        with tempfile.TemporaryDirectory() as folder:
+            base = Path(folder)
+            win64 = base / 'Win64'
+            (win64 / 'ue4ss/Mods').mkdir(parents=True)
+            package = base / 'runtime.zip'
+            nexus.write_archive(package, nexus.runtime_files())
+            installer.install(package, win64, base / 'backup')
+            target = win64 / 'ue4ss/Mods/MLConsoleCommandsByMobs'
+            self.assertIn('Full tutorial', (target / 'TUTORIAL.md').read_text())
+            self.assertIn('internal_name', (target / 'ITEM_IDS.csv').read_text())
+            self.assertTrue((target / 'Scripts/guidance.lua').exists())
+
     def test_rejects_archive_traversal_before_creating_backup(self):
         with tempfile.TemporaryDirectory() as folder:
             base = Path(folder)
