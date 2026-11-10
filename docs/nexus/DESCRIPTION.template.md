@@ -114,6 +114,9 @@ is `mobs.complete give br`. Use `mobs.find` for typo-tolerant discovery.
 `mobs.spawn_resource berries 100 4 preview` — close the console and click owned
 land to preview four berry clumps of 100 each. Repeat without preview to create.
 
+`mobs.pond place` — start native Fishing Pond placement, close the console and
+place the preview. `mobs.place_fishing_pond` is not a registered command.
+
 `mobs.pond_fish 500` — close the console and click near a completed owned Fishing
 Pond. An unfinished pond is rejected; existing shoals use `mobs.refill_resources fish`.
 
