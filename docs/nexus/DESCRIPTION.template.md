@@ -204,6 +204,7 @@ The optional **Source** download contains the original Lua/C source, tests and
 build/release tools under the MIT license. Keep its copyright/license notice
 when reusing it. It is not needed to play.
 
-Code was developed with generative AI under Mobs' direction. AI also helped
-produce this page and its original promotional title card. No generated in-game
+Code was developed with generative AI under Mobs' direction. AI also helped produce this page and promotional fan artwork using Manor Lords
+key art as a visual reference. The cover/banner are not gameplay screenshots or
+official artwork. No generated in-game
 art, voices or game assets are included.
