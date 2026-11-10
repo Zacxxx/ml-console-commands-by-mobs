@@ -13,7 +13,7 @@ RegisterConsoleCommandGlobalHandler=function() end
 print=function() end
 dofile('src/mobs_console/Scripts/main.lua')
 local categories=require('command_categories')
-local names={}; for name in pairs(registry) do names[#names+1]=name end
+local names={}; for name,entry in pairs(registry) do if not entry.hidden then names[#names+1]=name end end
 table.sort(names)
 for _,name in ipairs(names) do
     local entry=registry[name]

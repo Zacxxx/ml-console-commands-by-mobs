@@ -28,6 +28,8 @@ local result=commands['mobs.complete'].handler({'mobs.give','wo'})
 assert(result:find('mobs.give woodenparts',1,true) and result:find('Wooden Parts',1,true))
 assert(commands['mobs.complete'].handler({'mobs.give','bread','100','p'}):find('mobs.give bread 100 preview',1,true))
 assert(commands['mobs.complete'].handler({'mobs.give','bread','100'}):find('mobs.give bread 100 preview',1,true))
+assert(not commands['mobs.complete'].handler({'mobs.g'}):find('mobs.give bread',1,true), 'Partial command prefixes must not show item variants')
+assert(commands['mobs.complete'].handler({'mobs.give'}):find('mobs.give bread',1,true))
 local count=ui.refresh()
 assert(type(count)=='string' and #native_calls==1 and native_calls[1].on)
 local seen={}

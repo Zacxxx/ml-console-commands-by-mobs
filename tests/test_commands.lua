@@ -48,7 +48,9 @@ assert(logs[#logs]:find("mobs.treasury <set|add> <amount>", 1, true))
 assert(registry.help, "The plain help command must be registered")
 run("help")
 for name in pairs(registry) do
-    assert(logs[#logs]:find(name, 1, true), "Help is missing registered command " .. name)
+    if not name:match("^mobs%.advice%.") then
+        assert(logs[#logs]:find(name, 1, true), "Help is missing registered command " .. name)
+    end
 end
 run("help", {"no_such_command"})
 assert(logs[#logs]:find("No matching"))

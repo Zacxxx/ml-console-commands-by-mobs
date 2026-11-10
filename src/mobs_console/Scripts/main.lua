@@ -19,7 +19,7 @@ local command_files = require('command_files')
 local categories = require('command_categories')
 local undo = {}
 local commands = {}
-local VERSION = "0.14.0-alpha.1"
+local VERSION = "0.15.0-alpha.1"
 
 local function valid(object)
     local ok, result = pcall(function() return object and object:IsValid() end)
@@ -218,7 +218,7 @@ local function show_help(args)
     local filter = string.lower(args[1] or "")
     local lines = {}
     for name, entry in pairs(commands) do
-        if categories.matches(name,entry,filter) then
+        if (not entry.hidden or filter:find("advice",1,true)) and categories.matches(name,entry,filter) then
             lines[#lines + 1] = entry.usage .. " - " .. entry.description
         end
     end
@@ -269,6 +269,8 @@ ux.register(register)
 
 register("mobs.help", "mobs.help [search]", show_help, "List all commands; filter by army, lord, region, misc, or search usage/descriptions.")
 register("help", "help [search]", show_help, "Alias for mobs.help.")
+
+require('guidance').register(register,commands)
 
 local function refresh_autocomplete()
     if ExecuteWithDelay and ExecuteInGameThread then

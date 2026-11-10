@@ -27,7 +27,7 @@ function M.install(rows,enabled)
     file=assert(io.open(folder .. 'ux.response','rb'),'Console adapter did not respond')
     local response=file:read(4096); file:close()
     os.remove(folder .. 'ux.request'); os.remove(folder .. 'ux.response')
-    local count=response:match('^OK (%d+)\n$')
+    local count=response:match('^OK (%d+)%s*$')
     assert(count,response:gsub('%s+$',''))
     return tonumber(count)
 end

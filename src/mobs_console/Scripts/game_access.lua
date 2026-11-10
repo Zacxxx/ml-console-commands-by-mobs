@@ -21,7 +21,10 @@ function M.vector(at)
     return result
 end
 function M.selected(pawn)
-    local selected = pawn:getSelectedBuildings()
+    -- getSelectedBuildings returns a by-value TArray. UE4SS can outlive that
+    -- temporary buffer; selectedBld is the reflected, pawn-owned live array.
+    local selected = pawn.selectedBld
+    assert(selected, 'Selection unavailable; load a settlement and select a building')
     assert(#selected>0 and #selected<=32, 'Select between 1 and 32 owned buildings')
     local result, seen = {}, {}
     for i=1,#selected do

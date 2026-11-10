@@ -79,6 +79,7 @@ print("Pile click, wrapped names, unfinished pile, one-shot delivery, constructi
 -- Explicit inventory_add supports completed non-storage buildings, deduplicates,
 -- preflights foreign targets, and leaves ordinary give's storage rules intact.
 pawn.getSelectedBuildings=function() return buildings end
+setmetatable(pawn,{__index=function(_,key) if key=='selectedBld' then return buildings end end})
 local workshop=building(30,5,true)
 workshop.isStorageTypeBuilding=function() return false end
 buildings={workshop,workshop}

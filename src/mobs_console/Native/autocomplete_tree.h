@@ -27,6 +27,14 @@ static UxNode *ux_child(const UxNode *node,uint32_t key) {
 }
 static int ux_insert(UxNode *root,const uint16_t *command,int32_t index,int *nodes) {
     UxNode *at=root;
+    /* Keep argument variants out of broad command-prefix results. They remain
+     * reachable through child nodes, and become visible at the full command. */
+    int visible_from=0;
+    for(int i=0;command[i];i++) if(command[i]==' ') { visible_from=i-1; break; }
+    static const uint16_t advice[]={'M','O','B','S','.','A','D','V','I','C','E','.',0};
+    int is_advice=1;
+    for(int i=0;advice[i];i++) if(command[i]!=advice[i]) { is_advice=0; break; }
+    if(is_advice && visible_from<11) visible_from=11;
     for(int i=0;command[i];i++) {
         if(i>=255) return 0;
         UxNode *child=ux_child(at,command[i]);
@@ -38,7 +46,7 @@ static int ux_insert(UxNode *root,const uint16_t *command,int32_t index,int *nod
             if(!ux_push(&at->children,&child,sizeof(child))) { UX_FREE(child); return 0; }
             (*nodes)++;
         }
-        if(!ux_push(&child->indices,&index,sizeof(index))) return 0;
+        if(i>=visible_from && !ux_push(&child->indices,&index,sizeof(index))) return 0;
         at=child;
     }
     return 1;

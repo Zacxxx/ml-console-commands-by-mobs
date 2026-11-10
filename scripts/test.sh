@@ -2,8 +2,13 @@
 set -euo pipefail
 cd -- "$(dirname -- "$0")/.."
 python3 scripts/command_parity.py --check
+python3 scripts/build_guidance.py --check
+python3 scripts/build_wiki.py --check
+lua tests/guidance/test_guidance.lua
 python3 -m unittest discover -s tests/world_tools -p 'test_*.py' -v
 python3 -m unittest discover -s tests/release -p 'test_*.py' -v
+lua tests/game_access/test_selection.lua
+lua tests/console_ux/test_adapter.lua
 lua tests/console_ux/test_ux.lua
 lua tests/world_tools/test_commands.lua
 lua tests/parity_tools/test_commands.lua

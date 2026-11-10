@@ -25,7 +25,7 @@ function M.new(get_pawn, get_region, region_label)
 
     local function selected_fields()
         local pawn = get_pawn()
-        local selected = pawn:getSelectedBuildings()
+        local selected = require('game_access').selected(pawn)
         assert(#selected > 0 and #selected <= 32, "Select between 1 and 32 owned fields")
         local fields, seen = {}, {}
         for index = 1, #selected do

@@ -73,7 +73,7 @@ function M.new(get_pawn)
 
     local function selected_building()
         local pawn = get_pawn()
-        local buildings = pawn:getSelectedBuildings()
+        local buildings = require('game_access').selected(pawn)
         assert(#buildings == 1 and valid(buildings[1]), "Select exactly one building first")
         local building = buildings[1]
         assert(valid(building.Region) and same(building.Region.ownerPawn, pawn),
@@ -262,7 +262,7 @@ function M.new(get_pawn)
             local targets, label
             if selected then
                 local pawn, seen = get_pawn(), {}
-                local buildings = pawn:getSelectedBuildings()
+                local buildings = require('game_access').selected(pawn)
                 assert(#buildings > 0 and #buildings <= 32, "Select between 1 and 32 owned construction sites")
                 targets = {}
                 for index = 1, #buildings do

@@ -1,0 +1,854 @@
+{
+    "game_version": "0.8.117",
+    "provenance": "EItemType reflected name/value pairs in the locally installed Steam executable. Enum entries include internal/unused values, not just deliverable items. Numeric IDs are authoritative; runtime mobs.items reads the live deliverable subset and localized names.",
+    "entries": [
+        {
+            "id": 0,
+            "name": "None"
+        },
+        {
+            "id": 1,
+            "name": "WheatGrain"
+        },
+        {
+            "id": 2,
+            "name": "StagCarcass"
+        },
+        {
+            "id": 3,
+            "name": "Hides"
+        },
+        {
+            "id": 4,
+            "name": "Leather"
+        },
+        {
+            "id": 5,
+            "name": "WheatFlour"
+        },
+        {
+            "id": 6,
+            "name": "Irontools"
+        },
+        {
+            "id": 7,
+            "name": "WoodenParts"
+        },
+        {
+            "id": 8,
+            "name": "Recipe_Clothes_Woolen"
+        },
+        {
+            "id": 9,
+            "name": "Pelts"
+        },
+        {
+            "id": 10,
+            "name": "Shoes"
+        },
+        {
+            "id": 11,
+            "name": "Flax"
+        },
+        {
+            "id": 12,
+            "name": "Cloth_Linen"
+        },
+        {
+            "id": 13,
+            "name": "Charcoal"
+        },
+        {
+            "id": 14,
+            "name": "IronOre"
+        },
+        {
+            "id": 15,
+            "name": "Rubble"
+        },
+        {
+            "id": 16,
+            "name": "Timber"
+        },
+        {
+            "id": 17,
+            "name": "planks"
+        },
+        {
+            "id": 18,
+            "name": "Herbs"
+        },
+        {
+            "id": 20,
+            "name": "fellingAxe"
+        },
+        {
+            "id": 21,
+            "name": "huntingBow"
+        },
+        {
+            "id": 22,
+            "name": "Mallet"
+        },
+        {
+            "id": 23,
+            "name": "Wool"
+        },
+        {
+            "id": 24,
+            "name": "Saw"
+        },
+        {
+            "id": 25,
+            "name": "Knife"
+        },
+        {
+            "id": 26,
+            "name": "Sickle"
+        },
+        {
+            "id": 27,
+            "name": "RoughStone"
+        },
+        {
+            "id": 28,
+            "name": "Ale"
+        },
+        {
+            "id": 29,
+            "name": "Malt"
+        },
+        {
+            "id": 30,
+            "name": "fish"
+        },
+        {
+            "id": 31,
+            "name": "plow"
+        },
+        {
+            "id": 32,
+            "name": "Eel"
+        },
+        {
+            "id": 33,
+            "name": "RyeFlour"
+        },
+        {
+            "id": 34,
+            "name": "Recipe_Clothes_Linen"
+        },
+        {
+            "id": 35,
+            "name": "IronSlabs"
+        },
+        {
+            "id": 36,
+            "name": "Deer"
+        },
+        {
+            "id": 42,
+            "name": "Chicken"
+        },
+        {
+            "id": 43,
+            "name": "Hare"
+        },
+        {
+            "id": 44,
+            "name": "HareCarcass"
+        },
+        {
+            "id": 45,
+            "name": "Pears"
+        },
+        {
+            "id": 46,
+            "name": "Quinces"
+        },
+        {
+            "id": 52,
+            "name": "body_male_lv1_variations"
+        },
+        {
+            "id": 72,
+            "name": "Sheep"
+        },
+        {
+            "id": 89,
+            "name": "body_female_lv1_variations"
+        },
+        {
+            "id": 93,
+            "name": "headwear_female_lv1_variations"
+        },
+        {
+            "id": 98,
+            "name": "Horse"
+        },
+        {
+            "id": 108,
+            "name": "HorsewithCarriageReins"
+        },
+        {
+            "id": 109,
+            "name": "BigCart"
+        },
+        {
+            "id": 110,
+            "name": "bigCart_Axel"
+        },
+        {
+            "id": 133,
+            "name": "spears"
+        },
+        {
+            "id": 136,
+            "name": "ShepherdsCrook"
+        },
+        {
+            "id": 137,
+            "name": "HorseReins_Rider"
+        },
+        {
+            "id": 138,
+            "name": "Pickaxe"
+        },
+        {
+            "id": 139,
+            "name": "HideWashed"
+        },
+        {
+            "id": 140,
+            "name": "BeekeeperMask"
+        },
+        {
+            "id": 141,
+            "name": "Honey"
+        },
+        {
+            "id": 142,
+            "name": "Wax"
+        },
+        {
+            "id": 143,
+            "name": "Honeycomb"
+        },
+        {
+            "id": 144,
+            "name": "Robe"
+        },
+        {
+            "id": 145,
+            "name": "Salt"
+        },
+        {
+            "id": 146,
+            "name": "Clay"
+        },
+        {
+            "id": 147,
+            "name": "meat"
+        },
+        {
+            "id": 148,
+            "name": "Yarn"
+        },
+        {
+            "id": 149,
+            "name": "Clothes"
+        },
+        {
+            "id": 150,
+            "name": "Saddle"
+        },
+        {
+            "id": 153,
+            "name": "Candle"
+        },
+        {
+            "id": 154,
+            "name": "BasketArmour"
+        },
+        {
+            "id": 156,
+            "name": "Warhorse"
+        },
+        {
+            "id": 157,
+            "name": "Banner"
+        },
+        {
+            "id": 163,
+            "name": "gambesons"
+        },
+        {
+            "id": 164,
+            "name": "mail_armor"
+        },
+        {
+            "id": 165,
+            "name": "Barley"
+        },
+        {
+            "id": 166,
+            "name": "Hops"
+        },
+        {
+            "id": 167,
+            "name": "Beer"
+        },
+        {
+            "id": 170,
+            "name": "RyeBread"
+        },
+        {
+            "id": 171,
+            "name": "Berries"
+        },
+        {
+            "id": 172,
+            "name": "WheatBread"
+        },
+        {
+            "id": 173,
+            "name": "Pastries"
+        },
+        {
+            "id": 175,
+            "name": "Silk"
+        },
+        {
+            "id": 176,
+            "name": "Spices"
+        },
+        {
+            "id": 177,
+            "name": "weapons_sidearms"
+        },
+        {
+            "id": 178,
+            "name": "weapons_polearms"
+        },
+        {
+            "id": 204,
+            "name": "hat_variations_lv2"
+        },
+        {
+            "id": 205,
+            "name": "warbows"
+        },
+        {
+            "id": 206,
+            "name": "crossbows"
+        },
+        {
+            "id": 207,
+            "name": "hood_up"
+        },
+        {
+            "id": 213,
+            "name": "bludgeon_2h_maul"
+        },
+        {
+            "id": 216,
+            "name": "Firewood"
+        },
+        {
+            "id": 217,
+            "name": "WheatSheaves"
+        },
+        {
+            "id": 218,
+            "name": "Handcart"
+        },
+        {
+            "id": 219,
+            "name": "Woad"
+        },
+        {
+            "id": 220,
+            "name": "Eggs"
+        },
+        {
+            "id": 221,
+            "name": "Milk"
+        },
+        {
+            "id": 222,
+            "name": "Goat"
+        },
+        {
+            "id": 223,
+            "name": "shortAxe"
+        },
+        {
+            "id": 224,
+            "name": "work_hoe"
+        },
+        {
+            "id": 225,
+            "name": "work_flail"
+        },
+        {
+            "id": 226,
+            "name": "work_rollingPin"
+        },
+        {
+            "id": 227,
+            "name": "work_woodenSpade"
+        },
+        {
+            "id": 228,
+            "name": "water"
+        },
+        {
+            "id": 229,
+            "name": "empty_bucket"
+        },
+        {
+            "id": 230,
+            "name": "vegetables"
+        },
+        {
+            "id": 231,
+            "name": "empty_bag"
+        },
+        {
+            "id": 232,
+            "name": "Lamb"
+        },
+        {
+            "id": 233,
+            "name": "corpse"
+        },
+        {
+            "id": 234,
+            "name": "Ox"
+        },
+        {
+            "id": 236,
+            "name": "oxwhip"
+        },
+        {
+            "id": 237,
+            "name": "debranching_target"
+        },
+        {
+            "id": 246,
+            "name": "hat_variations"
+        },
+        {
+            "id": 247,
+            "name": "scabbard"
+        },
+        {
+            "id": 250,
+            "name": "retinue_polearms"
+        },
+        {
+            "id": 252,
+            "name": "embeded_arrow"
+        },
+        {
+            "id": 254,
+            "name": "tradingWagon"
+        },
+        {
+            "id": 255,
+            "name": "Brushwood"
+        },
+        {
+            "id": 256,
+            "name": "backpack"
+        },
+        {
+            "id": 257,
+            "name": "smallLog"
+        },
+        {
+            "id": 258,
+            "name": "CONSUM_ale"
+        },
+        {
+            "id": 259,
+            "name": "mug"
+        },
+        {
+            "id": 260,
+            "name": "distaff"
+        },
+        {
+            "id": 261,
+            "name": "slag"
+        },
+        {
+            "id": 262,
+            "name": "body_male_smith"
+        },
+        {
+            "id": 263,
+            "name": "hammer"
+        },
+        {
+            "id": 264,
+            "name": "iron_rod"
+        },
+        {
+            "id": 267,
+            "name": "basket"
+        },
+        {
+            "id": 268,
+            "name": "Fieldstone_DEPREC"
+        },
+        {
+            "id": 269,
+            "name": "clayTILES"
+        },
+        {
+            "id": 270,
+            "name": "shields_small"
+        },
+        {
+            "id": 271,
+            "name": "shields_large"
+        },
+        {
+            "id": 273,
+            "name": "militia_helmets_resource"
+        },
+        {
+            "id": 274,
+            "name": "townguard_weapon"
+        },
+        {
+            "id": 276,
+            "name": "helmets_retinue_tier1"
+        },
+        {
+            "id": 277,
+            "name": "archer_sidearm"
+        },
+        {
+            "id": 278,
+            "name": "retinue_sidearms"
+        },
+        {
+            "id": 279,
+            "name": "mushrooms"
+        },
+        {
+            "id": 280,
+            "name": "accessories_civilian_lv1_hoodDown"
+        },
+        {
+            "id": 281,
+            "name": "heads_male_variations"
+        },
+        {
+            "id": 282,
+            "name": "hair_male_variations"
+        },
+        {
+            "id": 283,
+            "name": "DressedStone"
+        },
+        {
+            "id": 284,
+            "name": "handcart_axel"
+        },
+        {
+            "id": 285,
+            "name": "helmets_militia_tier0"
+        },
+        {
+            "id": 286,
+            "name": "heads_female_variations"
+        },
+        {
+            "id": 287,
+            "name": "Hound"
+        },
+        {
+            "id": 288,
+            "name": "mercenary_helmet_poor"
+        },
+        {
+            "id": 289,
+            "name": "mercenary_helmet_medium"
+        },
+        {
+            "id": 290,
+            "name": "shields_retinue_small"
+        },
+        {
+            "id": 291,
+            "name": "arrow"
+        },
+        {
+            "id": 292,
+            "name": "retinue_hats"
+        },
+        {
+            "id": 293,
+            "name": "PlateArmor"
+        },
+        {
+            "id": 294,
+            "name": "helmets_retinue_tier3"
+        },
+        {
+            "id": 295,
+            "name": "plow_axel"
+        },
+        {
+            "id": 296,
+            "name": "apples"
+        },
+        {
+            "id": 297,
+            "name": "empty_stone_basket"
+        },
+        {
+            "id": 298,
+            "name": "RyeSheaves"
+        },
+        {
+            "id": 299,
+            "name": "RyeGrain"
+        },
+        {
+            "id": 300,
+            "name": "Dung"
+        },
+        {
+            "id": 301,
+            "name": "Fertilizer"
+        },
+        {
+            "id": 302,
+            "name": "dyes"
+        },
+        {
+            "id": 303,
+            "name": "horse_harness_wagon"
+        },
+        {
+            "id": 304,
+            "name": "body_male_lv2_variations"
+        },
+        {
+            "id": 305,
+            "name": "horse_cart_axel"
+        },
+        {
+            "id": 306,
+            "name": "mule"
+        },
+        {
+            "id": 307,
+            "name": "head_male_chubby"
+        },
+        {
+            "id": 308,
+            "name": "body_male_lv1_chubby"
+        },
+        {
+            "id": 309,
+            "name": "head_female_chubby"
+        },
+        {
+            "id": 310,
+            "name": "body_female_lv1_chubby"
+        },
+        {
+            "id": 311,
+            "name": "body_male_variations_combat"
+        },
+        {
+            "id": 312,
+            "name": "banner_carrier_sword"
+        },
+        {
+            "id": 313,
+            "name": "stirring_stick"
+        },
+        {
+            "id": 314,
+            "name": "crossbow_bolt"
+        },
+        {
+            "id": 315,
+            "name": "fishingRod"
+        },
+        {
+            "id": 316,
+            "name": "fishingFish"
+        },
+        {
+            "id": 317,
+            "name": "iron_parts"
+        },
+        {
+            "id": 318,
+            "name": "hunting_limit"
+        },
+        {
+            "id": 319,
+            "name": "fishing_limit"
+        },
+        {
+            "id": 320,
+            "name": "sausage"
+        },
+        {
+            "id": 321,
+            "name": "Pig"
+        },
+        {
+            "id": 322,
+            "name": "siege_ladders"
+        },
+        {
+            "id": 323,
+            "name": "smokedfish"
+        },
+        {
+            "id": 324,
+            "name": "zweiback"
+        },
+        {
+            "id": 325,
+            "name": "mead"
+        },
+        {
+            "id": 326,
+            "name": "lebkuchen"
+        },
+        {
+            "id": 327,
+            "name": "cider"
+        },
+        {
+            "id": 328,
+            "name": "chisel"
+        },
+        {
+            "id": 329,
+            "name": "Mortar"
+        },
+        {
+            "id": 330,
+            "name": "SmallGame"
+        },
+        {
+            "id": 331,
+            "name": "Venison"
+        },
+        {
+            "id": 332,
+            "name": "Mutton"
+        },
+        {
+            "id": 333,
+            "name": "Chevon"
+        },
+        {
+            "id": 334,
+            "name": "Pork"
+        },
+        {
+            "id": 335,
+            "name": "Beef"
+        },
+        {
+            "id": 336,
+            "name": "ChickenMeat"
+        },
+        {
+            "id": 337,
+            "name": "Carrots"
+        },
+        {
+            "id": 338,
+            "name": "Cabbages"
+        },
+        {
+            "id": 339,
+            "name": "Beetroots"
+        },
+        {
+            "id": 340,
+            "name": "VirtualRequirementItem_Faith_Lv1"
+        },
+        {
+            "id": 341,
+            "name": "VirtualRequirementItem_Faith_Lv2"
+        },
+        {
+            "id": 342,
+            "name": "VirtualRequirementItem_Faith_Lv3"
+        },
+        {
+            "id": 343,
+            "name": "VirtualRequirementItem_Faith_Lv4"
+        },
+        {
+            "id": 345,
+            "name": "TimberCart"
+        },
+        {
+            "id": 346,
+            "name": "TimberCart_Axel"
+        },
+        {
+            "id": 347,
+            "name": "Cow"
+        },
+        {
+            "id": 348,
+            "name": "Cheese"
+        },
+        {
+            "id": 349,
+            "name": "OatGrain"
+        },
+        {
+            "id": 350,
+            "name": "OatSheaves"
+        },
+        {
+            "id": 351,
+            "name": "AnimalFeed"
+        },
+        {
+            "id": 352,
+            "name": "Calf"
+        },
+        {
+            "id": 353,
+            "name": "CONSUM_mead"
+        },
+        {
+            "id": 354,
+            "name": "CONSUM_cider"
+        },
+        {
+            "id": 355,
+            "name": "Recipe_Sausage_Beef"
+        },
+        {
+            "id": 356,
+            "name": "Recipe_Sausage_Pork"
+        },
+        {
+            "id": 357,
+            "name": "Recipe_Smoked_Eel"
+        },
+        {
+            "id": 358,
+            "name": "Recipe_Smoked_Carp"
+        }
+    ]
+}

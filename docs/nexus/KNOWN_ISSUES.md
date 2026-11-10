@@ -1,4 +1,4 @@
-# Compatibility and known limits — 0.14.0-alpha.1
+# Compatibility and known limits — 0.15.0-alpha.1
 
 - **Game target: Manor Lords 0.8.117 only.** The native helper guards target the
   Steam pre_release executable (PE timestamp 0x6836c1ba, image size 0x9dfd000).
@@ -33,6 +33,20 @@
 - **Scope differences:** these are independent mobs.* commands. Original k.* aliases
   are not registered. debug_task is a read-only context diagnostic, not arbitrary
   worker-job assignment. Practical counterpart coverage does not mean identical behavior.
+
+## Community report status
+
+[Full report audit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Bug-report-status).
+Selection, contextual autocomplete and deposit creation/removal fixes pass offline
+checks but still need fresh in-game reproduction and save/load confirmation.
+Spawned eel ignored by fishermen / later despawning remains an open report.
+`mobs.animal deer/hare` creates individuals, not registered huntable resource nodes.
+
+New `spawn_deposit` creates the requested amount in a surface clump PLUS the same
+underground reserves; these are separate layers. Rich underground reserves can be
+endless under native deep-mining rules. Existing white-stripe/empty-marker placements
+are not silently rewritten. Preview `remove_deposit` to remove the old reserve/decal,
+and `resource remove` for remaining real surface clumps or orphaned empty markers.
 
 ## Reporting a problem
 

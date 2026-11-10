@@ -1,10 +1,10 @@
 # Command reference
 
-Version 0.14.0-alpha.1 — 91 registered names, including aliases.
+Version 0.15.0-alpha.1 — 94 base names/aliases, plus detailed dotted advice shortcuts.
 
 Generated from the registered implementation without executing gameplay commands.
 
-Use mobs.usage <command> for targeting help. Required arguments use <...>;
+Use mobs.advice.<command> for detailed guides and mobs.tutorial for the tutorial. Required arguments use <...>;
 optional arguments use [...]. Replace the placeholders; do not type their brackets.
 
 Preview/undo are available only where explicitly documented. Read KNOWN_ISSUES.md.
@@ -57,19 +57,20 @@ Preview/undo are available only where explicitly documented. Read KNOWN_ISSUES.m
 | `mobs.pile <item\|id> <amount>` | Experimental: enter native Supplies placement and fill the newly placed pile; owned region only. |
 | `mobs.pond_fish [amount] [rich] [preview]` | Add one fish shoal to the nearest completed owned Fishing Pond; rejects ponds already containing fish. Use refill_resources for existing shoals. |
 | `mobs.refill_resources [kind] [preview]` | Refill existing iron/clay/stone/salt/berries/mushrooms/fish/eel clumps to capacity; preview and guarded undo; no new nodes. |
+| `mobs.refresh_resource_icons [preview]` | Refresh the game HUD resource-node list for normal-map icons and paper-map hover details. No click required; resource quantities unchanged; preview available. |
 | `mobs.region [id\|current\|selected\|auto]` | Choose a region for wealth and regional construction commands; does not move the camera or alter map selection. |
 | `mobs.regions` | List your owned regions and their IDs for mobs.region. |
 | `mobs.regrow_trees [preview]` | Combined tool: click to replant one sapling and mature native growing trees in the target owned region; supports preview. |
 | `mobs.rehouse selected [preview]` | Move a hovered/followed family to one selected completed house in the same owned region; checks capacity, supports preview. |
-| `mobs.remove_deposit [iron\|clay\|salt\|all] [preview]` | Click near an owned underground deposit to remove its reserves/decal and unregister it; surface clumps are separate; no undo. |
+| `mobs.remove_deposit [iron\|clay\|salt\|all] [preview]` | Click near owned underground reserves to remove their decal and colocated empty legacy markers; real surface clumps remain (mobs.resource remove); no undo. |
 | `mobs.remove_selected_piles [preview]` | Remove selected owned Supplies piles INCLUDING CONTENTS, even unfinished/bugged ones; supports preview. Ignores region pin; no undo. |
 | `mobs.replant_trees [preview]` | Click cleared ground to replant one oak sapling in the target owned region; native collision checks; supports preview. |
-| `mobs.resource <add\|rich\|normal\|remove\|remove_clump> [kind\|all] [amount for add] [preview]` | Click near an owned resource to add to one clump, change group richness/capacity, or remove a whole group/one clump. Maximum distance 2500; no undo. |
+| `mobs.resource <add\|rich\|normal\|refresh\|remove\|remove_clump> [kind\|all] [amount for add] [preview]` | Click near an owned resource to add, change richness, refresh ground height/size/visibility without changing goods, or remove a group/clump. Refresh excludes fish/eel and attached clumps. Maximum distance 2500; no undo. |
 | `mobs.resources [kind]` | Inspect existing mineral, berry, mushroom, fish and eel clumps in the target owned region; does not count stored goods. |
 | `mobs.respec_perks [1\|2\|all] [preview]` | Reset regional perk cards and rebuild active effects. Default both tiers; resetting Origins also resets Rural Foundations. |
 | `mobs.skip_mourning [preview]` | Clear active mourning timers on owned buildings in the target region; preview lists the affected count. |
 | `mobs.soil <set\|restore> <wheat\|flax\|barley\|all> [0..100] [selected\|area] [preview]` | Set baseline/current soil fertility or restore depletion for selected planted plots or limited work areas; 0..100%, preview and guarded undo. |
-| `mobs.spawn_deposit <iron\|clay\|salt> <amount> [rich] [preview]` | Click to create a new registered underground iron/clay/salt deposit and matching map node; one million units maximum; no undo. |
+| `mobs.spawn_deposit <iron\|clay\|salt> <amount> [rich] [preview]` | Click to create iron/clay/salt with the requested amount in one surface clump PLUS the same underground reserves; ground-facing decal and map node; maximum one million per layer; no undo. |
 | `mobs.spawn_resource <kind> [amount per clump] [1..64 clumps] [rich] [preview]` | Click to create a registered surface resource group; amount is per clump, defaults to native capacity. Fish/eel require water; preview available. |
 | `mobs.stock [search]` | Show target region stock through the native stock query, including reserved goods; optional name or ID filter. |
 | `mobs.supply_construction [selected] [preview]` | Supply missing construction materials in the target region or selected sites; supports preview. Does not complete work. |
@@ -99,6 +100,7 @@ Preview/undo are available only where explicitly documented. Read KNOWN_ISSUES.m
 | --- | --- |
 | `help [search]` | Alias for mobs.help. |
 | `mobs [command words...]` | Quick-start dashboard or run an exact command using spaces; misspellings only suggest, never execute. |
+| `mobs.advice [command]` | Read a detailed command guide with targeting, explanations, examples and limits; dotted advice shortcuts also work. |
 | `mobs.autocomplete [status\|refresh\|on\|off]` | Refresh game-data suggestions, inspect status, or enable/disable only our native console suggestions. |
 | `mobs.boop [on\|off\|status]` | Toggle the game debug Boop mode, explicitly enable/disable it or read status; uses the native pawn setting and refresh. |
 | `mobs.cancel` | Cancel pending supply/forestry tools or further tree-growth batches; completed changes remain. |
@@ -116,6 +118,7 @@ Preview/undo are available only where explicitly documented. Read KNOWN_ISSUES.m
 | `mobs.run <filename.txt> [preview]` | Run up to 100 Mobs commands from a local Commands/*.txt file; no scripts, traversal or recursion; preview lists commands; stop on first error. |
 | `mobs.skip_day [1..30] [preview]` | Advance days through the native date update rather than overwrite the calendar; maximum 30, preview available. |
 | `mobs.speed [0..12]` | Read or request game speed through the native game function; 0 pauses and 1 resumes normally. |
+| `mobs.tutorial [chapter\|all]` | Read the tutorial chapter index, a numbered/named chapter, or the complete tutorial with all. |
 | `mobs.usage <command>` | Explain exact syntax, targeting, previews and click tools without running anything. |
 | `mobs.version` | Show the installed Mobs version and supported target. |
 | `mobs.weather <rain\|drought\|clear\|end_rain\|end_drought> [instant] [damaging] [preview]` | Start/end rain or drought; optional immediate transition and damaging rain. Supports preview. |

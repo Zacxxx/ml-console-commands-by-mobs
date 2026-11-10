@@ -51,7 +51,7 @@ function M.new(commands,api)
     local discovery={mobs=true,help=true,['mobs.help']=true,['mobs.find']=true,['mobs.usage']=true,
         ['mobs.complete']=true,['mobs.recent']=true,['mobs.autocomplete']=true}
     function self.record(name,args)
-        if discovery[name] then return end
+        if discovery[name] or name=='mobs.tutorial' or name=='mobs.advice' or name:match('^mobs%.advice%.') then return end
         local value=name .. (#args>0 and (' ' .. table.concat(args,' ')) or '')
         if history[#history]~=value then history[#history+1]=clean(value) end
         if #history>30 then table.remove(history,1) end
@@ -74,7 +74,7 @@ function M.new(commands,api)
             end
             local delta=distance(needle,norm(short))
             if delta<=math.max(1,math.min(3,math.floor(#needle/4))) then score=score+80-delta*10 end
-            if score>0 then result[#result+1]={name=name,score=score,entry=entry} end
+            if score>0 and not entry.hidden then result[#result+1]={name=name,score=score,entry=entry} end
         end
         table.sort(result,function(a,b) return a.score==b.score and a.name<b.name or a.score>b.score end)
         return result
@@ -154,7 +154,7 @@ function M.new(commands,api)
         local message=tostring(value):match('^([^\n]*)') or tostring(value)
         message=message:gsub('^.-%.lua:%d+:%s*','')
         local entry=commands[name]
-        return 'ERROR: ' .. message .. (entry and ('\nUsage: ' .. entry.usage .. '\nDetails: mobs.usage ' .. name:gsub('^mobs%.','')) or '')
+        return 'ERROR: ' .. message .. (entry and ('\nUsage: ' .. entry.usage .. '\nDetails: mobs.advice.' .. name:gsub('^mobs%.','')) or '')
     end
     local function completion(query)
         query=clean(query):gsub('^%s+','')
@@ -164,7 +164,11 @@ function M.new(commands,api)
             if not seen[command] then result[#result+1]={command=command,description=description}; seen[command]=true end
         end
         for _,entry in ipairs(self.suggestions()) do
-            if entry.command:lower():sub(1,#query)==query:lower() then add(entry.command,entry.description) end
+            local command_name=entry.command:match('^%S+')
+            local arguments_allowed=query:find(' ',1,true) or commands[query:lower()]
+            local advice_allowed=not entry.command:match('^mobs%.advice%.') or query:match('^mobs%.advice%.')
+            if advice_allowed and (arguments_allowed or command_name==entry.command)
+                and entry.command:lower():sub(1,#query)==query:lower() then add(entry.command,entry.description) end
         end
         local tokens=words(query)
         local entry=commands[tokens[1]]
@@ -197,11 +201,12 @@ function M.new(commands,api)
     function self.register(register)
         register('mobs','mobs [command words...]',function(args)
             if #args==0 then
-                local total=0; for _ in pairs(commands) do total=total+1 end
+                local total=0; for _,entry in pairs(commands) do if not entry.hidden then total=total+1 end end
                 return 'ML Console Commands by Mobs: ' .. total .. ' commands.\n'
                     .. 'Type mobs. for suggestions; Tab completes, Enter runs.\n'
                     .. 'mobs.find <words> - search names and descriptions, including close spellings\n'
-                    .. 'mobs.usage <command> - syntax and targeting guidance\n'
+                    .. 'mobs.advice.<command> - detailed explanations and examples\n'
+                    .. 'mobs.tutorial - chapter list; mobs.tutorial all - full manual\n'
                     .. 'mobs.help region | army | lord | misc - browse categories\n'
                     .. 'mobs.regions / mobs.region <id> - choose your target\n'
                     .. 'mobs.cancel - cancel a pending click tool; mobs.recent - last successful commands\n'

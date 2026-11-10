@@ -43,6 +43,11 @@ function M.new(get_pawn,arm,api)
         end)
     end
     function self.register(register)
+        register('mobs.refresh_resource_icons','mobs.refresh_resource_icons [preview]',function(args)
+            local args,preview=access.preview(args)
+            assert(#args==0,'Usage: mobs.refresh_resource_icons [preview]')
+            return api.run(get_pawn(),{mode=11,preview=preview})
+        end,'Refresh the game HUD resource-node list for normal-map icons and paper-map hover details. No click required; resource quantities unchanged; preview available.')
         register('mobs.spawn_resource','mobs.spawn_resource <kind> [amount per clump] [1..64 clumps] [rich] [preview]',function(args)
             local args,preview=access.preview(args)
             local rich=args[#args]=='rich'
@@ -51,30 +56,30 @@ function M.new(get_pawn,arm,api)
             return click('Resource placement',{mode=1,kind=kind(args[1]),amount=args[2] and core.integer(args[2],1,1000000) or 0,
                 count=core.integer(args[3] or 1,1,64),rich=rich and 1 or 0,preview=preview})
         end,'Click to create a registered surface resource group; amount is per clump, defaults to native capacity. Fish/eel require water; preview available.')
-        register('mobs.resource','mobs.resource <add|rich|normal|remove|remove_clump> [kind|all] [amount for add] [preview]',function(args)
+        register('mobs.resource','mobs.resource <add|rich|normal|refresh|remove|remove_clump> [kind|all] [amount for add] [preview]',function(args)
             local args,preview=access.preview(args)
             if args[1]=='add' then
                 assert(#args==3,'Usage: mobs.resource add <kind> <amount> [preview]')
                 return click('Add resource',{mode=9,kind=kind(args[2]),amount=core.integer(args[3],1,1000000),preview=preview})
             end
-            local modes={rich=2,normal=2,remove=3,remove_clump=3}
-            assert(#args>=1 and #args<=2 and modes[args[1]],'Choose rich, normal, remove or remove_clump, then optional kind and preview')
+            local modes={rich=2,normal=2,refresh=10,remove=3,remove_clump=3}
+            assert(#args>=1 and #args<=2 and modes[args[1]],'Choose rich, normal, refresh, remove or remove_clump, then optional kind and preview')
             return click('Resource ' .. args[1],{mode=modes[args[1]],kind=kind(args[2],true),
                 count=args[1]=='remove_clump' and 1 or 0,rich=args[1]=='rich' and 1 or 0,preview=preview})
-        end,'Click near an owned resource to add to one clump, change group richness/capacity, or remove a whole group/one clump. Maximum distance 2500; no undo.')
+        end,'Click near an owned resource to add, change richness, refresh ground height/size/visibility without changing goods, or remove a group/clump. Refresh excludes fish/eel and attached clumps. Maximum distance 2500; no undo.')
         register('mobs.spawn_deposit','mobs.spawn_deposit <iron|clay|salt> <amount> [rich] [preview]',function(args)
             local args,preview=access.preview(args)
             local rich=args[#args]=='rich';if rich then table.remove(args) end
             assert(#args==2 and (args[1]=='iron' or args[1]=='clay' or args[1]=='salt'),
                 'Usage: mobs.spawn_deposit <iron|clay|salt> <amount> [rich] [preview]')
             return click('Underground deposit placement',{mode=4,kind=kind(args[1]),amount=core.integer(args[2],1,1000000),rich=rich and 1 or 0,preview=preview})
-        end,'Click to create a new registered underground iron/clay/salt deposit and matching map node; one million units maximum; no undo.')
+        end,'Click to create iron/clay/salt with the requested amount in one surface clump PLUS the same underground reserves; ground-facing decal and map node; maximum one million per layer; no undo.')
         register('mobs.remove_deposit','mobs.remove_deposit [iron|clay|salt|all] [preview]',function(args)
             local args,preview=access.preview(args)
             assert(#args<=1 and (not args[1] or args[1]=='all' or args[1]=='iron' or args[1]=='clay' or args[1]=='salt'),
                 'Usage: mobs.remove_deposit [iron|clay|salt|all] [preview]')
             return click('Underground deposit removal',{mode=5,kind=kind(args[1],true),preview=preview})
-        end,'Click near an owned underground deposit to remove its reserves/decal and unregister it; surface clumps are separate; no undo.')
+        end,'Click near owned underground reserves to remove their decal and colocated empty legacy markers; real surface clumps remain (mobs.resource remove); no undo.')
         register('mobs.pond_fish','mobs.pond_fish [amount] [rich] [preview]',function(args)
             local args,preview=access.preview(args)
             local rich=args[#args]=='rich';if rich then table.remove(args) end

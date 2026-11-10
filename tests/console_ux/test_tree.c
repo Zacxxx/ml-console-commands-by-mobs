@@ -23,9 +23,10 @@ int main(void) {
     UxNode root={0}; int nodes=0;
     assert(ux_insert(&root,bread,0,&nodes));
     assert(ux_insert(&root,barley,1,&nodes));
-    const UxNode *at=ux_child(&root,'M'); assert(at && at->indices.count==2);
+    const UxNode *at=ux_child(&root,'M'); assert(at && at->indices.count==0);
     at=ux_child(at,'O'); at=ux_child(at,'B'); at=ux_child(at,'S'); at=ux_child(at,'.');
     at=ux_child(at,'G'); at=ux_child(at,'I'); at=ux_child(at,'V'); at=ux_child(at,'E');
+    assert(at->indices.count==2); /* Arguments appear only at the complete command. */
     at=ux_child(at,' '); at=ux_child(at,'B');
     assert(at && at->indices.count==2 && ((int32_t *)at->indices.data)[1]==1);
     assert(!ux_child(at,'X'));

@@ -1,6 +1,6 @@
 # ML Console Commands by Mobs
 
-Version 0.14.0-alpha.1 · Manor Lords 0.8.117 (Steam, pre_release branch)
+Version 0.15.0-alpha.1 · Manor Lords 0.8.117 (Steam, pre_release branch)
 
 Console tools for your settlement: construction, supplies and new piles,
 resources, forestry, regional perk cards, economy, weather and time, with
@@ -113,3 +113,43 @@ This is an independent implementation, not an official update to the original mo
 
 Original Mobs source is licensed under MIT; keep the copyright/license notice.
 Manor Lords and third-party content are not relicensed by this package.
+
+## Repair an existing invisible resource group
+
+For the 0.14.1-alpha.1 development patch, restart the game and enter
+`mobs.resource refresh berries preview`. Close the console and click near the
+existing berry group in your owned region. Repeat with
+`mobs.resource refresh berries` to apply. This refreshes ground height, the
+resource-specific size and current-view visibility; it keeps the group, berry
+amount, capacity and richness. Fish/eel and building-attached resources are
+excluded. New placement keeps the same `mobs.spawn_resource` syntax. Visual
+confirmation of this patch remains pending.
+
+## Repair missing resource icons or map hover details
+
+In the 0.14.2-alpha.1 development patch, reload the mod (Ctrl+R when UE4SS hot
+reload is enabled), or restart the game, then run:
+
+`mobs.refresh_resource_icons preview`
+
+`mobs.refresh_resource_icons`
+
+No click is required. This synchronizes the HUD's cached node list with the
+world registry. Resources, their positions, quantities, capacity and richness
+are unchanged. New spawns and removals synchronize the list automatically.
+Visual confirmation of this HUD patch is still pending.
+
+## Detailed guides and wiki
+
+`mobs.advice.pile` (or `mobs.advice pile`) explains a complete workflow without
+running it. Every base command has a guide. `mobs.tutorial` lists 13 chapters;
+`mobs.tutorial resources` reads one and `mobs.tutorial all` prints the full manual.
+
+[Wiki](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki) ·
+[All commands](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Commands) ·
+[Item IDs](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Item-IDs) ·
+[Report status](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Bug-report-status).
+
+The package also includes TUTORIAL.md and ITEM_IDS.csv for offline reading.
+Restart the game when upgrading native helpers; Lua hot reload alone can keep an
+older DLL loaded. Preserve Native/State and custom Commands files.

@@ -162,7 +162,7 @@ function M.new(get_pawn, notify)
             end
         end
         assert(#matches == 1, "Unknown or ambiguous item; use mobs.items <search> and its numeric ID")
-        local targets = pawn:getSelectedBuildings()
+        local targets = require('game_access').selected(pawn)
         assert(#targets > 0 and #targets <= 32, "Select between 1 and 32 owned storage buildings or construction sites")
         local plans, seen, total = {}, {}, 0
         -- Preflight every target before writing to the first one.

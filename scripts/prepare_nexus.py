@@ -56,9 +56,9 @@ def registry():
 
 
 def command_reference(rows):
-    lines = ['# Command reference', '', f'Version {VERSION} — {len(rows)} registered names, including aliases.', '',
+    lines = ['# Command reference', '', f'Version {VERSION} — {len(rows)} base names/aliases, plus detailed dotted advice shortcuts.', '',
              'Generated from the registered implementation without executing gameplay commands.', '',
-             'Use mobs.usage <command> for targeting help. Required arguments use <...>;',
+             'Use mobs.advice.<command> for detailed guides and mobs.tutorial for the tutorial. Required arguments use <...>;',
              'optional arguments use [...]. Replace the placeholders; do not type their brackets.', '',
              'Preview/undo are available only where explicitly documented. Read KNOWN_ISSUES.md.', '']
     for category in ['lord', 'region', 'army', 'misc']:
@@ -83,7 +83,9 @@ def runtime_files(rows=None):
     files.extend(native_files())
     files.extend([(f'{MOD}/enabled.txt', b''), (f'{MOD}/LICENSE', (ROOT / 'LICENSE').read_bytes()),
                   (f'{MOD}/README.md', (TEMPLATES / 'README_USER.md').read_bytes()),
-                  (f'{MOD}/COMMANDS.md', command_reference(rows).encode())])
+                  (f'{MOD}/COMMANDS.md', command_reference(rows).encode()),
+                  (f'{MOD}/TUTORIAL.md', (ROOT / 'docs/wiki/Tutorial.md').read_bytes()),
+                  (f'{MOD}/ITEM_IDS.csv', (ROOT / 'docs/wiki/item_ids.csv').read_bytes())])
     for name in ['KNOWN_ISSUES.md', 'CHANGELOG.md']:
         files.append((f'{MOD}/{name}', (TEMPLATES / name).read_bytes()))
     return files
@@ -108,7 +110,7 @@ def source_files():
     for name in ['prepare_nexus.py', 'export_command_reference.lua', 'create_nexus_cover.py',
                  'build_forestry_bridge.py', 'build_perks_bridge.py', 'build_soil_bridge.py',
                  'build_world_bridge.py', 'build_ux_bridge.py', 'command_parity.py',
-                 'check_world_layout.py', 'install_local.py']:
+                 'check_world_layout.py', 'install_local.py', 'build_guidance.py', 'build_wiki.py']:
         files.append(('scripts/' + name, (ROOT / 'scripts' / name).read_bytes()))
     runner = (ROOT / 'scripts/test.sh').read_text()
     runner = '\n'.join(line for line in runner.splitlines() if 'tests/patch_archive' not in line) + '\n'
@@ -122,6 +124,9 @@ def source_files():
         files.append(('docs/' + name, (TEMPLATES / template).read_bytes()))
     files.append(('docs/COMMANDS.md', command_reference(registry()).encode()))
     files.append(('CHANGELOG.md', (TEMPLATES / 'CHANGELOG.md').read_bytes()))
+    for path in sorted((ROOT / 'docs/wiki').glob('*')):
+        if path.is_file() and path.suffix in {'.md', '.csv'}:
+            files.append((path.relative_to(ROOT).as_posix(), path.read_bytes()))
     for path in sorted((ROOT / '.github').rglob('*')):
         if path.is_file() and not path.is_symlink():
             files.append((path.relative_to(ROOT).as_posix(), path.read_bytes()))

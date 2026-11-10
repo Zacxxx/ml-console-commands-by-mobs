@@ -5,9 +5,12 @@
 Console tools for **Manor Lords 0.8.117**: construction, Supplies piles, resources,
 trees, regional perk cards and settlement management, with searchable command help.
 
-**{{VERSION}} · alpha · {{COMMAND_COUNT}} registered command names/aliases · MIT**
+**{{VERSION}} · alpha · {{COMMAND_COUNT}} base command names/aliases + detailed advice shortcuts · MIT**
 
 [Download the alpha release]({{RELEASE_URL}}) ·
+[Wiki and full tutorial](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki) ·
+[All item IDs](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Item-IDs) ·
+[Report audit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Bug-report-status) ·
 [Installation](docs/INSTALL.md) · [Command reference](docs/COMMANDS.md) ·
 [Known limits](docs/KNOWN_ISSUES.md) · [Report a bug]({{ISSUES_URL}})
 
@@ -24,7 +27,8 @@ and run `mobs.version`, then `mobs`.
 
 ```text
 mobs.find construction
-mobs.usage pile
+mobs.advice.pile
+mobs.tutorial resources
 mobs.regions
 mobs.region <id>
 mobs.finish_constructions preview
@@ -49,6 +53,19 @@ Use an actual owned region ID in place of <id>. Read help and previews before ed
 This is an independent implementation. No original-mod DLL/PAK, implementation
 source, game assets, saves or UE4SS loader binaries are included. The original
 k.* aliases are not registered.
+
+## Community fixes and guidance in 0.15
+
+Every base command has a shared in-game/wiki guide with targeting, steps, examples,
+limits and related tools. `mobs.tutorial all` prints 13 chapters. The item reference
+contains all 212 actual EItemType name/value pairs, with internal-entry and live
+catalog caveats.
+
+Report-driven code changes address temporary selection arrays, the autocomplete
+argument flood/Windows line endings, underground decal orientation, finite mineral
+clumps and empty legacy marker cleanup. Earlier size/view and HUD icon/hover fixes
+are included. Read the report audit for exact verification status: eel harvesting/
+despawn remains open and huntable wildlife-node spawning is not implemented.
 
 ## Status
 

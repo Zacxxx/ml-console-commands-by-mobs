@@ -21,6 +21,7 @@ local b={IsValid=function() return true end,GetAddress=function() return 2 end}
 local p={IsValid=function() return true end,GetAddress=function() return 1 end}
 b.Region={IsValid=function() return true end,ownerPawn=p}; b.Region.GetAddress=function() return 3 end
 p.getSelectedBuildings=function() return {b} end
+p.selectedBld={b}
 local soil={}
 require('soil_tools').new(function() return p end,{run=function(_,mode,scope,preview,mask,value,buildings)
     assert(mode==0 and scope==0 and preview and mask==7 and value==1 and #buildings==1)

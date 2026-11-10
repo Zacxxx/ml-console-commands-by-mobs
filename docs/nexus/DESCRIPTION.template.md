@@ -6,6 +6,30 @@ right command without memorizing everything.
 
 **Version {{VERSION}} — alpha release for Manor Lords 0.8.117.**
 
+[Complete wiki and tutorial](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki) ·
+[Every command, advice and examples](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Commands) ·
+[All item IDs](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Item-IDs) ·
+[Bug report status](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Bug-report-status)
+
+## New in 0.15
+
+- `mobs.advice.pile`, `mobs.advice.spawn_resource`, `mobs.advice.soil` and a detailed
+  guide for every base command; `mobs.advice <command>` is equivalent.
+- `mobs.tutorial` lists 13 chapters; `mobs.tutorial resources` opens one;
+  `mobs.tutorial all` prints the full manual. Reading guidance never executes examples.
+- Contextual autocomplete: broad prefixes show commands, while item variants appear
+  only after the full item-taking command. Windows response parsing is corrected.
+- Selected-building tools read the pawn-owned live selection instead of a temporary
+  returned array. This addresses reported invalid-selection failures.
+- New mineral deposits use a ground-facing decal and a real finite surface clump,
+  plus separate underground reserves. Legacy empty markers can be removed.
+- Includes earlier resource size/view and HUD icon/hover-list fixes that were not in 0.14.0.
+
+These changes pass offline checks and exact-build guards. Fresh visuals, mining,
+worker harvesting and save/load tests are still needed. The spawned-eel harvesting/
+despawn report remains open. Registered huntable deer/hare-node spawning is not
+implemented; `mobs.animal` creates individuals only.
+
 ## What is included?
 
 - **Construction:** inspect missing materials, supply sites, prepare work for completion,
@@ -22,7 +46,7 @@ right command without memorizing everything.
   population/livestock utilities, building inventories and owned-region targeting.
 - **World and farming tools:** weather, time, soil/fertilization, claims, unit/camera
   utilities, and local command files.
-- **Command discovery:** {{COMMAND_COUNT}} registered commands/aliases with live help,
+- **Command discovery:** {{COMMAND_COUNT}} base command names/aliases, plus dotted advice shortcuts, with live help,
   fixed and game-data completion choices, typo-tolerant search, usage guidance,
   recent successful commands and clearer errors.
 
@@ -64,7 +88,8 @@ in Content/Paks/~mods. Manual installation is the documented method.
 `mobs` — quick-start dashboard.
 `mobs.help` — list every registered command.
 `mobs.find construction` — search names/descriptions.
-`mobs.usage pile` — explain syntax and targeting.
+`mobs.advice.pile` — detailed steps, targeting, examples and limits.
+`mobs.tutorial` — chapter list; use `mobs.tutorial all` for the full tutorial.
 `mobs.regions` — list your owned region IDs.
 `mobs.region <id>` — pin the owned region to use.
 `mobs.status` — check the current command target.
@@ -83,6 +108,30 @@ suggestion shows its syntax. Enter runs the typed command; selecting/completing
 text alone does not. Use `mobs.autocomplete refresh` to refresh loaded items,
 regions and cards; open Development first if card data is absent. The text fallback
 is `mobs.complete give br`. Use `mobs.find` for typo-tolerant discovery.
+
+## Common examples from player questions
+
+`mobs.spawn_resource berries 100 4 preview` — close the console and click owned
+land to preview four berry clumps of 100 each. Repeat without preview to create.
+
+`mobs.pond_fish 500` — close the console and click near a completed owned Fishing
+Pond. An unfinished pond is rejected; existing shoals use `mobs.refill_resources fish`.
+
+`mobs.spawn_deposit iron 1000 rich` — creates 1000 surface units PLUS 1000
+underground units. Rich deep reserves still follow the native endless-mining rules.
+`mobs.resource` edits/removes surface clumps; `mobs.deposit` edits underground
+reserves; `mobs.remove_deposit` removes the reserve/decal. Real surface clumps
+require their own explicit `mobs.resource remove iron` action. Preview first.
+
+`mobs.soil restore all selected preview` — select a planted owned field before
+opening the console. Restore removes depletion to the existing baseline;
+`mobs.soil set all 100 selected preview` instead sets baseline/current fertility.
+
+`mobs.grow_population 10` — ten native growth attempts, not ten guaranteed people.
+Housing, approval/migration and simulation timing still apply. Read the actual counts.
+
+[Read the complete report audit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Bug-report-status)
+for fixed-in-source issues, old-save cleanup and reports that remain open.
 
 ## Release status and limits
 

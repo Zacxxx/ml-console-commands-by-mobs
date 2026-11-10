@@ -28,6 +28,7 @@ print('Forestry modes, sapling command, read-only preview, continuation and canc
 local field={Region=region,IsValid=function() return true end,GetAddress=function() return 3 end,
     workAreaLimited=true,workAreaRange=1000,workAreaCenter={X=10,Y=20}}
 pawn.getSelectedBuildings=function() return {field} end
+pawn.selectedBld={field}
 registry['mobs.grow_stage']({'area','preview'})
 assert(calls[#calls].mode==5)
 registry['mobs.grow_saplings']({'area','preview'})
