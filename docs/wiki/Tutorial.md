@@ -1,6 +1,6 @@
 # Full tutorial
 
-For **0.15.0-alpha.1**, game **0.8.117**. In game: `mobs.tutorial` lists chapters, `mobs.tutorial all` prints everything.
+For **0.16.0-alpha.3**, game **0.8.117**. In game: `mobs.tutorial` lists chapters, `mobs.tutorial all` prints everything.
 
 ## 1. Install, check versions and read command syntax
 
@@ -94,7 +94,9 @@ For visible models but missing normal-map icons or paper-map hover details, run 
 
 Spawned fish/eel still need suitable water, worker reachability and native seasonal conditions. The reported eel harvesting/despawn issue remains unconfirmed; do not treat an icon and a full counter as proof that workers can harvest it.
 
-Guides: [mobs.advice.spawn_resource](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-spawn_resource), [mobs.advice.resource](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-resource), [mobs.advice.spawn_deposit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-spawn_deposit), [mobs.advice.deposit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-deposit), [mobs.advice.remove_deposit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-remove_deposit), [mobs.advice.refresh_resource_icons](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-refresh_resource_icons)
+The 0.16 alpha adds mobs.repair_fishing eel preview for an existing shoal: click nearby, inspect the plan, repeat without preview, then check catches and save/reload. It restores native aquatic identity, seasonal behavior and regional availability without refilling goods. Fish use the explicit fish argument. Actual catches and persistence still need gameplay confirmation.
+
+Guides: [mobs.advice.spawn_resource](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-spawn_resource), [mobs.advice.resource](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-resource), [mobs.advice.spawn_deposit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-spawn_deposit), [mobs.advice.deposit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-deposit), [mobs.advice.remove_deposit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-remove_deposit), [mobs.advice.refresh_resource_icons](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-refresh_resource_icons), [mobs.advice.spawn_wildlife](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-spawn_wildlife), [mobs.advice.repair_fishing](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-repair_fishing)
 
 ## 7. Fishing Ponds, natural fish and eel
 
@@ -164,11 +166,13 @@ mobs.treasury add 1000 affects your lord. mobs.wealth add 1000 affects the chose
 
 mobs.undo only reverses the latest unchanged economy edit in this mod session. If the simulation or another action changed that value, it refuses. Inventory, spawning, construction and removal are not economy undo actions.
 
-mobs.grow_population 10 means ten native growth ATTEMPTS, not ten guaranteed arrivals. Read the actual human resident count before/after. Housing, migration/approval and timing conditions still apply; let simulation time pass. skip_day is not a guaranteed migration bypass.
+In the 0.16.0-alpha.3, mobs.grow_population 3 means three PEOPLE, not three families or repeated scheduled checks. Use mobs.grow_population status, then mobs.grow_population 3 preview. Apply without preview to create residents now through native family/home registration, bypassing approval and scheduled arrival days. There must be enough completed, active, non-mourning housing; homeless families take priority over new households. The date and approval are not forced, and new people have normal ongoing needs. A native refusal stops and reports the actual count without retrying. livestock_cooldown reset clears only the next-order cooldown; skip_mourning clears mourning timers without reviving residents.
 
 mobs.animal ox 1 preview arms individual animal spawning. livestock_cooldown reset clears the next order cooldown but does not order or spawn an animal. Deer/hare individual spawning does not create registered hunting deposits.
 
 For a person/family, hover or follow an owned unit, inspect mobs.unit, select one completed same-region house and preview mobs.rehouse selected. Capacity checks remain. mobs.skip_mourning clears active building mourning timers; it does not revive residents.
+
+For a real hunting deposit, use mobs.spawn_wildlife deer preview or hare. Close the console and click clear owned ground. Apply without preview and click that spot again: the node and herd home are placed at your click, with animals nearby. Population is the midpoint of native normal/rich settings; rich selects its larger/native rich range. Include that site in a staffed hunting camp work area. Hunting and herd persistence in this alpha need live testing.
 
 Guides: [mobs.advice.treasury](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-treasury), [mobs.advice.wealth](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-wealth), [mobs.advice.approval](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-approval), [mobs.advice.grow_population](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-grow_population), [mobs.advice.animal](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-animal), [mobs.advice.rehouse](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-rehouse)
 

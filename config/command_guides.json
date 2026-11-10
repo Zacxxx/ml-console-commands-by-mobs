@@ -589,12 +589,14 @@
             "mobs.spawn_resource iron 1000 1 rich",
             "mobs.spawn_resource eel 400 1"
         ],
-        "notes": "Kinds: iron, clay, salt, stone, berries, mushrooms, fish, eel. Count 1..64; amount 1..1000000 per clump. Fish/eel need suitable reachable water; spawned eel harvesting/despawn remains an open report. Deer/hares are not accepted here. No undo.",
+        "notes": "Kinds: iron, clay, salt, stone, berries, mushrooms, fish, eel. Count 1..64; amount 1..1000000 per clump. Fish/eel need suitable reachable water. The 0.16 alpha preserves native aquatic identity/seasonality and adds region availability tags; harvesting and save/load still need testing. Use repair_fishing for existing shoals. Deer/hares use spawn_wildlife instead. No undo.",
         "related": [
             "resource",
             "refresh_resource_icons",
             "pond_fish",
-            "animal"
+            "animal",
+            "repair_fishing",
+            "spawn_wildlife"
         ]
     },
     "mobs.resource": {
@@ -607,11 +609,12 @@
             "mobs.resource remove eel preview",
             "mobs.resource remove eel"
         ],
-        "notes": "remove deletes a whole surface group; remove_clump only one clump. Exact kind is required: fish and eel differ. refresh repairs land clump size/height/visibility, not amounts. Real underground reserves use remove_deposit; empty legacy mineral markers are removable here. No undo.",
+        "notes": "remove deletes a whole surface group; remove_clump only one clump. Exact kind is required: fish and eel differ. refresh repairs land clump size/height/visibility, not amounts. Real underground reserves use remove_deposit; empty clumpless non-wildlife nodes are removable here. No undo.",
         "related": [
             "resources",
             "remove_deposit",
-            "refresh_resource_icons"
+            "refresh_resource_icons",
+            "repair_fishing"
         ]
     },
     "mobs.refresh_resource_icons": {
@@ -981,16 +984,19 @@
     },
     "mobs.grow_population": {
         "target": "Your owned command-target region. Run mobs.regions, then mobs.region with a listed ID; confirm mobs.status. mobs.region auto clears the pin.",
-        "steps": "Use 1..10 native growth ATTEMPTS and read the before/after human resident counts. Leave simulation time for arrivals and check housing/approval.",
+        "steps": "Run status to inspect approval, the game natural monthly growth result, usable housing places and homeless families. Preview the requested 1..10 PEOPLE, then run without preview to create them now through the native resident/family/home path. Existing incomplete eligible families are filled first; new families use vacant completed housing. No click is needed.",
         "examples": [
-            "mobs.grow_population 1",
-            "mobs.grow_population 10"
+            "mobs.grow_population status",
+            "mobs.grow_population 3 preview",
+            "mobs.grow_population 3",
+            "mobs.grow_population 10 preview"
         ],
-        "notes": "10 does not mean ten instant people or families. Native housing, migration, settlement and timing conditions apply. Zero change is reported honestly; repeating cannot guarantee arrival. No undo.",
+        "notes": "0.16.0-alpha.3 changes the number from repeated growth attempts to actual people, not families. Default 1; maximum 10 per call. Explicit creation bypasses the natural approval/arrival-day gates without changing the date or forcing approval. All planned home entrances are preflighted before creation; enough housing is required for the whole request. Sleeping/unfinished/mourning homes are excluded. Existing homeless families take priority over new households. Native failures stop and report actual population change without retrying or rolling back earlier arrivals. New population has ordinary needs and can later leave under normal game rules. Live/save-load confirmation remains pending. No undo.",
         "related": [
             "approval",
             "rehouse",
-            "skip_day"
+            "regions",
+            "status"
         ]
     },
     "mobs.skip_mourning": {
@@ -1028,7 +1034,8 @@
         "notes": "These are individual native spawned animals. deer/hare here do NOT create a registered hunting resource node; a hunting icon/working herd is not implemented. Do not use item IDs. No undo.",
         "related": [
             "livestock_cooldown",
-            "spawn_resource"
+            "spawn_resource",
+            "spawn_wildlife"
         ]
     },
     "mobs.unit": {
@@ -1260,6 +1267,40 @@
             "find",
             "advice",
             "tutorial"
+        ]
+    },
+    "mobs.spawn_wildlife": {
+        "target": "Run the command, close the console, then click the intended location in an owned region. It is a one-shot tool with a five-minute expiry. mobs.cancel disarms it. Preview also requires the click, but changes nothing.",
+        "steps": "Choose deer or hare, optionally rich, and preview first. Close the console and click clear ground in an owned region. The resource node and herd home are placed at that click; animals are distributed nearby. All planned animal sites are checked for valid native height, the same region and native blockers before any squad or animal is created. Repeat without preview and click the same spot to apply. Include the site in a staffed hunting camp work area and resume simulation.",
+        "examples": [
+            "mobs.spawn_wildlife deer preview",
+            "mobs.spawn_wildlife deer",
+            "mobs.spawn_wildlife deer rich",
+            "mobs.spawn_wildlife hare"
+        ],
+        "notes": "0.16 alpha; actual hunting and save/reload await user testing. Population is the midpoint of the game normal/rich population range (bounded to 1..256), so preview and apply agree. Animals begin within 1000 game units of the clicked node and can wander under normal game AI. Blocked or border-crossing placements are refused before spawning. One herd per applied click. Existing mobs.animal deer/hare remains individual spawning. No undo; do not repeat placement if registration reports an incomplete result.",
+        "related": [
+            "animal",
+            "resources",
+            "refresh_resource_icons",
+            "cancel"
+        ]
+    },
+    "mobs.repair_fishing": {
+        "target": "Run the command, close the console, then click the intended location in an owned region. It is a one-shot tool with a five-minute expiry. mobs.cancel disarms it. Preview also requires the click, but changes nothing.",
+        "steps": "Default kind is eel. Run preview, close the console and click near the actual shoal, within 2500 game units. Read the planned identity, regional registration and availability-tag counts. Repeat without preview and click the SAME shoal. Resume simulation; ensure a staffed fishing workplace has access to appropriate water. Check actual catches, then save separately and reload.",
+        "examples": [
+            "mobs.repair_fishing preview",
+            "mobs.repair_fishing eel",
+            "mobs.repair_fishing fish preview",
+            "mobs.repair_fishing fish"
+        ],
+        "notes": "Candidate repair for existing eel/fish nodes; worker harvesting and persistence are not yet verified. Restores the live game template identity/seasonal flag, native placement height, region resource registration, availability tag and map view/HUD. Amounts, capacity and richness remain unchanged. Rejects unavailable template defaults, other resource kinds and building-attached pond fish. Fish and eel never substitute for each other. Does not create a missing/deleted shoal, fix every shoreline/reachability problem, or undo earlier depletion. No undo.",
+        "related": [
+            "spawn_resource",
+            "resource",
+            "pond_fish",
+            "refresh_resource_icons"
         ]
     }
 }

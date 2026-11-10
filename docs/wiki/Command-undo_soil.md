@@ -1,6 +1,6 @@
 # mobs.undo_soil
 
-Guide for **0.15.0-alpha.1**, game **0.8.117**.
+Guide for **0.16.0-alpha.3**, game **0.8.117**.
 
 Undo the latest soil batch only if all edited values and ownership are unchanged; supports preview.
 

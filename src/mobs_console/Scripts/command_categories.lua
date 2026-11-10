@@ -5,7 +5,7 @@ local categories={
     army={'mercenaries','bandits','raiders','bandit_camp','teleport','unit','follow','rename_unit','undo_unit_name'},
     region={'wealth','approval','regions','region','map_regions','construction','construction_needs','supply_construction',
         'finish_constructions','instant_build','grow_population','livestock_cooldown','skip_mourning','stock',
-        'resources','spawn_resource','resource','refresh_resource_icons','spawn_deposit','remove_deposit','pond_fish','deposit','undo_deposit','refill_resources','empty_resources','undo_resources','claim','rehouse','soil','undo_soil',
+        'resources','spawn_wildlife','repair_fishing','spawn_resource','resource','refresh_resource_icons','spawn_deposit','remove_deposit','pond_fish','deposit','undo_deposit','refill_resources','empty_resources','undo_resources','claim','rehouse','soil','undo_soil',
         'fertility','fertilization','undo_fertilization','grow_trees','grow_saplings','grow_stage','regrow_trees','replant_trees',
         'animal','give','inventory_add','drop','pile','clear_empty_piles','remove_selected_piles','demolish','building','inventory',
         'perk_points','perks','respec_perks','perk_add','perk_remove','perk_clear','perks_add','perks_remove','perks_clear'},

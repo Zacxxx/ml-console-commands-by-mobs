@@ -1,6 +1,6 @@
 # mobs.spawn_resource
 
-Guide for **0.15.0-alpha.1**, game **0.8.117**.
+Guide for **0.16.0-alpha.3**, game **0.8.117**.
 
 Click to create a registered surface resource group; amount is per clump, defaults to native capacity. Fish/eel require water; preview available.
 
@@ -33,7 +33,7 @@ mobs.spawn_resource eel 400 1
 
 ## Limits and expected results
 
-Kinds: iron, clay, salt, stone, berries, mushrooms, fish, eel. Count 1..64; amount 1..1000000 per clump. Fish/eel need suitable reachable water; spawned eel harvesting/despawn remains an open report. Deer/hares are not accepted here. No undo.
+Kinds: iron, clay, salt, stone, berries, mushrooms, fish, eel. Count 1..64; amount 1..1000000 per clump. Fish/eel need suitable reachable water. The 0.16 alpha preserves native aquatic identity/seasonality and adds region availability tags; harvesting and save/load still need testing. Use repair_fishing for existing shoals. Deer/hares use spawn_wildlife instead. No undo.
 
 ## Related commands
 
@@ -41,5 +41,7 @@ Kinds: iron, clay, salt, stone, berries, mushrooms, fish, eel. Count 1..64; amou
 - [mobs.refresh_resource_icons](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-refresh_resource_icons) — `mobs.advice.refresh_resource_icons`
 - [mobs.pond_fish](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-pond_fish) — `mobs.advice.pond_fish`
 - [mobs.animal](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-animal) — `mobs.advice.animal`
+- [mobs.repair_fishing](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-repair_fishing) — `mobs.advice.repair_fishing`
+- [mobs.spawn_wildlife](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-spawn_wildlife) — `mobs.advice.spawn_wildlife`
 
 [All commands](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Commands) · [Tutorial](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Tutorial) · [Item IDs](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Item-IDs)

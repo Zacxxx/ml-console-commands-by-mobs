@@ -20,24 +20,7 @@ function M.register(register, get_pawn, get_region, region_label, item_name, ver
         return "Called the game's mercenary reroll. Reopen the hiring panel to inspect the result. Not undoable."
     end, "Reroll mercenary offers through the native game function; does not hire any units.")
 
-    register("mobs.grow_population", "mobs.grow_population [attempts]", function(args)
-        assert(#args <= 1, "Usage: mobs.grow_population [attempts: 1..10]")
-        local attempts = core.integer(args[1] or "1", 1, 10)
-        local region = get_region(true)
-        assert(region.isSettled, "Choose an established settlement first")
-        local label = region_label(region)
-        local before = region:getNumHumanResidents()
-        local completed, failure = 0, nil
-        for _ = 1, attempts do
-            local ok, err = pcall(function() region:growPopulation() end)
-            if not ok then failure = tostring(err); break end
-            completed = completed + 1
-        end
-        return string.format("%s: native growth attempts=%d/%d; human residents %d -> %d.%s "
-            .. "Game conditions still apply; an attempt does not guarantee arrivals. Not undoable.",
-            label, completed, attempts, before, region:getNumHumanResidents(),
-            failure and (" Stopped: " .. failure) or "")
-    end, "Request native population growth in the target settlement, up to ten attempts; reports actual resident counts.")
+    require('population_tools').register(register,get_pawn,get_region,region_label)
 
     register("mobs.livestock_cooldown", "mobs.livestock_cooldown [reset]", function(args)
         assert(#args == 0 or (#args == 1 and args[1] == "reset"), "Usage: mobs.livestock_cooldown [reset]")

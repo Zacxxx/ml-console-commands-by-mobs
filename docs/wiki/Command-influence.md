@@ -1,6 +1,6 @@
 # mobs.influence
 
-Guide for **0.15.0-alpha.1**, game **0.8.117**.
+Guide for **0.16.0-alpha.3**, game **0.8.117**.
 
 Change influence; records an economy undo step.
 

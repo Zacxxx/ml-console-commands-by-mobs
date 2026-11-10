@@ -1,6 +1,6 @@
 # mobs.perks
 
-Guide for **0.15.0-alpha.1**, game **0.8.117**.
+Guide for **0.16.0-alpha.3**, game **0.8.117**.
 
 List/search cards, or use mobs.perks add/remove <card> and mobs.perks clear; preview is supported for changes.
 

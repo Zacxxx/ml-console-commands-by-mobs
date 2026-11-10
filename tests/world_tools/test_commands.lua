@@ -16,6 +16,7 @@ local tools=require('world_tools').new(function() return pawn end,function(label
     armed={label=label,callback=callback,owned=owned}; return 'armed'
 end,api)
 tools.register(function(name,_,handler) commands[name]=handler end)
+assert(commands['mobs.spawn_wildlife'] and commands['mobs.repair_fishing'])
 local function rejects(name,args)
     assert(not pcall(commands[name],args));assert(#calls==0)
 end
@@ -29,6 +30,30 @@ rejects('mobs.spawn_deposit',{'iron','100','oops'})
 rejects('mobs.remove_deposit',{'iron','oops'})
 rejects('mobs.pond_fish',{'-1'})
 rejects('mobs.refresh_resource_icons',{'berries'})
+rejects('mobs.spawn_wildlife',{'wolf'})
+rejects('mobs.spawn_wildlife',{'deer','100'})
+rejects('mobs.repair_fishing',{'berries'})
+rejects('mobs.repair_fishing',{'eel','all'})
+commands['mobs.spawn_wildlife']({'deer','rich','preview'})
+assert(#calls==0 and armed.owned~=false)
+armed.callback(pawn,engine,region,{X=1,Y=2,Z=3})
+assert(calls[1].mode==12 and calls[1].kind==4 and calls[1].rich==1 and calls[1].preview)
+assert(calls[1].at.X==1 and calls[1].at.Y==2 and calls[1].at.Z==3)
+assert(not armed.label:find('game chooses',1,true))
+calls={}
+commands['mobs.spawn_wildlife']({'hare'})
+armed.callback(pawn,engine,region,{X=1,Y=2,Z=3})
+assert(calls[1].mode==12 and calls[1].kind==10 and calls[1].rich==0 and not calls[1].preview)
+calls={};armed=nil
+commands['mobs.repair_fishing']({'preview'})
+assert(#calls==0 and armed.owned~=false)
+armed.callback(pawn,engine,region,{X=1,Y=2,Z=3})
+assert(calls[1].mode==13 and calls[1].kind==11 and calls[1].preview)
+calls={};armed=nil
+commands['mobs.repair_fishing']({'fish'})
+armed.callback(pawn,engine,region,{X=1,Y=2,Z=3})
+assert(calls[1].mode==13 and calls[1].kind==5 and not calls[1].preview)
+calls={};armed=nil
 commands['mobs.refresh_resource_icons']({'preview'})
 assert(calls[1].mode==11 and calls[1].preview and armed==nil)
 calls={}

@@ -89,7 +89,9 @@
             "mobs.advice.spawn_deposit",
             "mobs.advice.deposit",
             "mobs.advice.remove_deposit",
-            "mobs.advice.refresh_resource_icons"
+            "mobs.advice.refresh_resource_icons",
+            "mobs.advice.spawn_wildlife",
+            "mobs.advice.repair_fishing"
         ],
         "paragraphs": [
             "Berries example: mobs.spawn_resource berries 100 4 preview; close console and click owned ground. This previews FOUR clumps of 100 each, not 100 spread across the group. Repeat without preview and click to create it. Optional rich comes after amount/count: mobs.spawn_resource iron 1000 1 rich.",
@@ -99,7 +101,8 @@
             "To remove surface fish: mobs.resource remove fish preview, close console and click close to the shoal. For eel use eel explicitly; fish never silently selects eel. Remove deletes the whole group; remove_clump deletes one clump. Matching distance is 2500 game units, and ownership still applies.",
             "mobs.remove_deposit iron preview removes underground reserves/decal and colocated EMPTY legacy markers. Real surface clumps stay until mobs.resource remove iron. If an old stripe was already removed but its empty marker remains, mobs.resource remove iron can now remove that marker. Preview first; removals have no undo.",
             "For visible models but missing normal-map icons or paper-map hover details, run mobs.refresh_resource_icons. For older badly scaled land clumps, mobs.resource refresh berries preview repairs size/height/view after a click without changing goods. Do not spawn duplicate nodes to fix an icon.",
-            "Spawned fish/eel still need suitable water, worker reachability and native seasonal conditions. The reported eel harvesting/despawn issue remains unconfirmed; do not treat an icon and a full counter as proof that workers can harvest it."
+            "Spawned fish/eel still need suitable water, worker reachability and native seasonal conditions. The reported eel harvesting/despawn issue remains unconfirmed; do not treat an icon and a full counter as proof that workers can harvest it.",
+            "The 0.16 alpha adds mobs.repair_fishing eel preview for an existing shoal: click nearby, inspect the plan, repeat without preview, then check catches and save/reload. It restores native aquatic identity, seasonal behavior and regional availability without refilling goods. Fish use the explicit fish argument. Actual catches and persistence still need gameplay confirmation."
         ]
     },
     {
@@ -185,9 +188,10 @@
         "paragraphs": [
             "mobs.treasury add 1000 affects your lord. mobs.wealth add 1000 affects the chosen owned region. Use set for an exact final balance. mobs.approval set 80 is bounded to 0..100 and may later be recalculated by the game. mobs.status checks targets and values.",
             "mobs.undo only reverses the latest unchanged economy edit in this mod session. If the simulation or another action changed that value, it refuses. Inventory, spawning, construction and removal are not economy undo actions.",
-            "mobs.grow_population 10 means ten native growth ATTEMPTS, not ten guaranteed arrivals. Read the actual human resident count before/after. Housing, migration/approval and timing conditions still apply; let simulation time pass. skip_day is not a guaranteed migration bypass.",
+            "In the 0.16.0-alpha.3, mobs.grow_population 3 means three PEOPLE, not three families or repeated scheduled checks. Use mobs.grow_population status, then mobs.grow_population 3 preview. Apply without preview to create residents now through native family/home registration, bypassing approval and scheduled arrival days. There must be enough completed, active, non-mourning housing; homeless families take priority over new households. The date and approval are not forced, and new people have normal ongoing needs. A native refusal stops and reports the actual count without retrying. livestock_cooldown reset clears only the next-order cooldown; skip_mourning clears mourning timers without reviving residents.",
             "mobs.animal ox 1 preview arms individual animal spawning. livestock_cooldown reset clears the next order cooldown but does not order or spawn an animal. Deer/hare individual spawning does not create registered hunting deposits.",
-            "For a person/family, hover or follow an owned unit, inspect mobs.unit, select one completed same-region house and preview mobs.rehouse selected. Capacity checks remain. mobs.skip_mourning clears active building mourning timers; it does not revive residents."
+            "For a person/family, hover or follow an owned unit, inspect mobs.unit, select one completed same-region house and preview mobs.rehouse selected. Capacity checks remain. mobs.skip_mourning clears active building mourning timers; it does not revive residents.",
+            "For a real hunting deposit, use mobs.spawn_wildlife deer preview or hare. Close the console and click clear owned ground. Apply without preview and click that spot again: the node and herd home are placed at your click, with animals nearby. Population is the midpoint of native normal/rich settings; rich selects its larger/native rich range. Include that site in a staffed hunting camp work area. Hunting and herd persistence in this alpha need live testing."
         ]
     },
     {

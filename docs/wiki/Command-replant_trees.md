@@ -1,6 +1,6 @@
 # mobs.replant_trees
 
-Guide for **0.15.0-alpha.1**, game **0.8.117**.
+Guide for **0.16.0-alpha.3**, game **0.8.117**.
 
 Click cleared ground to replant one oak sapling in the target owned region; native collision checks; supports preview.
 

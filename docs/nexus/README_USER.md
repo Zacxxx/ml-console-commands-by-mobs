@@ -1,6 +1,6 @@
 # ML Console Commands by Mobs
 
-Version 0.15.0-alpha.1 · Manor Lords 0.8.117 (Steam, pre_release branch)
+Version 0.16.0-alpha.3 · alpha · Manor Lords 0.8.117 (Steam, pre_release branch)
 
 Console tools for your settlement: construction, supplies and new piles,
 resources, forestry, regional perk cards, economy, weather and time, with
@@ -153,3 +153,36 @@ running it. Every base command has a guide. `mobs.tutorial` lists 13 chapters;
 The package also includes TUTORIAL.md and ITEM_IDS.csv for offline reading.
 Restart the game when upgrading native helpers; Lua hot reload alone can keep an
 older DLL loaded. Preserve Native/State and custom Commands files.
+
+
+## Eel repair and huntable wildlife
+
+After restarting, check `mobs.version` reports 0.16.0-alpha.3.
+
+- Existing eel shoal: `mobs.repair_fishing eel preview`, then repeat without
+  preview. Close the console and click near the same owned shoal after each line.
+  Amounts/capacity/richness stay intact; native identity, seasonal behavior and
+  regional availability are repaired. Use `fish` explicitly for fish. Ponds excluded.
+- Huntable herd: `mobs.spawn_wildlife deer preview`, then repeat without preview.
+  Close the console and click clear owned ground after each line. The node is
+  placed there with animals nearby. `hare` and optional `rich`
+  are supported. Locate the new node and include it in a staffed camp work area.
+- Detailed help: `mobs.advice.repair_fishing` and `mobs.advice.spawn_wildlife`.
+
+Use a separate test save. Resume simulation, confirm actual fishing/hunting catches,
+then save separately and reload to check persistence. These game-session results
+remain unverified; a visible node alone is not proof. No spawn/delete undo.
+The wiki and release include these 0.16 alpha commands; harvesting and persistence still need live confirmation.
+
+
+## Immediate population creation
+
+`mobs.grow_population status` shows housing places, homeless families, approval and
+natural monthly growth. `mobs.grow_population 3 preview` checks a request for three
+people; run without preview to add them immediately through native family/home
+creation. The number now means PEOPLE, not growth attempts or families (1..10,
+default 1). No click or wait for a scheduled arrival day is required. The command
+does not force approval or advance the calendar. Enough completed, active,
+non-mourning housing is required for the whole request. Native failures stop and
+report actual changes without retrying; there is no undo. Live/save-load testing
+of this alpha is pending.

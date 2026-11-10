@@ -56,8 +56,8 @@ def render():
            '| salt | 1 | Surface clumps; underground reserves are separate |','| iron | 2 | Surface clumps; underground reserves are separate |',
            '| clay | 3 | Surface clumps; underground reserves are separate |','| fish | 5 | Suitable water / pond attachment required |',
            '| berries | 6 | Berry clumps and harvesting node |','| stone | 7 | Surface stone |','| mushrooms | 9 | Mushroom clumps |',
-           '| eel | 11 | Distinct from fish; spawned harvesting report remains open |','',
-           'Pass the **text argument** to resource commands, not the numeric node-kind ID. Deer/hare hunting-node spawning is not implemented; `mobs.animal` makes individuals only.','',
+           '| eel | 11 | Distinct from fish; repair_fishing, live confirmation pending |','',
+           'Pass the **text argument** to resource commands, not the numeric node-kind ID. Deer (kind 4) and hare (kind 10) hunting nodes use `mobs.spawn_wildlife`, with native population settings and placement at your click. `mobs.animal` makes individuals only. The 0.16 alpha awaits hunting/save-load testing.','',
            '## Full item enum','','| Item ID | Internal item identifier | Classification |','| --- | --- | --- |']
     for row in items['entries']:
         name=row['name'];kind='Recipe / internal entry' if name.lower().startswith('recipe') else 'Sentinel / no item' if row['id']==0 else 'Check live mobs.items for deliverability'
@@ -97,7 +97,7 @@ Region IDs vary per save. Select actual owned buildings before opening the conso
 - **Pond fish:** finish the pond, then `mobs.pond_fish 500` and click near it. [Guide]({WIKI}/Command-pond_fish).
 - **Remove rich fish/eel:** `mobs.resource remove fish preview` (or eel). Close console and click near the actual shoal; repeat without preview to apply. Exact kind and ownership matter. [Guide]({WIKI}/Command-resource).
 - **Underground vs surface:** `deposit` edits reserves; `resource` edits visible clumps. [Full explanation]({WIKI}/Tutorial#6-create-berriesminerals-understand-layers-and-remove-nodes).
-- **Wild animals:** individual deer/hare spawning exists; registered huntable resource-node spawning is not implemented. An individual animal is not a hunting deposit.
+- **Wild animals:** `mobs.spawn_wildlife deer` or `hare` creates a native herd/node at your clicked location. Hunting/save-load checks are pending. `mobs.animal` creates individuals separately. [Guide]({WIKI}/Command-spawn_wildlife).
 
 The runtime guides and this wiki are generated from the same maintained data. Source/static checks do not establish harvesting, visual or save/load success for every command variant.
 '''

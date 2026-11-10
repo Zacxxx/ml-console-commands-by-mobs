@@ -1,3 +1,26 @@
+# 0.16.0-alpha.3 — Aquatic repair, click-placed wildlife and population
+
+- Add `mobs.repair_fishing [eel|fish] [preview]` to repair native aquatic identity,
+  seasonality, height, regional/spatial registration and availability tags. Existing
+  shoal quantity, capacity and richness are preserved. New aquatic nodes retain
+  their native Blueprint identity and seasonal flags.
+- Add `mobs.spawn_wildlife <deer|hare> [rich] [preview]`: create a native registered
+  herd and hunting node at the next clicked owned location, with native normal/rich
+  population. Preflight terrain, ownership and blockers for every animal.
+- Replace repeated calendar-gated population attempts with native resident/family/
+  home creation. `grow_population` now requests PEOPLE (1..10), default 1, with
+  `status` and `preview`. No date/approval changes; housing and entrance checks stay.
+  A partial native failure reports the actual result and stops without retrying.
+- Allow explicit cleanup of empty clumpless aquatic nodes. Exact resource filters
+  remain: eel and fish are different kinds and are never substituted automatically.
+- Update advice, tutorial, wiki and report audit: 96 base names/aliases, 95 detailed
+  dotted advice shortcuts, 13 tutorial chapters and 212 item enum IDs.
+- Replace versioned promotional cards with the corrected medieval-computer cover
+  and banner, generated using Manor Lords key art as a visual reference.
+- Offline checks and 43 native entry guards pass. Worker catches, hunting, arrivals
+  and save/reload persistence are not yet confirmed in a loaded game. This remains
+  an alpha for Manor Lords 0.8.117 only; restart after updating and preserve State.
+
 # 0.15.0-alpha.1 — Community fixes and shared guidance
 
 - Add detailed `mobs.advice.<command>` / `mobs.advice <command>` guides and a

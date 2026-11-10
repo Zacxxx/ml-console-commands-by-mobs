@@ -19,9 +19,9 @@ Example: `mobs.items 17`, then `mobs.pile 17 100` for planks. Live `mobs.items b
 | berries | 6 | Berry clumps and harvesting node |
 | stone | 7 | Surface stone |
 | mushrooms | 9 | Mushroom clumps |
-| eel | 11 | Distinct from fish; spawned harvesting report remains open |
+| eel | 11 | Distinct from fish; repair_fishing, live confirmation pending |
 
-Pass the **text argument** to resource commands, not the numeric node-kind ID. Deer/hare hunting-node spawning is not implemented; `mobs.animal` makes individuals only.
+Pass the **text argument** to resource commands, not the numeric node-kind ID. Deer (kind 4) and hare (kind 10) hunting nodes use `mobs.spawn_wildlife`, with native population settings and placement at your click. `mobs.animal` makes individuals only. The 0.16 alpha awaits hunting/save-load testing.
 
 ## Full item enum
 

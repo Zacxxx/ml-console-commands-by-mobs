@@ -43,8 +43,9 @@ static double distance(Vec a,Vec b) { return (a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-
 static int supported(int kind) { return kind==1||kind==2||kind==3||kind==5||kind==6||kind==7||kind==9||kind==11; }
 static const char *resource_kind_name(int kind) {
     switch(kind) {
-        case 1:return "salt";case 2:return "iron";case 3:return "clay";case 5:return "fish";
+        case 1:return "salt";case 2:return "iron";case 3:return "clay";case 4:return "deer";case 5:return "fish";
         case 6:return "berries";case 7:return "stone";case 9:return "mushrooms";case 11:return "eel";
+        case 10:return "hare";
         default:return "all";
     }
 }
@@ -112,7 +113,29 @@ static int sync_resource_view(Byte *node,Byte *pawn) {
     return 1;
 }
 static Byte *spawn_node(Byte *engine,int kind,Vec pos,int rich,Array *clumps) {
-    return FN(0x4ce6620,Byte *(*)(Byte *,int,Vec *,int,Array *,int))(engine,kind,&pos,rich,clumps,-1);
+    return FN(0x4ce6620,Byte *(*)(Byte *,int,Vec *,int,Array *,int))(engine,kind,&pos,rich,clumps,0);
+}
+/* Native eel generation updates AActor::Tags on Region (verified offset 0x1e0).
+ * Gameplay/UI use availability tags separately from the spatial node registry.
+ * Adding a second kind must not remove Fish or another existing region tag. */
+static int ensure_region_kind(Byte *region,int kind,int preview,int *added) {
+    Array *tags=(Array *)(region+0x1e0),text={0};uint64_t name=0;
+    if(!array(tags,256,8)||tags->count>=256) return 0;
+    FN(0x4c76400,Array *(*)(Array *,int))(&text,kind);
+    if(!array(&text,256,2)||text.count<2) {
+        if(text.data) FN(0x1128900,void(*)(void *))(text.data);
+        return 0;
+    }
+    FN(0x1251260,uint64_t *(*)(uint64_t *,const wchar_t *,int))(&name,text.data,1);
+    FN(0x1128900,void(*)(void *))(text.data);
+    if(!(uint32_t)name) return 0;
+    *added=1;
+    for(int i=0;i<tags->count;i++) if(((uint64_t *)tags->data)[i]==name) { *added=0;return 1; }
+    if(preview) return 1;
+    int index=tags->count++;
+    if(tags->count>tags->capacity) FN(0x10ddd10,void(*)(Array *,int))(tags,index);
+    ((uint64_t *)tags->data)[index]=name;
+    return 1;
 }
 static void refresh_rich(Byte *settings,Byte *props,Byte *node,int rich) {
     node[0x2ac]=(Byte)rich;
@@ -181,7 +204,7 @@ __declspec(dllexport) int mobs_world_run(void *unused) {
     const char *error="Invalid world request";
     if(!in || fscanf(in,"MOBS_WORLD_1 %llu %llu %llu %d %d %d %d %d %d %lf %lf %lf %llu",
         &ea,&pa,&ra,&mode,&kind,&amount,&count,&rich,&preview,&pos.x,&pos.y,&pos.z,&ta)!=13 ||
-        mode<1||mode>11||(!supported(kind)&&kind!=0)||amount<0||amount>1000000||count<0||count>64||rich<0||rich>2||
+        mode<1||mode>14||(!supported(kind)&&kind!=0&&!(mode==12&&(kind==4||kind==10)))||amount<0||amount>1000000||count<0||count>64||rich<0||rich>2||
         preview<0||preview>1||!finite_vec(pos)) goto fail;
     base=(Byte *)GetModuleHandleA(NULL);
     IMAGE_DOS_HEADER *dos=(IMAGE_DOS_HEADER *)base;
@@ -206,7 +229,54 @@ __declspec(dllexport) int mobs_world_run(void *unused) {
     }
     error=mode==8?"Bandit camps require an unclaimed region":"Click inside a region owned by your lord";
     if(!object(region,0xcd0)||(mode==8?PTR(region,0x350)!=NULL:PTR(region,0x350)!=pawn)||
-        FN(0x4cc9ab0,Byte *(*)(Byte *,Vec *,int))(engine,&pos,0)!=region) goto fail;
+        (mode!=14&&FN(0x4cc9ab0,Byte *(*)(Byte *,Vec *,int))(engine,&pos,0)!=region)) goto fail;
+    if(mode==14) {
+        /* Explicit resident creation bypasses the scheduling/approval gates in
+         * growPopulation; it never calls the daily emigration/age update loop. */
+        Byte *home=(Byte *)(uintptr_t)ta;
+        Array *families=(Array *)(region+0x4e8),*residents=(Array *)(region+0x368);
+        int family_id=amount-1;
+        error="Population target/home is invalid or not usable; nothing changed";
+        if(kind<0||kind>2||!object(region,0x1290)||PTR(region,0x318)!=engine||!region[0x2e8]||
+            !array(families,100000,0x50)||!array(residents,100000,8)||
+            !object(home,0x1044)||PTR(home,0x2c8)!=region||PTR(home,0x2e8)!=engine||
+            home[0x3cc]!=1||!home[0x3c1]||home[0x700]||INT(home,0xf20)>0||
+            !registered((Array *)(region+0x658),home)) goto fail;
+        Vec entrance;memcpy(&entrance,home+0x3f8,sizeof(entrance));
+        error="House entrance is blocked; nothing changed";
+        if(!finite_vec(entrance)||!readable(PTR(engine,0x2c0),0x450)||
+            FN(0x4c8e610,Byte(*)(Byte *,Vec *))(engine,&entrance)) goto fail;
+        if(family_id<0) {
+            error="New families require a vacant home and no homeless families; nothing changed";
+            if(kind!=0||families->count>=100000||residents->count>=100000) goto fail;
+            int occupied=0;
+            for(int i=0;i<families->count;i++) {
+                Byte *family=(Byte *)families->data+i*0x50;
+                Byte *existing_home=PTR(family,0x20);
+                if(!object(existing_home,0x3cd)||existing_home[0x3cc]==7) goto fail;
+                if(existing_home==home) occupied++;
+            }
+            int maximum=FN(0x4d406c0,int(*)(Byte *))(home);
+            if(maximum<1||maximum>64||occupied>=maximum||INT(home,0x1040)>=maximum) goto fail;
+        } else {
+            error="Family changed, is full, or already has this role; nothing changed";
+            if(family_id>=families->count) goto fail;
+            Byte *family=(Byte *)families->data+family_id*0x50;
+            Array *members=(Array *)family;
+            if(PTR(family,0x20)!=home||!array(members,3,8)||members->count<1||members->count>=3) goto fail;
+            for(int i=0;i<members->count;i++) {
+                Byte *member=((Byte **)members->data)[i];
+                if(!object(member,0xab2)||member[0x30c]||PTR(member,0x340)!=home||member[0xab1]>2||member[0xab1]==kind) goto fail;
+            }
+        }
+        if(preview) { fprintf(out,"OK Preview: native resident/home/entrance checks passed; nothing changed.\n");goto finish; }
+        Byte *person=FN(0x4c51db0,Byte *(*)(Byte *,int,int,Byte *))(region,family_id,kind,home);
+        error="Native resident creation refused; no automatic retry";
+        if(!object(person,0xab2)) goto fail;
+        error="A person was created but family/home registration is unexpected; do not repeat blindly";
+        if(!registered(residents,person)||PTR(person,0x340)!=home||INT(person,0x348)<0||person[0xab1]!=kind) goto fail;
+        fprintf(out,"OK Created one native resident in family %d, with home and regional registration. No calendar or approval override.\n",INT(person,0x348));goto finish;
+    }
     if(mode==8) {
         error="Bandit camps require unclaimed ground and valid squad registries";
         Array *bandits=(Array *)(engine+0x448);
@@ -242,9 +312,92 @@ __declspec(dllexport) int mobs_world_run(void *unused) {
     Byte *settings=object(settings_class,0x118)?PTR(settings_class,0x110):NULL;
     error="Resource settings are not loaded";if(!object(settings,0x80)) goto fail;
     Byte *props=kind?properties(settings,kind):NULL;
+    if(mode==12) {
+        error="Choose deer or hare; native herd settings or navigation are unavailable";
+        Byte *component=PTR(engine,0x2d0);
+        if((kind!=4&&kind!=10)||rich>1||!props||!object(component,0x148)||!object(PTR(engine,0x5b8),0x28)) goto fail;
+        int minimum=INT(props,rich?0x14:0xc),maximum=INT(props,rich?0x18:0x10),wanted=0;
+        error="Native wildlife population must be between 1 and 256; nothing changed";
+        if(!world_wildlife_population(minimum,maximum,&wanted)||nodes->count>=10000) goto fail;
+        int tag_added=0;
+        error="Region resource availability tags unavailable; nothing changed";
+        if(!ensure_region_kind(region,kind,1,&tag_added)) goto fail;
+        /* Build every ground/border/collision plan before allocating a squad or
+         * actor. The anchor keeps the clicked X/Y; only native height is snapped. */
+        Vec places[256];
+        error="Choose clear ground with enough room for the herd inside your region; nothing changed";
+        if(!readable(PTR(engine,0x2c0),0x450)||!object(PTR(engine,0x5b8),0x2b0)) goto fail;
+        for(int i=0;i<wanted;i++) {
+            double dx=0,dy=0;
+            if(!world_wildlife_offset(i,wanted,&dx,&dy)) goto fail;
+            places[i]=pos;places[i].x+=dx;places[i].y+=dy;
+            struct { float height; Byte valid,padding[3]; } ground={0};
+            FN(0x2d48ac0,void *(*)(Byte *,void *,Vec *,int))(PTR(engine,0x5b8),&ground,places+i,2);
+            if(ground.valid!=1||!isfinite(ground.height)) goto fail;
+            places[i].z=ground.height;
+            if(!finite_vec(places[i])||FN(0x4cc9ab0,Byte *(*)(Byte *,Vec *,int))(engine,places+i,0)!=region||
+                FN(0x4c8e610,Byte(*)(Byte *,Vec *))(engine,places+i)) goto fail;
+        }
+        pos=places[0];
+        if(preview) {
+            fprintf(out,"OK Preview: place %s %s herd (%d animals) and huntable node at the click %.0f %.0f. Ground/border/blocker checks passed for all animals. Nothing changed.\n",
+                rich?"rich":"normal",resource_kind_name(kind),wanted,pos.x,pos.y);goto finish;
+        }
+        /* Same native squad/animal/node registration primitives as world
+         * generation; explicit anchor replaces its random-site search. */
+        struct __attribute__((aligned(16))) { Byte data[0x410]; } temporary={0};
+        FN(0x4a6b590,void(*)(Byte *))(temporary.data);
+        Array *label=(Array *)(temporary.data+0x28);
+        if(label->data) FN(0x1128900,void(*)(void *))(label->data);
+        memset(label,0,sizeof(*label));
+        FN(0x10cd540,void(*)(Array *,const wchar_t *))(label,kind==4?L"Deer":L"Hare");
+        temporary.data[0x10]=5;INT(temporary.data,0x48)=102;INT(temporary.data,0x60)=wanted;
+        memcpy(temporary.data+0x98,&pos,sizeof(pos));memcpy(temporary.data+0xb8,&pos,sizeof(pos));
+        PTR(temporary.data,0x1f8)=region;
+        int id=0;
+        FN(0x4d67b80,int *(*)(Byte *,int *,Byte *))(component,&id,temporary.data);
+        FN(0x4a6bbd0,void(*)(Byte *))(temporary.data);
+        Byte *squad=id>0?FN(0x4d63100,Byte *(*)(Byte *,int))(component,id):NULL;
+        error="Native wildlife squad registration failed; do not repeat blindly";
+        if(!readable(squad,0x410)||squad[0x10]!=5||INT(squad,0x64)!=id) goto fail;
+        for(int i=0;i<wanted;i++) {
+            /* The animal factory reads 28 bytes of cargo, including an internal
+             * trailing field, unlike the 24-byte Good used by mineral deposits. */
+            struct { int type,amount; Byte rest[24]; } cargo={0};
+            cargo.type=kind==4?36:43;
+            Vec rotation={0,i*137.50776405003785,0};
+            Byte *unit=FN(0x4ca31a0,Byte *(*)(Byte *,int,Vec *,Vec *,Byte *,int,void *,int))
+                (engine,kind==4?8:20,places+i,&rotation,NULL,id,&cargo,18);
+            if(!object(unit,0xab0)) break;
+            memcpy(unit+0x2c0,&rotation,sizeof(rotation));
+            FN(0x4de6270,void(*)(Byte *,Byte *,int))(unit,region,0);
+            FN(0x4e27970,void(*)(Byte *))(unit);
+        }
+        squad=FN(0x4d63100,Byte *(*)(Byte *,int))(component,id);
+        error="Native animal registration incomplete; do not repeat placement";
+        if(!readable(squad,0x410)||!array((Array *)(squad+0x18),1000,8)) goto fail;
+        int population=((Array *)(squad+0x18))->count;
+        if(population<1) {
+            FN(0x4d80780,void(*)(Byte *,int))(component,id);
+            error="No animals created; empty squad removal requested";goto fail;
+        }
+        Byte *created=FN(0x4ce6620,Byte *(*)(Byte *,int,Vec *,int,Array *,int))(engine,kind,&pos,rich,NULL,id);
+        error="Animals created but native node registration failed; do not repeat placement";
+        if(!object(created,0x318)||PTR(created,0x2b0)!=region||INT(created,0x2b8)!=id||!registered(nodes,created)) goto fail;
+        error="Herd created but region availability update failed; do not repeat placement";
+        if(!ensure_region_kind(region,kind,0,&tag_added)) goto fail;
+        int view_ready=sync_resource_view(created,pawn),before=0,after=0;
+        int hud_ready=sync_resource_hud(engine,pawn,0,&before,&after);
+        fprintf(out,"OK Created native %s herd: %d animals, squad %d, huntable resource node at the click %.0f %.0f. %s %s Resume simulation; hunting camp work area must include this site. No undo.\n",
+            resource_kind_name(kind),population,id,pos.x,pos.y,view_ready?"Map view refreshed.":"View refresh unavailable.",
+            hud_ready?"HUD synchronized.":"Use mobs.refresh_resource_icons.");goto finish;
+    }
     if(mode==1||mode==6) {
         error="Resource template or capacity unavailable";
         if(!props||!supported(kind)||!object(PTR(props,0x30),0x40)||count<1) goto fail;
+        int tag_added=0;
+        error="Region aquatic availability tags unavailable; nothing changed";
+        if(mode==1&&(kind==5||kind==11)&&!ensure_region_kind(region,kind,1,&tag_added)) goto fail;
         int capacity=amount?amount:INT(props,rich?0x18:0x10);
         if(capacity<1||capacity>1000000||INT(props,4)<1||INT(props,4)>10000) goto fail;
         double scale=0;
@@ -267,24 +420,34 @@ __declspec(dllexport) int mobs_world_run(void *unused) {
             if(count>1) { double angle=i*2.399963229728653;double radius=160.0*sqrt((double)i);places[i].x+=cos(angle)*radius;places[i].y+=sin(angle)*radius; }
             error="Resource cluster crosses the region boundary";
             if(FN(0x4cc9ab0,Byte *(*)(Byte *,Vec *,int))(engine,&places[i],0)!=region) goto fail;
-            if(kind!=5&&kind!=11) places[i].z=FN(0x4cee3d0,float(*)(Byte *,Vec *,int,int,int))(engine,&places[i],0,0,-1);
+            if(kind==5||kind==11) places[i].z=FN(0x4cc6d50,float(*)(Byte *,Vec *))(engine,&places[i]);
+            else places[i].z=FN(0x4cee3d0,float(*)(Byte *,Vec *,int,int,int))(engine,&places[i],0,0,-1);
             error="Terrain height invalid";if(!finite_vec(places[i])) goto fail;
         }
         if(preview) { fprintf(out,"OK Preview: create %d clump(s), %d units each, %s group, native size %.3g; nothing changed.\n",count,capacity,rich?"rich":"normal",scale);goto finish; }
         Array resource_name={0};uint64_t name=0;
-        FN(0x4c76400,Array *(*)(Array *,int))(&resource_name,kind);
-        error="Cannot resolve native resource name";
-        if(!array(&resource_name,256,2)||resource_name.count<2) { if(resource_name.data) FN(0x1128900,void(*)(void *))(resource_name.data);goto fail; }
-        FN(0x1251260,uint64_t *(*)(uint64_t *,const wchar_t *,int))(&name,resource_name.data,1);
-        FN(0x1128900,void(*)(void *))(resource_name.data);
+        if(kind!=5&&kind!=11) {
+            FN(0x4c76400,Array *(*)(Array *,int))(&resource_name,kind);
+            error="Cannot resolve native resource name";
+            if(!array(&resource_name,256,2)||resource_name.count<2) { if(resource_name.data) FN(0x1128900,void(*)(void *))(resource_name.data);goto fail; }
+            FN(0x1251260,uint64_t *(*)(uint64_t *,const wchar_t *,int))(&name,resource_name.data,1);
+            FN(0x1128900,void(*)(void *))(resource_name.data);
+        }
         Byte *created[64]={0};Array clumps={created,0,64};
         for(int i=0;i<count;i++) {
             Transform t=transform(places[i]);Byte *template=PTR(props,0x30);
             t.scale[0]=t.scale[1]=t.scale[2]=scale;
             Byte *res=FN(0x4ce5780,Byte *(*)(Byte *,Byte *,Transform *,Byte **,int))(engine,region,&t,&template,0);
             if(!object(res,0x330)) break;
-            *(uint64_t *)(res+0x2f0)=name;INT(res,0x308)=capacity;INT(res,0x310)=capacity;INT(res,0x30c)=INT(props,4);
+            /* Native aquatic generation preserves the spawned Blueprint's
+             * resource identity/seasonal behavior. Node kind is a separate enum. */
+            if(kind!=5&&kind!=11) { *(uint64_t *)(res+0x2f0)=name;INT(res,0x30c)=INT(props,4); }
             created[clumps.count++]=res;
+            if((kind==5||kind==11)&&!world_fishing_identity_valid(kind,*(uint64_t *)(res+0x2f0),INT(res,0x30c),res[0x32c])) {
+                for(int j=0;j<clumps.count;j++) FN(0x4cacc00,void(*)(Byte *,Byte *))(engine,created[j]);
+                error="Native aquatic template has no valid fishing identity; created clumps removed";goto fail;
+            }
+            INT(res,0x308)=capacity;INT(res,0x310)=capacity;
         }
         Byte *node=clumps.count?spawn_node(engine,kind,pos,rich,&clumps):NULL;
         if(!object(node,0x318)) {
@@ -292,20 +455,25 @@ __declspec(dllexport) int mobs_world_run(void *unused) {
             error="Game refused the resource group; created clumps removed";goto fail;
         }
         if(pond_resources) { PTR(created[0],0x2d8)=pond;append_pointer(pond_resources,created[0]); }
+        error="Aquatic node created but region availability update failed; do not repeat placement";
+        if(mode==1&&(kind==5||kind==11)&&!ensure_region_kind(region,kind,0,&tag_added)) goto fail;
         int view_ready=sync_resource_view(node,pawn);
         int before=0,after=0,hud_ready=sync_resource_hud(engine,pawn,0,&before,&after);
         fprintf(out,"OK Created %d/%d registered clump(s), %d units each, native size %.3g. %s %s No undo.\n",clumps.count,count,capacity,scale,
             view_ready?"Current map/mesh visibility refreshed.":"View refresh unavailable; do not repeat placement to repair it.",
             hud_ready?"HUD icons/hover list synchronized.":"HUD refresh unavailable; use mobs.refresh_resource_icons after loading.");goto finish;
     }
-    if(mode==2||mode==3||mode==9||mode==10) {
+    if(mode==2||mode==3||mode==9||mode==10||mode==13) {
+        error="Fishing repair requires an exact eel or fish node";
+        if(mode==13&&kind!=5&&kind!=11) goto fail;
         Byte *nearest=NULL,*closest=NULL;double best=2500.0*2500,unfiltered_best=best;int nearby_kind=0;
         for(int i=0;i<nodes->count;i++) {
             Byte *node=((Byte **)nodes->data)[i];
             if(!object(node,0x318)||PTR(node,0x2b0)!=region||!supported(INT(node,0x2a8))) continue;
             int node_kind=INT(node,0x2a8);
             Array *clumps=(Array *)(node+0x2c0);if(!array(clumps,10000,8)) continue;
-            if(mode==3 && count==0 && clumps->count==0 && node_kind>=1 && node_kind<=3) {
+            if((mode==3 && count==0 && clumps->count==0 && INT(node,0x2b8)==0)||
+                (mode==13 && clumps->count>0)) {
                 Vec p;
                 if(position(node,&p)) {
                     double d=distance(pos,p);
@@ -321,6 +489,9 @@ __declspec(dllexport) int mobs_world_run(void *unused) {
             }
         }
         if(!nearest&&nearby_kind) {
+            if(mode==13) {
+                fprintf(out,"ERROR No nearby %s shoal matches. Nearby resource is %s. Fish and eel are separate; nothing changed.\n",resource_kind_name(kind),resource_kind_name(nearby_kind));goto finish;
+            }
             const char *operation=mode==2?(rich?"rich":"normal"):mode==3?(count==1?"remove_clump":"remove"):mode==9?"add":"refresh";
             fprintf(out,"ERROR No nearby %s node matches. Nearby owned resource is %s; try mobs.resource %s %s%s. Nothing changed.\n",
                 resource_kind_name(kind),resource_kind_name(nearby_kind),operation,resource_kind_name(nearby_kind),mode==9?" <amount>":"");goto finish;
@@ -328,10 +499,10 @@ __declspec(dllexport) int mobs_world_run(void *unused) {
         error="No matching owned surface resource within 2500 game units";if(!nearest) goto fail;
         Array *clumps=(Array *)(nearest+0x2c0);
         if(mode==3 && count==0 && clumps->count==0) {
-            if(preview) { fprintf(out,"OK Preview: remove one empty legacy mineral map marker; underground reserves are separate. Nothing changed.\n");goto finish; }
+            if(preview) { fprintf(out,"OK Preview: remove one empty %s node; underground reserves are separate. Nothing changed.\n",resource_kind_name(INT(nearest,0x2a8)));goto finish; }
             remove_empty_node(engine,nearest);
             int before=0,after=0;sync_resource_hud(engine,pawn,0,&before,&after);
-            fprintf(out,"OK Removed empty legacy mineral map marker. Underground reserves unchanged; use mobs.remove_deposit for those. No undo.\n");goto finish;
+            fprintf(out,"OK Removed empty resource node. Underground reserves unchanged; use mobs.remove_deposit for those. No undo.\n");goto finish;
         }
         Byte *targets[10000];int n=(count==1&&mode==3)||mode==9?1:clumps->count;
         if(n==1&&((count==1&&mode==3)||mode==9)) targets[0]=closest;else memcpy(targets,clumps->data,(size_t)n*8);
@@ -340,6 +511,48 @@ __declspec(dllexport) int mobs_world_run(void *unused) {
             Byte *res=targets[i];error="Resource group contains an invalid or attached clump; no changes";
             if(!object(res,0x330)||PTR(res,0x2b8)!=nearest||PTR(res,0x2d0)!=region||PTR(res,0x2d8)) goto fail;
             if(mode==2 && (INT(res,0x310)<1||INT(res,0x310)>1000000||INT(res,0x308)<0||INT(res,0x308)>INT(res,0x310))) goto fail;
+        }
+        if(mode==13) {
+            /* Defaults are read from the live game class, never guessed from
+             * Fish/Eel node labels or inventory item IDs. Reject unresolved CDOs. */
+            Byte *template=PTR(props,0x30);
+            Byte *defaults=object(template,0x118)?PTR(template,0x110):NULL;
+            error="Native fishing template defaults are unavailable; no changes";
+            if(!object(defaults,0x330)||!world_fishing_identity_valid(kind,*(uint64_t *)(defaults+0x2f0),INT(defaults,0x30c),defaults[0x32c])) goto fail;
+            int tag_added=0;
+            error="Region aquatic availability tags unavailable; nothing changed";
+            if(!ensure_region_kind(region,kind,1,&tag_added)) goto fail;
+            Vec places[10000];int identity_changes=0,missing=0;
+            for(int i=0;i<n;i++) {
+                Byte *res=targets[i];
+                error="Fishing clump differs from native template or has invalid quantities; no changes";
+                if(PTR(res,0x10)!=template||INT(res,0x308)<0||INT(res,0x310)<1||INT(res,0x310)>1000000||INT(res,0x308)>INT(res,0x310)||
+                    !position(res,places+i)||!object(PTR(res,0x1b8),0x230)||!object(PTR(res,0x2a8),0x278)) goto fail;
+                places[i].z=FN(0x4cc6d50,float(*)(Byte *,Vec *))(engine,places+i);
+                if(!finite_vec(places[i])) goto fail;
+                if(*(uint64_t *)(res+0x2f0)!=*(uint64_t *)(defaults+0x2f0)||INT(res,0x30c)!=INT(defaults,0x30c)||res[0x32c]!=defaults[0x32c]) identity_changes++;
+                if(!registered(resources,res)) missing++;
+            }
+            if(preview) {
+                fprintf(out,"OK Preview: repair %d %s clump(s): %d template identity/seasonal changes, %d missing region registrations, %d missing availability tag; native height/view refresh. Amounts/capacity/richness unchanged.\n",n,resource_kind_name(kind),identity_changes,missing,tag_added);goto finish;
+            }
+            for(int i=0;i<n;i++) {
+                Byte *res=targets[i];Transform t;memcpy(&t,PTR(res,0x1b8)+0x1d0,sizeof(t));
+                t.pos[2]=places[i].z;
+                if(!FN(0x34d6860,Byte(*)(Byte *,Transform *,int,void *,int))(res,&t,0,NULL,1)) {
+                    fprintf(out,"OK Fishing repair stopped at clump %d/%d; %d completed. Amounts unchanged; do not respawn the node.\n",i+1,n,i);goto finish;
+                }
+                *(uint64_t *)(res+0x2f0)=*(uint64_t *)(defaults+0x2f0);
+                INT(res,0x30c)=INT(defaults,0x30c);res[0x32c]=defaults[0x32c];
+                if(!registered(resources,res)) append_pointer(resources,res);
+            }
+            error="Clumps repaired but region availability update failed";
+            if(!ensure_region_kind(region,kind,0,&tag_added)) goto fail;
+            refresh_rich(settings,props,nearest,nearest[0x2ac]!=0);
+            int view_ready=sync_resource_view(nearest,pawn),before=0,after=0;
+            int hud_ready=sync_resource_hud(engine,pawn,0,&before,&after);
+            fprintf(out,"OK Repaired %d %s clump(s): native template identity/seasonal flag, height, region/spatial registration and availability tag. %s %s Amounts/capacity/richness unchanged. Resume simulation to check fishing; save/reload persistence needs testing. No undo.\n",
+                n,resource_kind_name(kind),view_ready?"View refreshed.":"View refresh unavailable.",hud_ready?"HUD synchronized.":"Use mobs.refresh_resource_icons.");goto finish;
         }
         if(mode==10) {
             Vec places[10000];double scale=0;

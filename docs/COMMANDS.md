@@ -1,6 +1,6 @@
 # Command reference
 
-Version 0.15.0-alpha.1 — 94 base names/aliases, plus detailed dotted advice shortcuts.
+Version 0.16.0-alpha.3 — 96 base names/aliases, plus detailed dotted advice shortcuts.
 
 Generated from the registered implementation without executing gameplay commands.
 
@@ -37,7 +37,7 @@ Preview/undo are available only where explicitly documented. Read KNOWN_ISSUES.m
 | `mobs.fertilization <on\|off> [selected\|region] [preview]` | Enable/disable native fertilization permission for selected fields or the target region; supports preview. Does not add fertility. |
 | `mobs.finish_constructions [preview]` | Finish construction work in the selected/current owned region and let the game finalize sites during simulation; preview lists the count. |
 | `mobs.give <item\|id> <amount> [preview]` | Deliver up to this amount to EACH selected owned storage building or construction site (max 32); supports preview. |
-| `mobs.grow_population [attempts]` | Request native population growth in the target settlement, up to ten attempts; reports actual resident counts. |
+| `mobs.grow_population [1..10\|status] [preview]` | Add 1..10 human residents immediately through native family/housing creation; bypasses natural approval/arrival-day gates. Requires usable housing; status explains capacity; preview available; no undo. |
 | `mobs.grow_saplings [area] [preview]` | Mature registered saplings, including forester plantings; optionally limit to the selected building work area, supports preview. |
 | `mobs.grow_stage [area] [preview]` | Advance each registered growing tree once through native growth; optionally target one limited work area, supports preview. |
 | `mobs.grow_trees [preview]` | Grow registered trees and untracked native young-tree stages to maturity in batches; excludes decorative bushes. Supports preview. |
@@ -64,6 +64,7 @@ Preview/undo are available only where explicitly documented. Read KNOWN_ISSUES.m
 | `mobs.rehouse selected [preview]` | Move a hovered/followed family to one selected completed house in the same owned region; checks capacity, supports preview. |
 | `mobs.remove_deposit [iron\|clay\|salt\|all] [preview]` | Click near owned underground reserves to remove their decal and colocated empty legacy markers; real surface clumps remain (mobs.resource remove); no undo. |
 | `mobs.remove_selected_piles [preview]` | Remove selected owned Supplies piles INCLUDING CONTENTS, even unfinished/bugged ones; supports preview. Ignores region pin; no undo. |
+| `mobs.repair_fishing [eel\|fish] [preview]` | Click near an owned eel/fish shoal to restore native template identity, seasonal flag, height and registration. Preserves amounts/capacity; excludes ponds. Default eel; range 2500; preview available. Candidate: worker/save-load validation pending. |
 | `mobs.replant_trees [preview]` | Click cleared ground to replant one oak sapling in the target owned region; native collision checks; supports preview. |
 | `mobs.resource <add\|rich\|normal\|refresh\|remove\|remove_clump> [kind\|all] [amount for add] [preview]` | Click near an owned resource to add, change richness, refresh ground height/size/visibility without changing goods, or remove a group/clump. Refresh excludes fish/eel and attached clumps. Maximum distance 2500; no undo. |
 | `mobs.resources [kind]` | Inspect existing mineral, berry, mushroom, fish and eel clumps in the target owned region; does not count stored goods. |
@@ -72,6 +73,7 @@ Preview/undo are available only where explicitly documented. Read KNOWN_ISSUES.m
 | `mobs.soil <set\|restore> <wheat\|flax\|barley\|all> [0..100] [selected\|area] [preview]` | Set baseline/current soil fertility or restore depletion for selected planted plots or limited work areas; 0..100%, preview and guarded undo. |
 | `mobs.spawn_deposit <iron\|clay\|salt> <amount> [rich] [preview]` | Click to create iron/clay/salt with the requested amount in one surface clump PLUS the same underground reserves; ground-facing decal and map node; maximum one million per layer; no undo. |
 | `mobs.spawn_resource <kind> [amount per clump] [1..64 clumps] [rich] [preview]` | Click to create a registered surface resource group; amount is per clump, defaults to native capacity. Fish/eel require water; preview available. |
+| `mobs.spawn_wildlife <deer\|hare> [rich] [preview]` | Click clear owned ground to place one huntable deer/hare herd and its resource node there. Native normal/rich settings determine population; animals spread around the click. Preview available; no undo. |
 | `mobs.stock [search]` | Show target region stock through the native stock query, including reserved goods; optional name or ID filter. |
 | `mobs.supply_construction [selected] [preview]` | Supply missing construction materials in the target region or selected sites; supports preview. Does not complete work. |
 | `mobs.undo_deposit` | Undo the latest unchanged underground deposit edit; holds ten edits until mod/player reload. |

@@ -5,9 +5,9 @@
 Console tools for **Manor Lords 0.8.117**: construction, Supplies piles, resources,
 trees, regional perk cards and settlement management, with searchable command help.
 
-**0.15.0-alpha.1 · alpha · 94 base command names/aliases + detailed advice shortcuts · MIT**
+**0.16.0-alpha.3 · alpha · 96 base command names/aliases + detailed advice shortcuts · MIT**
 
-[Download the alpha release](https://github.com/Zacxxx/ml-console-commands-by-mobs/releases/tag/v0.15.0-alpha.1) ·
+[Download the alpha release](https://github.com/Zacxxx/ml-console-commands-by-mobs/releases/tag/v0.16.0-alpha.3) ·
 [Wiki and full tutorial](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki) ·
 [All item IDs](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Item-IDs) ·
 [Report audit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Bug-report-status) ·
@@ -54,7 +54,7 @@ This is an independent implementation. No original-mod DLL/PAK, implementation
 source, game assets, saves or UE4SS loader binaries are included. The original
 k.* aliases are not registered.
 
-## Community fixes and guidance in 0.15
+## Community fixes and guidance
 
 Every base command has a shared in-game/wiki guide with targeting, steps, examples,
 limits and related tools. `mobs.tutorial all` prints 13 chapters. The item reference
@@ -65,7 +65,10 @@ Report-driven code changes address temporary selection arrays, the autocomplete
 argument flood/Windows line endings, underground decal orientation, finite mineral
 clumps and empty legacy marker cleanup. Earlier size/view and HUD icon/hover fixes
 are included. Read the report audit for exact verification status: eel harvesting/
-despawn remains open and huntable wildlife-node spawning is not implemented.
+despawn has a repair path in 0.16, alongside click-placed huntable herds and explicit
+population creation with status/preview. Actual catches, hunting, arrivals and
+save/reload remain unverified. See [population checks](docs/population_testing.md)
+and [aquatic/wildlife checks](docs/aquatic_wildlife_testing.md).
 
 ## Status
 

@@ -43,6 +43,20 @@ function M.new(get_pawn,arm,api)
         end)
     end
     function self.register(register)
+        register('mobs.spawn_wildlife','mobs.spawn_wildlife <deer|hare> [rich] [preview]',function(args)
+            local args,preview=access.preview(args)
+            local rich=args[#args]=='rich';if rich then table.remove(args) end
+            assert(#args==1 and (args[1]=='deer' or args[1]=='hare'),
+                'Usage: mobs.spawn_wildlife <deer|hare> [rich] [preview]')
+            return click('Wildlife herd placement at click',
+                {mode=12,kind=args[1]=='deer' and 4 or 10,rich=rich and 1 or 0,preview=preview})
+        end,'Click clear owned ground to place one huntable deer/hare herd and its resource node there. Native normal/rich settings determine population; animals spread around the click. Preview available; no undo.')
+        register('mobs.repair_fishing','mobs.repair_fishing [eel|fish] [preview]',function(args)
+            local args,preview=access.preview(args)
+            assert(#args<=1 and (not args[1] or args[1]=='eel' or args[1]=='fish'),
+                'Usage: mobs.repair_fishing [eel|fish] [preview]')
+            return click('Fishing resource repair',{mode=13,kind=kind(args[1] or 'eel'),preview=preview})
+        end,'Click near an owned eel/fish shoal to restore native template identity, seasonal flag, height and registration. Preserves amounts/capacity; excludes ponds. Default eel; range 2500; preview available. Candidate: worker/save-load validation pending.')
         register('mobs.refresh_resource_icons','mobs.refresh_resource_icons [preview]',function(args)
             local args,preview=access.preview(args)
             assert(#args==0,'Usage: mobs.refresh_resource_icons [preview]')

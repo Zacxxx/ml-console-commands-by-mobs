@@ -1,6 +1,6 @@
 # mobs.undo_fertilization
 
-Guide for **0.15.0-alpha.1**, game **0.8.117**.
+Guide for **0.16.0-alpha.3**, game **0.8.117**.
 
 Undo the latest fertilization permission batch when fields are unchanged; holds five batches until reload.
 

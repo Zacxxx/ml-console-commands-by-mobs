@@ -1,11 +1,11 @@
 # mobs.grow_population
 
-Guide for **0.15.0-alpha.1**, game **0.8.117**.
+Guide for **0.16.0-alpha.3**, game **0.8.117**.
 
-Request native population growth in the target settlement, up to ten attempts; reports actual resident counts.
+Add 1..10 human residents immediately through native family/housing creation; bypasses natural approval/arrival-day gates. Requires usable housing; status explains capacity; preview available; no undo.
 
 ```text
-mobs.grow_population [attempts]
+mobs.grow_population [1..10|status] [preview]
 ```
 
 ## In-game advice
@@ -18,25 +18,28 @@ Your owned command-target region. Run mobs.regions, then mobs.region with a list
 
 ## Steps
 
-Use 1..10 native growth ATTEMPTS and read the before/after human resident counts. Leave simulation time for arrivals and check housing/approval.
+Run status to inspect approval, the game natural monthly growth result, usable housing places and homeless families. Preview the requested 1..10 PEOPLE, then run without preview to create them now through the native resident/family/home path. Existing incomplete eligible families are filled first; new families use vacant completed housing. No click is needed.
 
 ## Examples
 
 Examples below are command text to enter yourself; reading this page never runs them.
 
 ```text
-mobs.grow_population 1
-mobs.grow_population 10
+mobs.grow_population status
+mobs.grow_population 3 preview
+mobs.grow_population 3
+mobs.grow_population 10 preview
 ```
 
 ## Limits and expected results
 
-10 does not mean ten instant people or families. Native housing, migration, settlement and timing conditions apply. Zero change is reported honestly; repeating cannot guarantee arrival. No undo.
+0.16.0-alpha.3 changes the number from repeated growth attempts to actual people, not families. Default 1; maximum 10 per call. Explicit creation bypasses the natural approval/arrival-day gates without changing the date or forcing approval. All planned home entrances are preflighted before creation; enough housing is required for the whole request. Sleeping/unfinished/mourning homes are excluded. Existing homeless families take priority over new households. Native failures stop and report actual population change without retrying or rolling back earlier arrivals. New population has ordinary needs and can later leave under normal game rules. Live/save-load confirmation remains pending. No undo.
 
 ## Related commands
 
 - [mobs.approval](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-approval) — `mobs.advice.approval`
 - [mobs.rehouse](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-rehouse) — `mobs.advice.rehouse`
-- [mobs.skip_day](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-skip_day) — `mobs.advice.skip_day`
+- [mobs.regions](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-regions) — `mobs.advice.regions`
+- [mobs.status](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-status) — `mobs.advice.status`
 
 [All commands](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Commands) · [Tutorial](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Tutorial) · [Item IDs](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Item-IDs)

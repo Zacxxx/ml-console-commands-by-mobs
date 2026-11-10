@@ -25,10 +25,21 @@ right command without memorizing everything.
   plus separate underground reserves. Legacy empty markers can be removed.
 - Includes earlier resource size/view and HUD icon/hover-list fixes that were not in 0.14.0.
 
-These changes pass offline checks and exact-build guards. Fresh visuals, mining,
-worker harvesting and save/load tests are still needed. The spawned-eel harvesting/
-despawn report remains open. Registered huntable deer/hare-node spawning is not
-implemented; `mobs.animal` creates individuals only.
+## New in 0.16
+
+- `mobs.repair_fishing eel preview`, then without preview: repair the native identity,
+  seasonal flags and regional availability of an existing owned shoal. Close the
+  console and click near the shoal after each command. Amounts are preserved.
+- `mobs.spawn_wildlife deer` or `hare`: place a registered hunting herd and its
+  resource node at your next click on clear owned ground. Add `rich` for a rich herd.
+- `mobs.grow_population status`, `mobs.grow_population 3 preview`, then
+  `mobs.grow_population 3`: explicitly add people through the native resident/family/
+  home path. The number now means **people**, not growth attempts or families.
+  Monthly arrival/approval gates are bypassed; valid housing is still required.
+
+These changes pass offline checks and exact-build guards. Actual eel catches,
+hunting, resident arrivals and save/reload persistence still need gameplay
+confirmation. Use a separate save. `mobs.animal` remains individual animal spawning.
 
 ## What is included?
 
@@ -130,8 +141,10 @@ require their own explicit `mobs.resource remove iron` action. Preview first.
 opening the console. Restore removes depletion to the existing baseline;
 `mobs.soil set all 100 selected preview` instead sets baseline/current fertility.
 
-`mobs.grow_population 10` — ten native growth attempts, not ten guaranteed people.
-Housing, approval/migration and simulation timing still apply. Read the actual counts.
+`mobs.grow_population 3 preview` — check housing for three people without changing
+anything. `mobs.grow_population 3` adds up to three people immediately through the
+native arrival path; it does not advance time or change approval. Read the actual
+counts if native creation stops early. Normal needs and later migration still apply.
 
 [Read the complete report audit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Bug-report-status)
 for fixed-in-source issues, old-save cleanup and reports that remain open.

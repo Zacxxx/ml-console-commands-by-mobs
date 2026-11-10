@@ -2,6 +2,36 @@
 #include <math.h>
 #include "../../src/mobs_console/Native/world_plan.h"
 int main(void) {
+    int population=0;
+    assert(world_wildlife_population(10,20,&population) && population==15);
+    assert(world_wildlife_population(1,1,&population) && population==1);
+    assert(world_wildlife_population(1,256,&population) && population==128);
+    assert(!world_wildlife_population(0,10,&population));
+    assert(!world_wildlife_population(20,10,&population));
+    assert(!world_wildlife_population(1,257,&population));
+    assert(!world_wildlife_population(1,2,NULL));
+    double offset_x=1,offset_y=1;
+    assert(world_wildlife_offset(0,256,&offset_x,&offset_y));
+    assert(offset_x==0 && offset_y==0);
+    for(int i=0;i<256;i++) {
+        assert(world_wildlife_offset(i,256,&offset_x,&offset_y));
+        assert(isfinite(offset_x) && isfinite(offset_y));
+        assert(offset_x*offset_x+offset_y*offset_y<=1000.0*1000.0);
+        if(i) assert(offset_x!=0 || offset_y!=0);
+    }
+    assert(!world_wildlife_offset(-1,4,&offset_x,&offset_y));
+    assert(!world_wildlife_offset(4,4,&offset_x,&offset_y));
+    assert(!world_wildlife_offset(0,0,&offset_x,&offset_y));
+    assert(!world_wildlife_offset(0,257,&offset_x,&offset_y));
+    assert(world_fishing_identity_valid(11,123,32,1));
+    assert(world_fishing_identity_valid(5,456,316,0));
+    assert(!world_fishing_identity_valid(4,123,36,0));
+    assert(!world_fishing_identity_valid(10,123,43,0));
+    assert(!world_fishing_identity_valid(11,0,32,1));
+    assert(!world_fishing_identity_valid(11,UINT64_C(1)<<32,32,1));
+    assert(!world_fishing_identity_valid(11,123,0,1));
+    assert(!world_fishing_identity_valid(11,123,10001,1));
+    assert(!world_fishing_identity_valid(11,123,32,2));
     void *world_nodes[]={(void *)1,(void *)2,(void *)3};
     void *hud_nodes[]={(void *)1,(void *)9,(void *)9,(void *)9};
     assert(!world_copy_nodes(hud_nodes,2,world_nodes,3));

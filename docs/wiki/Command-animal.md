@@ -1,6 +1,6 @@
 # mobs.animal
 
-Guide for **0.15.0-alpha.1**, game **0.8.117**.
+Guide for **0.16.0-alpha.3**, game **0.8.117**.
 
 Click inside an owned region to spawn 1..20 animals using native livestock registration; preview available.
 
@@ -37,5 +37,6 @@ These are individual native spawned animals. deer/hare here do NOT create a regi
 
 - [mobs.livestock_cooldown](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-livestock_cooldown) — `mobs.advice.livestock_cooldown`
 - [mobs.spawn_resource](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-spawn_resource) — `mobs.advice.spawn_resource`
+- [mobs.spawn_wildlife](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-spawn_wildlife) — `mobs.advice.spawn_wildlife`
 
 [All commands](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Commands) · [Tutorial](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Tutorial) · [Item IDs](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Item-IDs)

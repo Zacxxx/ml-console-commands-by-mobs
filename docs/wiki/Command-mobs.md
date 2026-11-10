@@ -1,6 +1,6 @@
 # mobs
 
-Guide for **0.15.0-alpha.1**, game **0.8.117**.
+Guide for **0.16.0-alpha.3**, game **0.8.117**.
 
 Quick-start dashboard or run an exact command using spaces; misspellings only suggest, never execute.
 

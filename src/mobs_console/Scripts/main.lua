@@ -19,7 +19,7 @@ local command_files = require('command_files')
 local categories = require('command_categories')
 local undo = {}
 local commands = {}
-local VERSION = "0.15.0-alpha.1"
+local VERSION = "0.16.0-alpha.3"
 
 local function valid(object)
     local ok, result = pcall(function() return object and object:IsValid() end)

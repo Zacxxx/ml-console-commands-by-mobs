@@ -1,6 +1,6 @@
 # mobs.resource
 
-Guide for **0.15.0-alpha.1**, game **0.8.117**.
+Guide for **0.16.0-alpha.3**, game **0.8.117**.
 
 Click near an owned resource to add, change richness, refresh ground height/size/visibility without changing goods, or remove a group/clump. Refresh excludes fish/eel and attached clumps. Maximum distance 2500; no undo.
 
@@ -34,12 +34,13 @@ mobs.resource remove eel
 
 ## Limits and expected results
 
-remove deletes a whole surface group; remove_clump only one clump. Exact kind is required: fish and eel differ. refresh repairs land clump size/height/visibility, not amounts. Real underground reserves use remove_deposit; empty legacy mineral markers are removable here. No undo.
+remove deletes a whole surface group; remove_clump only one clump. Exact kind is required: fish and eel differ. refresh repairs land clump size/height/visibility, not amounts. Real underground reserves use remove_deposit; empty clumpless non-wildlife nodes are removable here. No undo.
 
 ## Related commands
 
 - [mobs.resources](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-resources) — `mobs.advice.resources`
 - [mobs.remove_deposit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-remove_deposit) — `mobs.advice.remove_deposit`
 - [mobs.refresh_resource_icons](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-refresh_resource_icons) — `mobs.advice.refresh_resource_icons`
+- [mobs.repair_fishing](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-repair_fishing) — `mobs.advice.repair_fishing`
 
 [All commands](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Commands) · [Tutorial](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Tutorial) · [Item IDs](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Item-IDs)

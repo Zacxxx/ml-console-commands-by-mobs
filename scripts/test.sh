@@ -11,6 +11,7 @@ lua tests/game_access/test_selection.lua
 lua tests/console_ux/test_adapter.lua
 lua tests/console_ux/test_ux.lua
 lua tests/world_tools/test_commands.lua
+lua tests/world_tools/test_population.lua
 lua tests/parity_tools/test_commands.lua
 lua tests/parity_tools/test_files.lua
 lua tests/parity_tools/test_resources.lua
@@ -34,7 +35,7 @@ cc -Wall -Wextra -Werror tests/forestry/test_growth_loop.c -o "$perk_test_binary
 "$perk_test_binary"
 cc -Wall -Wextra -Werror tests/parity_tools/test_soil_cells.c -o "$perk_test_binary"
 "$perk_test_binary"
-cc -Wall -Wextra -Werror tests/world_tools/test_resource_plan.c -o "$perk_test_binary"
+cc -Wall -Wextra -Werror tests/world_tools/test_resource_plan.c -lm -o "$perk_test_binary"
 "$perk_test_binary"
 cc -Wall -Wextra -Werror tests/console_ux/test_tree.c -o "$perk_test_binary"
 "$perk_test_binary"

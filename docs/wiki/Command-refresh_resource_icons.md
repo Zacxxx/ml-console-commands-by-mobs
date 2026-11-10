@@ -1,6 +1,6 @@
 # mobs.refresh_resource_icons
 
-Guide for **0.15.0-alpha.1**, game **0.8.117**.
+Guide for **0.16.0-alpha.3**, game **0.8.117**.
 
 Refresh the game HUD resource-node list for normal-map icons and paper-map hover details. No click required; resource quantities unchanged; preview available.
 

@@ -19,7 +19,7 @@ for name,entry in pairs(registry) do
         assert(not pcall(entry.handler,{'execute'}),'Advice aliases must reject gameplay arguments')
     end
 end
-assert(aliases==93)
+assert(aliases==95)
 assert(registry['mobs.advice'].handler({'pile'})==registry['mobs.advice.pile'].handler({}))
 assert(registry['mobs.advice'].handler({'mobs.pile'})==registry['mobs.advice.pile'].handler({}))
 assert(not pcall(registry['mobs.advice'].handler,{'does_not_exist'}))
@@ -30,4 +30,4 @@ for i,chapter in ipairs(data.tutorial) do
 end
 assert(not pcall(registry['mobs.tutorial'].handler,{'does_not_exist'}))
 assert(mutations==0,'Every guide and tutorial must stay read only')
-print('93 advice shortcuts, menu-safe read-only guidance, aliases, validation and 13 tutorial chapters passed')
+print('95 advice shortcuts, menu-safe read-only guidance, aliases, validation and 13 tutorial chapters passed')

@@ -54,7 +54,7 @@ This is an independent implementation. No original-mod DLL/PAK, implementation
 source, game assets, saves or UE4SS loader binaries are included. The original
 k.* aliases are not registered.
 
-## Community fixes and guidance in 0.15
+## Community fixes and guidance
 
 Every base command has a shared in-game/wiki guide with targeting, steps, examples,
 limits and related tools. `mobs.tutorial all` prints 13 chapters. The item reference
@@ -65,7 +65,10 @@ Report-driven code changes address temporary selection arrays, the autocomplete
 argument flood/Windows line endings, underground decal orientation, finite mineral
 clumps and empty legacy marker cleanup. Earlier size/view and HUD icon/hover fixes
 are included. Read the report audit for exact verification status: eel harvesting/
-despawn remains open and huntable wildlife-node spawning is not implemented.
+despawn has a repair path in 0.16, alongside click-placed huntable herds and explicit
+population creation with status/preview. Actual catches, hunting, arrivals and
+save/reload remain unverified. See [population checks](docs/population_testing.md)
+and [aquatic/wildlife checks](docs/aquatic_wildlife_testing.md).
 
 ## Status
 

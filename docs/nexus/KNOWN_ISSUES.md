@@ -1,4 +1,4 @@
-# Compatibility and known limits — 0.15.0-alpha.1
+# Compatibility and known limits — 0.16.0-alpha.3
 
 - **Game target: Manor Lords 0.8.117 only.** The native helper guards target the
   Steam pre_release executable (PE timestamp 0x6836c1ba, image size 0x9dfd000).
@@ -39,8 +39,13 @@
 [Full report audit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Bug-report-status).
 Selection, contextual autocomplete and deposit creation/removal fixes pass offline
 checks but still need fresh in-game reproduction and save/load confirmation.
-Spawned eel ignored by fishermen / later despawning remains an open report.
-`mobs.animal deer/hare` creates individuals, not registered huntable resource nodes.
+The **0.16 alpha** addresses aquatic template identity/seasonality
+and missing regional availability tags; `mobs.repair_fishing` repairs existing
+shoals without refilling them. Actual catches and save/reload survival remain open
+until user testing. It cannot repair every invalid water placement or worker access.
+`mobs.spawn_wildlife deer/hare` now uses native herd/squad/node registration. Placement
+uses the clicked location as the node/herd home and native population settings; hunting and
+save/reload need user confirmation. `mobs.animal deer/hare` remains individual spawning.
 
 New `spawn_deposit` creates the requested amount in a surface clump PLUS the same
 underground reserves; these are separate layers. Rich underground reserves can be
@@ -56,3 +61,14 @@ problem also occurs after restarting with other optional mods disabled.
 Attach only the relevant UE4SS.log excerpt; remove personal paths or save names.
 Do not post an entire save or Native/State folder unless you choose to share it.
 For a crash, include the timestamp and the preceding relevant log lines.
+
+
+## Population creation
+
+`grow_population` now creates a requested 1..10 people directly through the native
+arrival/family/home path. It bypasses the scheduling/approval gates that made
+repeated daily growth checks no-op, while retaining housing and entrance checks.
+Use `mobs.grow_population status` and `preview`. The number is people, not families
+or attempts. The command does not force approval or advance time. Normal needs and
+later migration still apply. Native failure can leave a reported partial result;
+there is no undo. Actual arrivals and save/reload need user confirmation.
