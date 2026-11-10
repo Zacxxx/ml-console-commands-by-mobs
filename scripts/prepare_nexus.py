@@ -160,6 +160,27 @@ def write_archive(path, files):
 
 
 def bbcode(markdown):
+    # Join Markdown soft wraps before translating; otherwise Nexus renders every
+    # source line as a hard break, including inside list items.
+    blocks = []
+    for block in re.split(r'\n\s*\n', markdown.strip()):
+        lines = block.splitlines()
+        if re.match(r'^(?:- |\d+\. )', lines[0]):
+            ordered = bool(re.match(r'^\d+\. ', lines[0]))
+            items = []
+            for line in lines:
+                item = re.match(r'^(?:- |\d+\. )(.*)', line)
+                if item:
+                    items.append(item[1])
+                elif items:
+                    items[-1] += ' ' + line.strip()
+            blocks.append(('[list=1]' if ordered else '[list]') + '\n'
+                          + '\n'.join('[*]' + item + '[/*]' for item in items) + '\n[/list]')
+        elif lines[0].startswith('`mobs'):
+            blocks.append('\n'.join(lines))
+        else:
+            blocks.append(' '.join(line.strip() for line in lines))
+    markdown = '\n\n'.join(blocks) + '\n'
     value = re.sub(r'\[([^\]]+)\]\((https?://[^)]+)\)', r'[url=\2]\1[/url]', markdown)
     value = re.sub(r'\*\*(.+?)\*\*', r'[b]\1[/b]', value)
     value = re.sub(r'`([^`]+)`', r'[font=Courier New]\1[/font]', value)

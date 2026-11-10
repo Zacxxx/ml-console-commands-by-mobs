@@ -53,6 +53,14 @@ class NexusPackageTests(unittest.TestCase):
             build = subprocess.run(['git', 'check-ignore', 'release/runtime.zip'], cwd=folder, capture_output=True)
             self.assertEqual(build.returncode, 0, 'Generated release outputs should be ignored')
 
+    def test_nexus_description_preserves_lists_and_joins_soft_wraps(self):
+        source = '# Title\n\nA useful paragraph\ncontinued here.\n\n- First item\n  continued.\n- Second item\n\n1. Install it\n   carefully.\n2. Open console\n'
+        output = nexus.bbcode(source)
+        self.assertIn('A useful paragraph continued here.', output)
+        self.assertIn('[list]\n[*]First item continued.[/*]\n[*]Second item[/*]\n[/list]', output)
+        self.assertIn('[list=1]\n[*]Install it carefully.[/*]', output)
+        self.assertIn('[size=5][b]Title[/b][/size]', output)
+
     def test_rejects_traversal_duplicates_and_non_mobs_native_manifests(self):
         with tempfile.TemporaryDirectory() as temporary:
             target = Path(temporary) / 'bad.zip'
