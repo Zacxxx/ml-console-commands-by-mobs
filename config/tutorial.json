@@ -86,7 +86,7 @@
         "guides": [
             "mobs.advice.spawn_resource",
             "mobs.advice.resource",
-            "mobs.advice.spawn_deposit",
+            "mobs.advice.spawn_deposit New mineral placement uses a moving native-material preview, centre crosshair and mining-radius ring. Close the console, move to READY owned ground and left-click the exact centre. Blocked clicks stay armed; right-click cancels. Add preview to inspect repeatedly without creating either layer.",
             "mobs.advice.deposit",
             "mobs.advice.remove_deposit",
             "mobs.advice.refresh_resource_icons",
@@ -97,7 +97,7 @@
             "Berries example: mobs.spawn_resource berries 100 4 preview; close console and click owned ground. This previews FOUR clumps of 100 each, not 100 spread across the group. Repeat without preview and click to create it. Optional rich comes after amount/count: mobs.spawn_resource iron 1000 1 rich.",
             "Kinds are iron, clay, salt, stone, berries, mushrooms, fish and eel. Deer/hares are not supported hunting-node kinds. mobs.resources berries inspects existing clumps in the target region; mobs.refill_resources berries preview refills them to capacity rather than creating new ones.",
             "There are TWO mineral layers: visible finite surface clumps and underground reserves for deep extraction. mobs.resource add iron 100 edits one existing surface clump. mobs.deposit add iron 100 edits an existing underground reserve. A surface icon alone does not prove an underground reserve exists.",
-            "New mobs.spawn_deposit iron 1000 rich creates 1000 surface units PLUS 1000 underground units and a ground-facing decal. Rich deep reserves follow native endless/deep-mining rules. The finite amount shown in the resource tooltip comes from the surface clump. Legacy 0.14.0 placements could have only an empty marker, with no finite surface amount.",
+            "New mobs.spawn_deposit iron 1000 rich creates 1000 surface units PLUS 1000 underground units and a ground-facing decal. Rich deep reserves follow native endless/deep-mining rules. The finite amount shown in the resource tooltip comes from the surface clump. Legacy 0.14.0 placements could have only an empty marker, with no finite surface amount. New mineral placement uses a moving native-material preview, centre crosshair and mining-radius ring. Close the console, move to READY owned ground and left-click the exact centre. Blocked clicks stay armed; right-click cancels. Add preview to inspect repeatedly without creating either layer.",
             "To remove surface fish: mobs.resource remove fish preview, close console and click close to the shoal. For eel use eel explicitly; fish never silently selects eel. Remove deletes the whole group; remove_clump deletes one clump. Matching distance is 2500 game units, and ownership still applies.",
             "mobs.remove_deposit iron preview removes underground reserves/decal and colocated EMPTY legacy markers. Real surface clumps stay until mobs.resource remove iron. If an old stripe was already removed but its empty marker remains, mobs.resource remove iron can now remove that marker. Preview first; removals have no undo.",
             "For visible models but missing normal-map icons or paper-map hover details, run mobs.refresh_resource_icons. For older badly scaled land clumps, mobs.resource refresh berries preview repairs size/height/view after a click without changing goods. Do not spawn duplicate nodes to fix an icon.",
@@ -115,7 +115,7 @@
             "mobs.advice.resource"
         ],
         "paragraphs": [
-            "mobs.pond place starts native building placement. Close the console, place on valid owned ground and complete construction. An unfinished pond is not a valid pond_fish target.",
+            "mobs.pond place opens a moving footprint preview with relaxed rules: the actual pond outline, no extra margin, up to 10 metres of height variation and neighbouring regions owned by your lord. Close the console and read green READY or red BLOCKED with the reason. Left-click a valid site for one completed empty pond; blocked clicks keep the tool active. Right-click or mobs.cancel cancels. mobs.pond place preview stays read-only. Add strict to restore the old rectangle, 1-metre margin, 2-metre height limit and single-region rule. No builders are needed; stock fish separately. Existing unfinished ponds are not reinitialized.",
             "Run mobs.pond_fish 500 preview, close the console and click within 1500 game units of the completed owned pond. Repeat without preview to add ONE shoal. Existing fish are rejected rather than duplicated; use mobs.refill_resources fish preview for an existing shoal.",
             "Natural-water groups use mobs.spawn_resource fish or mobs.spawn_resource eel with suitable placement. This differs from putting fish food in a granary or creating a pond building. Fish and eel are different resource kinds; inspect mobs.resources to choose correctly.",
             "If workers ignore a new shoal, record the exact command, month/season, fishing building type, work area, water placement and behavior after reload. Worker usability and save/load of spawned shoals still require live confirmation. Removal of a pond and removal of its resource are separate operations; preview before deleting anything."

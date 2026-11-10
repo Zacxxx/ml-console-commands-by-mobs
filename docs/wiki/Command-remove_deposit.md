@@ -1,6 +1,6 @@
 # mobs.remove_deposit
 
-Guide for **0.16.0-alpha.3**, game **0.8.117**.
+Guide for **0.16.1-alpha.5**, game **0.8.117**.
 
 Click near owned underground reserves to remove their decal and colocated empty legacy markers; real surface clumps remain (mobs.resource remove); no undo.
 

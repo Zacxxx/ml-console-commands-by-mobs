@@ -1,6 +1,6 @@
 # mobs.boop
 
-Guide for **0.16.0-alpha.3**, game **0.8.117**.
+Guide for **0.16.1-alpha.5**, game **0.8.117**.
 
 Toggle the game debug Boop mode, explicitly enable/disable it or read status; uses the native pawn setting and refresh.
 

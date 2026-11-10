@@ -1,6 +1,6 @@
 # mobs.instant_build
 
-Guide for **0.16.0-alpha.3**, game **0.8.117**.
+Guide for **0.16.1-alpha.5**, game **0.8.117**.
 
 Use the game native instaBuild setting for newly placed buildings, including materials. Applies globally this session until off; existing sites use finish_constructions.
 

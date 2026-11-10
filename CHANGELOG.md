@@ -1,3 +1,36 @@
+# 0.16.1-alpha.5 — Pond and deposit placement fixes
+
+- Fishing Ponds now place already completed using the native map-initialization
+  path. No builders or finish_constructions are needed. Stock fish separately with
+  `mobs.pond_fish 500`; fish use the completed pond's native placement anchors.
+- Add a moving pond outline with a green READY / red BLOCKED label and specific
+  rejection reasons. Blocked clicks keep the preview active; right-click or
+  `mobs.cancel` cancels. `mobs.pond place preview` supports repeated read-only checks.
+- Make pond placement more permissive: check the actual polygon, remove the extra
+  clearance margin, allow 10m rather than 2m of height variation, and allow adjacent
+  regions owned by the same lord. `mobs.pond place strict` restores the old rules.
+- Fix "Mineral resource template or native size unavailable" by using the game's
+  authoritative iron/clay/salt Blueprint classes. Surface-only mineral spawning
+  uses the corrected class lookup too.
+- Add native ground-material previews, exact-centre crosshairs and mining-range rings
+  to `mobs.spawn_deposit`. Place at the clicked X/Y with terrain height snapping;
+  no random relocation. Show native 20m normal / 25m rich mining range and amounts.
+- Fix white paper-map artwork projected onto terrain after mineral placement. Hide
+  extra reserve/data-clump rendering while preserving quantities, richness, capacity,
+  collision/mining data and separate normal-map/paper-map icons and tooltips.
+  Surface stones keep their models.
+- Automatically repair earlier owned mineral imprints after loading, without deleting
+  or recreating the deposits. `mobs.refresh_resource_icons` applies the same visual
+  repair immediately; append `preview` for a read-only count.
+- Update in-game advice/tutorial, wiki examples and report-status notes. Native
+  incompatibility errors identify the failed executable layout or entry point.
+- User testing confirmed improved pond placement, native deposit placement and the
+  terrain-imprint repair. Offline checks pass and all 49 native entry guards match
+  the supported game. Extended mining, harvesting and save/reload checks remain open.
+
+Restart the game after upgrading native helpers. Preserve Native/State and custom
+Commands files. Target remains Manor Lords 0.8.117; this is an alpha release.
+
 # 0.16.0-alpha.3 — Aquatic repair, click-placed wildlife and population
 
 - Add `mobs.repair_fishing [eel|fish] [preview]` to repair native aquatic identity,

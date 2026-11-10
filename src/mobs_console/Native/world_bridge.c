@@ -77,6 +77,10 @@ static Byte *properties(Byte *settings,int kind) {
     }
     return NULL;
 }
+static Byte *resource_template(Byte *engine,Byte *props,int kind) {
+    return (Byte *)world_mineral_template(kind,(uintptr_t)PTR(engine,0x8a8),
+        (uintptr_t)PTR(engine,0x8b0),(uintptr_t)PTR(engine,0x8b8),(uintptr_t)PTR(props,0x30));
+}
 static void destroy(Byte *actor) { FN(0x34bf200,int(*)(Byte *,int,int))(actor,0,1); }
 static int sync_resource_hud(Byte *engine,Byte *pawn,int preview,int *before,int *after) {
     Array *nodes=(Array *)(engine+0x6e8);
@@ -110,6 +114,12 @@ static int sync_resource_view(Byte *node,Byte *pawn) {
     /* A new node did not receive earlier paper-map view broadcasts. Apply the
      * current view to both decals and all clump meshes through the game handler. */
     FN(0x4cd4390,void(*)(Byte *,int))(node,pawn[0xb20]!=0);
+    for(int i=0;i<clumps->count;i++) {
+        Byte *res=((Byte **)clumps->data)[i];
+        int item=INT(res,0x30c);
+        if(item==14||item==145||item==146)
+            FN(0x37a59f0,void(*)(Byte *,int,int))(PTR(res,0x2a8),1,1);
+    }
     return 1;
 }
 static Byte *spawn_node(Byte *engine,int kind,Vec pos,int rich,Array *clumps) {
@@ -193,6 +203,29 @@ static int instant_build(Byte *engine,int wanted,int preview,FILE *out) {
         preview && wanted!=2?"Preview: would set ":"",wanted==2?(found?"on":"off"):(wanted?"on":"off"));
     return 1;
 }
+typedef struct {
+    Byte *engine,*pawn,*region;
+    Vec origin;
+    int strict;
+    const char *error;
+} PondProbe;
+static int pond_probe(double x,double y,double *height,void *context) {
+    PondProbe *probe=context;
+    Vec at=probe->origin;at.x+=x;at.y+=y;
+    struct { float height; Byte valid,padding[3]; } ground={0};
+    FN(0x2d48ac0,void *(*)(Byte *,void *,Vec *,int))(PTR(probe->engine,0x5b8),&ground,&at,2);
+    probe->error="Pond footprint leaves valid terrain; move away from the map edge";
+    if(ground.valid!=1||!isfinite(ground.height)) return 0;
+    at.z=ground.height;
+    if(!finite_vec(at)) return 0;
+    Byte *region=FN(0x4cc9ab0,Byte *(*)(Byte *,Vec *,int))(probe->engine,&at,0);
+    probe->error=probe->strict?"Strict pond clearance crosses this region border; omit strict to allow neighbouring owned land":
+        "Pond footprint reaches land you do not own; keep the outline on owned land";
+    if(!object(region,0x358)||PTR(region,0x350)!=probe->pawn||(probe->strict&&region!=probe->region)) return 0;
+    probe->error="Pond footprint overlaps a native navigation/building blocker; move the outline clear of it";
+    if(FN(0x4c8e610,Byte(*)(Byte *,Vec *))(probe->engine,&at)) return 0;
+    *height=at.z;return 1;
+}
 __declspec(dllexport) int mobs_world_run(void *unused) {
     (void)unused;
     char path[MAX_PATH],request[MAX_PATH],response[MAX_PATH];
@@ -201,19 +234,28 @@ __declspec(dllexport) int mobs_world_run(void *unused) {
     FILE *in=fopen(request,"r"),*out=fopen(response,"w");if(!out) { if(in) fclose(in);return 0; }
     unsigned long long ea=0,pa=0,ra=0,ta=0;
     int mode=0,kind=0,amount=0,count=0,rich=0,preview=1;Vec pos={0};
+    char error_detail[192];
     const char *error="Invalid world request";
     if(!in || fscanf(in,"MOBS_WORLD_1 %llu %llu %llu %d %d %d %d %d %d %lf %lf %lf %llu",
         &ea,&pa,&ra,&mode,&kind,&amount,&count,&rich,&preview,&pos.x,&pos.y,&pos.z,&ta)!=13 ||
-        mode<1||mode>14||(!supported(kind)&&kind!=0&&!(mode==12&&(kind==4||kind==10)))||amount<0||amount>1000000||count<0||count>64||rich<0||rich>2||
+        mode<1||mode>15||(!supported(kind)&&kind!=0&&!(mode==12&&(kind==4||kind==10)))||amount<0||amount>1000000||count<0||count>64||rich<0||rich>2||
         preview<0||preview>1||!finite_vec(pos)) goto fail;
     base=(Byte *)GetModuleHandleA(NULL);
     IMAGE_DOS_HEADER *dos=(IMAGE_DOS_HEADER *)base;
     IMAGE_NT_HEADERS64 *pe=(IMAGE_NT_HEADERS64 *)(base+dos->e_lfanew);
     error="Unsupported game binary; world edit refused";
-    if(pe->FileHeader.TimeDateStamp!=0x6836c1ba||pe->OptionalHeader.SizeOfImage!=0x9dfd000) goto fail;
+    if(pe->FileHeader.TimeDateStamp!=0x6836c1ba||pe->OptionalHeader.SizeOfImage!=0x9dfd000) {
+        snprintf(error_detail,sizeof(error_detail),"Unsupported game binary (timestamp %08lx, image %08lx); expected 6836c1ba/09dfd000; world edit refused",
+            (unsigned long)pe->FileHeader.TimeDateStamp,(unsigned long)pe->OptionalHeader.SizeOfImage);
+        error=error_detail;goto fail;
+    }
     for(size_t i=0;i<sizeof(WORLD_SIGNATURES)/sizeof(WORLD_SIGNATURES[0]);i++) {
         const WorldSignature *signature=WORLD_SIGNATURES+i;
-        if(memcmp(base+signature->rva,signature->bytes,sizeof(signature->bytes))) goto fail;
+        if(memcmp(base+signature->rva,signature->bytes,sizeof(signature->bytes))) {
+            snprintf(error_detail,sizeof(error_detail),"Unsupported game binary: native entry +0x%lx differs (different executable or another mod hook); world edit refused",
+                (unsigned long)signature->rva);
+            error=error_detail;goto fail;
+        }
     }
     Byte *engine=(Byte *)(uintptr_t)ea,*pawn=(Byte *)(uintptr_t)pa,*region=(Byte *)(uintptr_t)ra;
     error="Invalid simulation or player";
@@ -230,6 +272,55 @@ __declspec(dllexport) int mobs_world_run(void *unused) {
     error=mode==8?"Bandit camps require an unclaimed region":"Click inside a region owned by your lord";
     if(!object(region,0xcd0)||(mode==8?PTR(region,0x350)!=NULL:PTR(region,0x350)!=pawn)||
         (mode!=14&&FN(0x4cc9ab0,Byte *(*)(Byte *,Vec *,int))(engine,&pos,0)!=region)) goto fail;
+    if(mode==15) {
+        /* Fish resource generation at 0x4ce3fcf creates type 39, marks it
+         * constructed BEFORE region registration and initial SetupBuilding.
+         * Do not rerun SetupBuilding on an existing construction site. */
+        error="Pond terrain/registration data unavailable; nothing changed";
+        if(kind||rich>1||amount||ta||count!=1||!object(PTR(engine,0x930),0x30)||
+            !array((Array *)(engine+0x508),100000,8)||!array((Array *)(region+0x658),100000,8)||
+            !readable(PTR(engine,0x2c0),0x450)||!object(PTR(engine,0x5b8),0x2b0)) goto fail;
+        Byte *stats=FN(0x4cc34c0,Byte *(*)(int))(39);
+        error="Native Fishing Pond bounds unavailable; nothing changed";
+        if(!readable(stats,0xe0)) goto fail;
+        /* rich is unused by pond placement: 0=relaxed default, 1=legacy strict.
+         * Both preview and allocation use this same read-only plan. */
+        Array *shape=(Array *)(stats+0xd0);
+        if(!array(shape,256,2*sizeof(double))||shape->count<3) goto fail;
+        PondProbe probe={engine,pawn,region,pos,rich==1,"Pond terrain check failed"};
+        double centre_height=0,spread=0;
+        int plan=world_pond_plan(shape->data,shape->count,probe.strict,pond_probe,&probe,&centre_height,&spread);
+        if(plan==-1) { error=probe.error;goto fail; }
+        if(plan==-2) {
+            snprintf(error_detail,sizeof(error_detail),"Pond terrain height variation %.1fm exceeds %s limit %.0fm; move to gentler terrain%s",
+                spread/100,probe.strict?"strict":"relaxed",probe.strict?2.0:10.0,probe.strict?" or omit strict":"");
+            error=error_detail;goto fail;
+        }
+        if(plan!=1) goto fail;
+        pos.z=centre_height;
+        if(preview) {
+            fprintf(out,"OK Preview: completed empty Fishing Pond at %.0f %.0f. %s footprint checks passed; height variation %.1fm (limit %.0fm). Nothing changed.\n",
+                pos.x,pos.y,probe.strict?"Strict rectangle":"Relaxed actual pond outline",spread/100,probe.strict?2.0:10.0);
+            goto finish;
+        }
+        Vec rotation={0};
+        Byte *pond=FN(0x4ca1bb0,Byte *(*)(Byte *,int,Vec *,Vec *))(engine,39,&pos,&rotation);
+        error="Native pond allocation failed; inspect the placement before retrying";
+        if(!object(pond,0xc28)||PTR(pond,0x2e8)!=engine||INT(pond,0x3b8)!=39) goto fail;
+        pond[0x3c1]=1;
+        FN(0x4d39b40,void(*)(Byte *,Byte *))(pond,NULL);
+        error="Pond created but owner/region registration failed; do not repeat placement blindly";
+        if(PTR(pond,0x2c8)!=region||PTR(pond,0x2e0)!=pawn||
+            !registered((Array *)(engine+0x508),pond)||!registered((Array *)(region+0x658),pond)) goto fail;
+        FN(0x4d1a650,void(*)(Byte *))(pond);
+        error="Pond created but geometry initialization is incomplete; do not repeat placement blindly";
+        Array *anchors=(Array *)(pond+0xb58),*border=(Array *)(pond+0x6b8);
+        if(!pond[0x3c1]||!array(anchors,10000,sizeof(Transform))||anchors->count<1||
+            !array(border,10000,sizeof(Vec))||border->count<3) goto fail;
+        FN(0x4d37620,void(*)(Byte *,Array *))(pond,border);
+        fprintf(out,"OK Created completed Fishing Pond %d at %.0f %.0f using native map initialization; no builders required. Empty pond: use mobs.pond_fish 500 and click near it to stock fish. No undo.\n",
+            INT(pond,0x3e0),pos.x,pos.y);goto finish;
+    }
     if(mode==14) {
         /* Explicit resident creation bypasses the scheduling/approval gates in
          * growPopulation; it never calls the daily emigration/age update loop. */
@@ -394,10 +485,10 @@ __declspec(dllexport) int mobs_world_run(void *unused) {
     }
     if(mode==1||mode==6) {
         error="Resource template or capacity unavailable";
-        if(!props||!supported(kind)||!object(PTR(props,0x30),0x40)||count<1) goto fail;
+        if(!props||!supported(kind)||!object(resource_template(engine,props,kind),0x40)||count<1) goto fail;
         int tag_added=0;
         error="Region aquatic availability tags unavailable; nothing changed";
-        if(mode==1&&(kind==5||kind==11)&&!ensure_region_kind(region,kind,1,&tag_added)) goto fail;
+        if((mode==1||mode==6)&&(kind==5||kind==11)&&!ensure_region_kind(region,kind,1,&tag_added)) goto fail;
         int capacity=amount?amount:INT(props,rich?0x18:0x10);
         if(capacity<1||capacity>1000000||INT(props,4)<1||INT(props,4)>10000) goto fail;
         double scale=0;
@@ -405,10 +496,22 @@ __declspec(dllexport) int mobs_world_run(void *unused) {
         if(!world_resource_scale(*(double *)(props+0x38),*(double *)(props+0x40),&scale)) goto fail;
         Byte *pond=(Byte *)(uintptr_t)ta;
         Array *pond_resources=NULL;
+        Transform pond_transform={0};
         if(mode==6) {
             error="Pond changed or already has a fish shoal; use mobs.refill_resources fish";
-            if(!object(pond,0x3d0)||PTR(pond,0x2c8)!=region||PTR(pond,0x2e8)!=engine) goto fail;
+            if(count!=1||kind!=5||!object(pond,0xb68)||INT(pond,0x3b8)!=39||!pond[0x3c1]||
+                PTR(pond,0x2c8)!=region||PTR(pond,0x2e8)!=engine||PTR(pond,0x2e0)!=pawn) goto fail;
             pond_resources=(Array *)(pond+0x308);if(!array(pond_resources,10000,8)) goto fail;
+            Array *anchors=(Array *)(pond+0xb58);
+            error="Completed pond has no native fish placement anchors; remove/recreate the old unfinished pond";
+            if(!array(anchors,10000,sizeof(Transform))||anchors->count<1) goto fail;
+            memcpy(&pond_transform,anchors->data,sizeof(pond_transform));
+            memcpy(&pos,pond_transform.pos,sizeof(pos));
+            if(!finite_vec(pos)) goto fail;
+            for(int i=0;i<4;i++) if(!isfinite(pond_transform.q[i])||fabs(pond_transform.q[i])>1.01) goto fail;
+            for(int i=0;i<3;i++) if(!isfinite(pond_transform.scale[i])||pond_transform.scale[i]<=0||pond_transform.scale[i]>10000) goto fail;
+            scale=pond_transform.scale[0];
+            error="Pond already has a fish shoal; use mobs.refill_resources fish";
             for(int i=0;i<resources->count;i++) {
                 Byte *res=((Byte **)resources->data)[i];
                 if(object(res,0x318)&&PTR(res,0x2d8)==pond&&INT(res,0x30c)==INT(props,4)) goto fail;
@@ -420,7 +523,8 @@ __declspec(dllexport) int mobs_world_run(void *unused) {
             if(count>1) { double angle=i*2.399963229728653;double radius=160.0*sqrt((double)i);places[i].x+=cos(angle)*radius;places[i].y+=sin(angle)*radius; }
             error="Resource cluster crosses the region boundary";
             if(FN(0x4cc9ab0,Byte *(*)(Byte *,Vec *,int))(engine,&places[i],0)!=region) goto fail;
-            if(kind==5||kind==11) places[i].z=FN(0x4cc6d50,float(*)(Byte *,Vec *))(engine,&places[i]);
+            if(pond_resources) { /* Map generation uses the pond's own transform, not ground height. */ }
+            else if(kind==5||kind==11) places[i].z=FN(0x4cc6d50,float(*)(Byte *,Vec *))(engine,&places[i]);
             else places[i].z=FN(0x4cee3d0,float(*)(Byte *,Vec *,int,int,int))(engine,&places[i],0,0,-1);
             error="Terrain height invalid";if(!finite_vec(places[i])) goto fail;
         }
@@ -435,8 +539,8 @@ __declspec(dllexport) int mobs_world_run(void *unused) {
         }
         Byte *created[64]={0};Array clumps={created,0,64};
         for(int i=0;i<count;i++) {
-            Transform t=transform(places[i]);Byte *template=PTR(props,0x30);
-            t.scale[0]=t.scale[1]=t.scale[2]=scale;
+            Transform t=pond_resources?pond_transform:transform(places[i]);Byte *template=resource_template(engine,props,kind);
+            if(!pond_resources) t.scale[0]=t.scale[1]=t.scale[2]=scale;
             Byte *res=FN(0x4ce5780,Byte *(*)(Byte *,Byte *,Transform *,Byte **,int))(engine,region,&t,&template,0);
             if(!object(res,0x330)) break;
             /* Native aquatic generation preserves the spawned Blueprint's
@@ -456,7 +560,7 @@ __declspec(dllexport) int mobs_world_run(void *unused) {
         }
         if(pond_resources) { PTR(created[0],0x2d8)=pond;append_pointer(pond_resources,created[0]); }
         error="Aquatic node created but region availability update failed; do not repeat placement";
-        if(mode==1&&(kind==5||kind==11)&&!ensure_region_kind(region,kind,0,&tag_added)) goto fail;
+        if((mode==1||mode==6)&&(kind==5||kind==11)&&!ensure_region_kind(region,kind,0,&tag_added)) goto fail;
         int view_ready=sync_resource_view(node,pawn);
         int before=0,after=0,hud_ready=sync_resource_hud(engine,pawn,0,&before,&after);
         fprintf(out,"OK Created %d/%d registered clump(s), %d units each, native size %.3g. %s %s No undo.\n",clumps.count,count,capacity,scale,
@@ -608,37 +712,82 @@ __declspec(dllexport) int mobs_world_run(void *unused) {
         error="Choose iron, clay or salt and a positive amount";
         if((kind!=1&&kind!=2&&kind!=3)||amount<1) goto fail;
         double scale=0;
-        error="Mineral resource template or native size unavailable";
-        if(!props||!object(PTR(props,0x30),0x40)||!world_resource_scale(*(double *)(props+0x38),*(double *)(props+0x40),&scale)) goto fail;
-        if(preview) { fprintf(out,"OK Preview: create %d surface units plus %d underground units and a map node; nothing changed.\n",amount,amount);goto finish; }
+        error="Native mineral properties or size unavailable; nothing changed";
+        if(!props||rich>1||count!=1||ta||!world_resource_scale(*(double *)(props+0x38),*(double *)(props+0x40),&scale)) goto fail;
+        /* 0.8.117 ResourceNodeProperties.ResourceTemplate is NULL for minerals.
+         * Native getResourceBP routes Iron/Clay/Salt to engine +8a8/+8b0/+8b8. */
+        Byte *template=resource_template(engine,props,kind);
+        error="Native iron/clay/salt Blueprint class unavailable; load a settlement and retry";
+        if(!object(template,0x118)) goto fail;
+        int item=kind==1?145:kind==2?14:146;
+        error="Native mineral item identity differs; nothing changed";
+        if(INT(props,4)!=item) goto fail;
+        /* Resolve the game's resource name before allocating either layer. Some
+         * Blueprint identities are initialized at spawn, not on their class CDO. */
+        Array resource_name={0};uint64_t name=0;
+        FN(0x4c76400,Array *(*)(Array *,int))(&resource_name,kind);
+        if(array(&resource_name,256,2)&&resource_name.count>1)
+            FN(0x1251260,uint64_t *(*)(uint64_t *,const wchar_t *,int))(&name,resource_name.data,1);
+        if(resource_name.data) FN(0x1128900,void(*)(void *))(resource_name.data);
+        error="Native mineral resource name unavailable; nothing changed";
+        if(!(uint32_t)name) goto fail;
+        float radius=*(float *)(settings+(rich?0x40:0x3c));
+        Byte *material=PTR(engine,kind==1?0x7d0:kind==2?0x7c8:0x7d8);
+        error="Native deposit mining radius or ground material unavailable; nothing changed";
+        if(!isfinite(radius)||radius<100||radius>=15000||!object(material,0x28)) goto fail;
+        error="Deposit terrain/navigation unavailable; nothing changed";
+        if(!readable(PTR(engine,0x2c0),0x450)||!object(PTR(engine,0x5b8),0x2b0)) goto fail;
+        struct { float height; Byte valid,padding[3]; } ground={0};
+        FN(0x2d48ac0,void *(*)(Byte *,void *,Vec *,int))(PTR(engine,0x5b8),&ground,&pos,2);
+        error="Click valid land inside your region; no deposit was created";
+        if(ground.valid!=1||!isfinite(ground.height)) goto fail;
+        pos.z=ground.height;
+        if(!finite_vec(pos)||FN(0x4cc9ab0,Byte *(*)(Byte *,Vec *,int))(engine,&pos,0)!=region) goto fail;
+        error="Deposit centre is on a native building/navigation blocker; move the crosshair onto clear ground";
+        if(FN(0x4c8e610,Byte(*)(Byte *,Vec *))(engine,&pos)) goto fail;
+        error="An underground deposit already occupies this centre; move the crosshair or edit the existing deposit";
+        for(int i=0;i<deposits->count;i++) {
+            Byte *existing=((Byte **)deposits->data)[i];Vec here;
+            if(object(existing,0x2d8)&&position(existing,&here)&&distance(pos,here)<100.0*100.0) goto fail;
+        }
+        int tag_added=0;
+        error="Region mineral availability tags unavailable; nothing changed";
+        if(!ensure_region_kind(region,kind,1,&tag_added)) goto fail;
+        if(preview) {
+            fprintf(out,"OK Preview: %s%s deposit centred at %.0f %.0f; %.0fm native mining radius, %d surface + %d underground units. No random relocation. Nothing changed.\n",
+                rich?"rich ":"",resource_kind_name(kind),pos.x,pos.y,radius/100,amount,amount);goto finish;
+        }
         Good good={0};good.type=kind==1?145:kind==2?14:146;good.amount=amount;
         Transform t=transform(pos);
         Byte *decal=FN(0x4ce2b30,Byte *(*)(Byte *,Good *,Transform *,int,int,int))(engine,&good,&t,1,-1,rich);
         error="Game refused underground deposit";if(!object(decal,0x2d8)||!registered(deposits,decal)) goto fail;
+        /* Native legacy DepositDecal uses the paper-map resource icon material.
+         * Keep its reserves/spatial registration, suppress its terrain projection.
+         * The ResourceNode owns the normal HUD and paper-map icons separately. */
+        error="Deposit reserve created but render component unavailable; inspect before retrying";
+        if(!object(PTR(decal,0x2a8),0x278)) goto fail;
+        FN(0x37a59f0,void(*)(Byte *,int,int))(PTR(decal,0x2a8),1,1);
         /* A real clump supplies the surface amount and survives save/load. The
          * separate underground reserve is for deep mining, as in natural nodes. */
         pos.z=t.pos[2];t=transform(pos);t.scale[0]=t.scale[1]=t.scale[2]=scale;
-        Byte *template=PTR(props,0x30);
         Byte *res=FN(0x4ce5780,Byte *(*)(Byte *,Byte *,Transform *,Byte **,int))(engine,region,&t,&template,0);
         Byte *node=NULL;
         if(object(res,0x330)) {
-            Array resource_name={0};uint64_t name=0;
-            FN(0x4c76400,Array *(*)(Array *,int))(&resource_name,kind);
-            if(array(&resource_name,256,2)&&resource_name.count>1) {
-                FN(0x1251260,uint64_t *(*)(uint64_t *,const wchar_t *,int))(&name,resource_name.data,1);
-                *(uint64_t *)(res+0x2f0)=name;INT(res,0x308)=amount;INT(res,0x310)=amount;INT(res,0x30c)=INT(props,4);
-                Array clumps={&res,1,1};node=spawn_node(engine,kind,pos,rich,&clumps);
-            }
-            if(resource_name.data) FN(0x1128900,void(*)(void *))(resource_name.data);
+            /* Keep the native Blueprint's initialized name when present. */
+            if(!*(uint32_t *)(res+0x2f0)) *(uint64_t *)(res+0x2f0)=name;
+            INT(res,0x30c)=item;INT(res,0x308)=amount;INT(res,0x310)=amount;
+            Array clumps={&res,1,1};node=spawn_node(engine,kind,pos,rich,&clumps);
             if(!object(node,0x318)) FN(0x4cacc00,void(*)(Byte *,Byte *))(engine,res);
         }
         if(!object(node,0x318)) { /* Roll back the new decal if its map node failed. */
             Byte *tree=PTR(region,0x738);if(tree) FN(0x4ba40c0,void(*)(Byte *,Byte *))(tree,decal);
             erase_pointer(deposits,decal);destroy(decal);error="Map node creation failed; new underground deposit removed";goto fail;
         }
+        int tagged=ensure_region_kind(region,kind,0,&tag_added);
         sync_resource_view(node,pawn);
         int before=0,after=0,hud_ready=sync_resource_hud(engine,pawn,0,&before,&after);
-        fprintf(out,"OK Created mineral group: %d surface units plus %d underground units, with ground-facing decal and map node. %s No undo.\n",amount,amount,
+        if(!tagged) { error="Mineral group created but availability tag update failed; inspect before retrying";goto fail; }
+        fprintf(out,"OK Created mineral group: %d surface units plus %d underground units, at clicked centre %.0f %.0f, with hidden reserve geometry, %.0fm mining radius and map node. %s No undo.\n",amount,amount,pos.x,pos.y,radius/100,
             hud_ready?"HUD icons/hover list synchronized.":"HUD refresh unavailable; use mobs.refresh_resource_icons.");goto finish;
     }
     if(mode==5) {

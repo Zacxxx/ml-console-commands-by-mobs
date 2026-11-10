@@ -1,6 +1,6 @@
 # mobs.repair_fishing
 
-Guide for **0.16.0-alpha.3**, game **0.8.117**.
+Guide for **0.16.1-alpha.5**, game **0.8.117**.
 
 Click near an owned eel/fish shoal to restore native template identity, seasonal flag, height and registration. Preserves amounts/capacity; excludes ponds. Default eel; range 2500; preview available. Candidate: worker/save-load validation pending.
 

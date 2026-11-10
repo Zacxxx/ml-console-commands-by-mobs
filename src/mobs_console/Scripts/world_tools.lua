@@ -60,8 +60,14 @@ function M.new(get_pawn,arm,api)
         register('mobs.refresh_resource_icons','mobs.refresh_resource_icons [preview]',function(args)
             local args,preview=access.preview(args)
             assert(#args==0,'Usage: mobs.refresh_resource_icons [preview]')
-            return api.run(get_pawn(),{mode=11,preview=preview})
-        end,'Refresh the game HUD resource-node list for normal-map icons and paper-map hover details. No click required; resource quantities unchanged; preview available.')
+            local result=api.run(get_pawn(),{mode=11,preview=preview})
+            if api.repair_deposit_visuals then
+                local count=api.repair_deposit_visuals(preview)
+                result=result .. string.format(' Mineral terrain visuals: %s %d actor(s); reserves and stone models unchanged.',
+                    preview and 'would hide' or 'hid',count)
+            end
+            return result
+        end,'Refresh normal-map icons and paper-map hover data, and hide leaked owned mineral terrain artwork while retaining reserves and surface stones. No click; quantities unchanged; preview available.')
         register('mobs.spawn_resource','mobs.spawn_resource <kind> [amount per clump] [1..64 clumps] [rich] [preview]',function(args)
             local args,preview=access.preview(args)
             local rich=args[#args]=='rich'
@@ -86,8 +92,10 @@ function M.new(get_pawn,arm,api)
             local rich=args[#args]=='rich';if rich then table.remove(args) end
             assert(#args==2 and (args[1]=='iron' or args[1]=='clay' or args[1]=='salt'),
                 'Usage: mobs.spawn_deposit <iron|clay|salt> <amount> [rich] [preview]')
-            return click('Underground deposit placement',{mode=4,kind=kind(args[1]),amount=core.integer(args[2],1,1000000),rich=rich and 1 or 0,preview=preview})
-        end,'Click to create iron/clay/salt with the requested amount in one surface clump PLUS the same underground reserves; ground-facing decal and map node; maximum one million per layer; no undo.')
+            local request={mode=4,kind=kind(args[1]),amount=core.integer(args[2],1,1000000),rich=rich and 1 or 0,preview=preview}
+            if api.place_deposit then return api.place_deposit(get_pawn(),request) end
+            return click('Underground deposit placement',request)
+        end,'Preview native iron/clay/salt ground material, mining-radius ring and exact centre; left-click READY terrain to create one surface clump plus equal underground reserves. Blocked clicks keep preview; right-click cancels. Optional read-only preview; maximum one million per layer; no undo.')
         register('mobs.remove_deposit','mobs.remove_deposit [iron|clay|salt|all] [preview]',function(args)
             local args,preview=access.preview(args)
             assert(#args<=1 and (not args[1] or args[1]=='all' or args[1]=='iron' or args[1]=='clay' or args[1]=='salt'),

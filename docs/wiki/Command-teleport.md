@@ -1,6 +1,6 @@
 # mobs.teleport
 
-Guide for **0.16.0-alpha.3**, game **0.8.117**.
+Guide for **0.16.1-alpha.5**, game **0.8.117**.
 
 Click to relocate an owned unit or selected squads, preserving formation offsets; preview supported; existing orders remain active.
 

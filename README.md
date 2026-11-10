@@ -5,9 +5,9 @@
 Console tools for **Manor Lords 0.8.117**: construction, Supplies piles, resources,
 trees, regional perk cards and settlement management, with searchable command help.
 
-**0.16.0-alpha.3 · alpha · 96 base command names/aliases + detailed advice shortcuts · MIT**
+**0.16.1-alpha.5 · alpha · 96 base command names/aliases + detailed advice shortcuts · MIT**
 
-[Download the alpha release](https://github.com/Zacxxx/ml-console-commands-by-mobs/releases/tag/v0.16.0-alpha.3) ·
+[Download the alpha release](https://github.com/Zacxxx/ml-console-commands-by-mobs/releases/tag/v0.16.1-alpha.5) ·
 [Wiki and full tutorial](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki) ·
 [All item IDs](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Item-IDs) ·
 [Report audit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Bug-report-status) ·

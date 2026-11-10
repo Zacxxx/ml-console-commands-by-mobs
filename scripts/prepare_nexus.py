@@ -120,7 +120,7 @@ def source_files():
         if path.is_file() and path.suffix in {'.py', '.lua', '.c'} and 'patch_archive' not in path.parts:
             files.append((path.relative_to(ROOT).as_posix(), path.read_bytes()))
     files.append(('docs/command_parity.md', (ROOT / 'docs/command_parity.md').read_bytes()))
-    for guide in ['aquatic_wildlife_testing.md', 'population_testing.md']:
+    for guide in ['aquatic_wildlife_testing.md', 'population_testing.md', 'pond_testing.md', 'deposit_testing.md']:
         candidate_guide = ROOT / 'docs' / guide
         if candidate_guide.exists():
             files.append(('docs/' + guide, candidate_guide.read_bytes()))

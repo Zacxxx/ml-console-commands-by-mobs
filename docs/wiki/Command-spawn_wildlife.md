@@ -1,6 +1,6 @@
 # mobs.spawn_wildlife
 
-Guide for **0.16.0-alpha.3**, game **0.8.117**.
+Guide for **0.16.1-alpha.5**, game **0.8.117**.
 
 Click clear owned ground to place one huntable deer/hare herd and its resource node there. Native normal/rich settings determine population; animals spread around the click. Preview available; no undo.
 

@@ -1,6 +1,6 @@
 # mobs.perk_add
 
-Guide for **0.16.0-alpha.3**, game **0.8.117**.
+Guide for **0.16.1-alpha.5**, game **0.8.117**.
 
 Activate an additional tier 1/2 card without replacing primary cards; includes its penalties. Use mobs.perks list for numbers.
 

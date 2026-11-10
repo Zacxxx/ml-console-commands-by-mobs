@@ -1,4 +1,4 @@
-# Compatibility and known limits — 0.16.0-alpha.3
+# Compatibility and known limits — 0.16.1-alpha.5
 
 - **Game target: Manor Lords 0.8.117 only.** The native helper guards target the
   Steam pre_release executable (PE timestamp 0x6836c1ba, image size 0x9dfd000).
@@ -11,6 +11,21 @@
 - **Unloading does not revert saved edits.** Economy, inventory, demolition and
   spawned-world changes can remain in a save. Not all actions support undo.
   Some batch operations can report partial completion; already completed changes remain.
+- **Mineral terrain appearance:** placed iron/clay/salt reserves and data clumps
+  are render-hidden, preserving quantities and the separate map icon/tooltip.
+  Earlier mineral imprints are hidden automatically after load; run
+  `mobs.refresh_resource_icons` for immediate repair. Surface stones stay visible.
+- **Deposit preview:** native ground material, centre crosshair and mining-range ring
+  follow the cursor. The ring is not an empty-clearance requirement. Owned centre,
+  terrain, native blockers and duplicate-centre checks apply. Mine access, display
+  and persistence of these new placements still need manual checks.
+- **Pond preview:** relaxed mode checks the actual footprint, up to 10m height
+  variation and adjoining owned regions. Add strict for the old rectangle/2m rule.
+  The ghost shows the active footprint, not the final
+  water/terrain deformation. The green/red READY/BLOCKED label is authoritative;
+  outline tint is available only if the installed engine material exposes Color.
+  User testing confirmed pond placement and the mineral visual repair; extended
+  harvesting and persistence checks remain open.
 - **Construction:** the command prepares work and supplies materials; finalization
   remains simulation-driven. Resume if paused and let workers reach the site.
 - **Piles:** remove_selected_piles deletes selected owned Supplies piles including
@@ -37,8 +52,9 @@
 ## Community report status
 
 [Full report audit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Bug-report-status).
-Selection, contextual autocomplete and deposit creation/removal fixes pass offline
-checks but still need fresh in-game reproduction and save/load confirmation.
+Offline checks pass. User testing confirmed pond placement, native mineral placement
+and mineral-imprint cleanup. Selection/autocomplete variants, extended worker
+extraction and full save/load coverage still need broader confirmation.
 The **0.16 alpha** addresses aquatic template identity/seasonality
 and missing regional availability tags; `mobs.repair_fishing` repairs existing
 shoals without refilling them. Actual catches and save/reload survival remain open
@@ -49,9 +65,10 @@ save/reload need user confirmation. `mobs.animal deer/hare` remains individual s
 
 New `spawn_deposit` creates the requested amount in a surface clump PLUS the same
 underground reserves; these are separate layers. Rich underground reserves can be
-endless under native deep-mining rules. Existing white-stripe/empty-marker placements
-are not silently rewritten. Preview `remove_deposit` to remove the old reserve/decal,
-and `resource remove` for remaining real surface clumps or orphaned empty markers.
+endless under native deep-mining rules. Existing owned mineral terrain imprints are hidden automatically after loading,
+without deleting data; `refresh_resource_icons` repairs them immediately. Removal
+is separate: preview `remove_deposit` for reserves and `resource remove` for real
+surface clumps or orphaned empty markers.
 
 ## Reporting a problem
 
@@ -72,3 +89,16 @@ Use `mobs.grow_population status` and `preview`. The number is people, not famil
 or attempts. The command does not force approval or advance time. Normal needs and
 later migration still apply. Native failure can leave a reported partial result;
 there is no undo. Actual arrivals and save/reload need user confirmation.
+
+## Completed pond placement
+
+`mobs.pond place` now directly creates a completed empty pond at your click on
+owned ground, using initial map-generation setup. Relaxed mode accepts a 10m
+height spread and checks only the actual pond shape; strict retains the old rules. There is
+a separate footprint ghost with a green/red status label, and no builder stage.
+`place preview` follows the cursor and repeated clicks only report; it creates
+no game buildings. Right-click cancels. Fish remain separate (`mobs.pond_fish 500`), using
+native pond transforms. Existing unfinished ponds are not automatically repaired.
+User testing confirmed pond placement. Actual catches and extended persistence
+checks remain open. Native unsupported-build guards
+remain active and now identify the failed timestamp/layout or entry RVA.

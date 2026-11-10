@@ -619,29 +619,35 @@
     },
     "mobs.refresh_resource_icons": {
         "target": "Current game HUD; no click or building selection.",
-        "steps": "Run preview to compare authoritative/displayed node counts, then run normally. Let the HUD tick and reopen the map if needed.",
+        "steps": "Run preview to compare node counts and count owned mineral render actors that would be hidden, then run normally. This synchronizes HUD icons/hover data and suppresses leaked underground paper-map projections and extra mineral meshes. No click required. An automatic visual repair also runs shortly after loading a settlement.",
         "examples": [
             "mobs.refresh_resource_icons preview",
             "mobs.refresh_resource_icons"
         ],
-        "notes": "Repairs the separate normal-map icon/paper-map hover list after spawned/removed resources. It does not create clumps, alter amounts, resolve worker reachability or repair old underground orientation.",
+        "notes": "Keeps the separate normal-map icons, paper-map icons and tooltips. Only rendering of owned iron/clay/salt reserve/data actors is hidden: amounts, richness, capacity, node membership and collision/mining data are unchanged. Surface stones and foreign deposits are untouched. Preview changes nothing. It does not repair worker reachability. The manual repair and automatic reload pass cover deposits made by older Mobs candidates.",
         "related": [
+            "spawn_deposit",
             "resource",
-            "spawn_resource"
+            "remove_deposit"
         ]
     },
     "mobs.spawn_deposit": {
-        "target": "Run the command, close the console, then click the intended location in an owned region. It is a one-shot tool with a five-minute expiry. mobs.cancel disarms it. Preview also requires the click, but changes nothing.",
-        "steps": "Choose iron, clay or salt, a quantity, and optional rich. Preview, then place clear owned ground. New versions create a finite surface clump AND a separate underground reserve with that quantity.",
+        "target": "Run the command, close the console and move the cursor over owned land. A native ground-material preview, centre crosshair and mining-radius ring follow the cursor. Read green READY / red BLOCKED, then left-click the centre you want. Right-click or mobs.cancel cancels; five-minute expiry. Add preview for a read-only tool that stays active across clicks.",
+        "steps": "Choose iron, clay or salt, an amount and optional rich. The tool uses the game native mineral Blueprint classes and underground-deposit factory; it keeps your click X/Y and snaps only height to terrain. The ring uses the native mining radius: 20m normal or 25m rich on the supported build. A valid click creates one finite surface clump, an equal underground reserve, registered map node and hidden data-only reserve actor. Blocked clicks keep the preview active so you can move and try again. The click is rechecked immediately before allocation. Preview-only clicks report the plan and never allocate a reserve, clump or node.",
         "examples": [
-            "mobs.spawn_deposit iron 1000 rich preview",
-            "mobs.spawn_deposit iron 1000 rich"
+            "mobs.spawn_deposit iron 1000 preview",
+            "mobs.spawn_deposit iron 1000",
+            "mobs.spawn_deposit clay 2000 rich preview",
+            "mobs.spawn_deposit clay 2000 rich",
+            "mobs.spawn_deposit salt 1500",
+            "mobs.cancel"
         ],
-        "notes": "1000 means 1000 surface units plus 1000 underground units. Rich reserves follow the native deep-mining rules and can be displayed as endless; the surface clump supplies the finite tooltip amount. Old empty markers need removal/recreation. No undo.",
+        "notes": "The screenshot error Mineral resource template or native size unavailable came from reading generic ResourceTemplate fields that are NULL for minerals on 0.8.117; the native engine owns separate Iron/Clay/Salt classes. This release uses those classes and native scale instead. 1000 means 1000 surface units plus 1000 underground units. Rich reserves follow native deep-mining rules and may display as endless. The ring indicates mining range, not a strict empty clearance circle. The centre must be on valid owned terrain and outside native blockers; centres within 1m of an existing underground deposit are refused to prevent accidental duplicates. This does not guarantee mine access on cliffs or awkward terrain. No random map-generator relocation or new custom game assets. Placement has no undo; partial native failure stops the tool. Remove underground and surface layers separately when cleaning up. User testing confirmed placement and mineral-imprint cleanup. Extended mining and save/reload checks remain open; offline checks are not gameplay proof. The placed iron/clay/salt deposit has no terrain artwork or extra ore model, matching natural deposits; only its map icon/tooltip remain. The ground material, radius and crosshair are temporary placement guides. Earlier Mobs paper-map imprints are hidden automatically after load or by refresh_resource_icons, without deleting reserves. Surface stones remain visible.",
         "related": [
             "remove_deposit",
             "resource",
-            "deposit"
+            "deposit",
+            "cancel"
         ]
     },
     "mobs.remove_deposit": {
@@ -687,13 +693,16 @@
         ]
     },
     "mobs.pond": {
-        "target": "Run the command, close the console, then click the intended location in an owned region. It is a one-shot tool with a five-minute expiry. mobs.cancel disarms it. Preview also requires the click, but changes nothing.",
-        "steps": "place starts the native Fishing Pond building tool. Close the console and place it. Let construction finish. remove arms an owned pond-removal click, with preview support.",
+        "target": "place opens a moving pond-footprint preview on owned terrain. Close the console, move the cursor and read green READY or red BLOCKED. Left-click confirms only a valid site; right-click or mobs.cancel cancels. The tool expires after five minutes. Relaxed placement is the default; add strict only to restore the old restrictive rules. remove uses a separate one-shot click.",
+        "steps": "Run mobs.pond place for relaxed placement: check the actual pond polygon, without a surrounding clearance rectangle or extra margin. Allow up to 10 metres of height variation across the footprint and crossing into neighbouring regions owned by the same lord. Valid terrain and native navigation/building blocker checks still apply. Left-click a READY site to create one completed empty pond, then stock it with pond_fish. Blocked clicks keep the tool active. mobs.pond place strict restores the full rectangle plus 1 metre, a 2-metre height limit and a single-region requirement. Add preview to either mode for repeated read-only checks; no pond is created.",
         "examples": [
             "mobs.pond place",
+            "mobs.pond place preview",
+            "mobs.pond place strict preview",
+            "mobs.pond_fish 500",
             "mobs.pond remove preview"
         ],
-        "notes": "A pond is a building, not a fish shoal. Creating one does not automatically prove fish are present. Use pond_fish on a completed pond. Removal has no undo.",
+        "notes": "The pond size is unchanged; relaxed placement stops rejecting unused corners of its bounding rectangle. Its ghost shows only the actual outline, while strict also shows the old outer clearance rectangle. The coloured READY/BLOCKED label includes specific reasons for terrain, ownership or native blockers. The outline is a footprint guide, not the final water/terrain deformation. More uneven terrain may produce rougher banks; the 10-metre limit is a placement policy, not a proven guarantee of attractive or usable shores. Both preview and apply use the same native plan and recheck the exact click. Existing unfinished ponds are not reinitialized; stock fish separately. User testing confirmed improved pond placement. Actual catches and extended persistence checks remain open.",
         "related": [
             "pond_fish",
             "finish_constructions"
@@ -701,13 +710,13 @@
     },
     "mobs.pond_fish": {
         "target": "Run the command, close the console, then click the intended location in an owned region. It is a one-shot tool with a five-minute expiry. mobs.cancel disarms it. Preview also requires the click, but changes nothing.",
-        "steps": "Finish the Fishing Pond first. Run the command, close the console and click close to that pond (within 1500 game units).",
+        "steps": "Run the command, close the console and click near a completed owned Fishing Pond (within 1500 game units). New mobs.pond place ponds are already complete. Fish use a native pond placement transform rather than the building origin.",
         "examples": [
             "mobs.pond_fish 500 preview",
             "mobs.pond_fish 500",
             "mobs.refill_resources fish preview"
         ],
-        "notes": "Adds one shoal to the nearest completed owned Fishing Pond. Existing shoals are rejected to prevent duplicates; refill existing fish instead. Worker harvesting and save/load need live confirmation. No undo.",
+        "notes": "Adds one shoal to the nearest completed owned Fishing Pond. Existing shoals are rejected to prevent duplicates; refill existing fish instead. Worker harvesting and save/load need live confirmation. No undo. 0.16.1 checks the native constructed state again at apply and uses the pond's generated fish anchor; missing anchors produce an explicit refusal.",
         "related": [
             "pond",
             "resources",

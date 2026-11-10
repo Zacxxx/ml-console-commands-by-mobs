@@ -1,7 +1,63 @@
 #include <assert.h>
 #include <math.h>
 #include "../../src/mobs_console/Native/world_plan.h"
+static int pond_samples=0,pond_corner_block=0,pond_edge_block=0;
+static double pond_gradient=0;
+static int pond_probe(double x,double y,double *height,void *context) {
+    (void)context;
+    pond_samples++;
+    if(pond_corner_block && x>70 && y>70) return 0;
+    if(pond_edge_block && fabs(x-250)<1 && fabs(y-1000)<1) return 0;
+    *height=pond_gradient*x;
+    return 1;
+}
 int main(void) {
+    /* Regression: minerals have NULL generic templates on 0.8.117. */
+    assert(world_mineral_template(2,11,12,13,0)==11);
+    assert(world_mineral_template(3,11,12,13,0)==12);
+    assert(world_mineral_template(1,11,12,13,0)==13);
+    assert(world_mineral_template(2,11,12,13,99)==11);
+    assert(world_mineral_template(2,0,12,13,99)==99);
+    assert(world_mineral_template(6,11,12,13,99)==99);
+
+    /* Diamond: its empty rectangular corners must not block relaxed placement. */
+    double pond_shape[]={0,-100,100,0,0,100,-100,0};
+    double centre=0,span=0;
+    assert(world_pond_contains(pond_shape,4,0,0));
+    assert(world_pond_contains(pond_shape,4,50,50));
+    assert(!world_pond_contains(pond_shape,4,80,80));
+    pond_corner_block=1;
+    assert(world_pond_plan(pond_shape,4,0,pond_probe,NULL,&centre,&span)==1);
+    assert(world_pond_plan(pond_shape,4,1,pond_probe,NULL,&centre,&span)==-1);
+    pond_corner_block=0; pond_gradient=3;
+    assert(world_pond_plan(pond_shape,4,0,pond_probe,NULL,&centre,&span)==1 && span==600);
+    assert(world_pond_plan(pond_shape,4,1,pond_probe,NULL,&centre,&span)==-2);
+    pond_gradient=6;
+    assert(world_pond_plan(pond_shape,4,0,pond_probe,NULL,&centre,&span)==-2);
+    pond_gradient=0; pond_edge_block=1;
+    double long_edge[]={-1000,-1000,1000,-1000,1000,1000,-1000,1000};
+    /* Blocker between 5m interior grid points is still caught on the outline. */
+    assert(world_pond_plan(long_edge,4,0,pond_probe,NULL,&centre,&span)==-1);
+    pond_edge_block=0;
+    assert(world_pond_plan(long_edge,4,0,pond_probe,NULL,&centre,&span)==1);
+    pond_samples=0;
+    double bad_shape[]={NAN,0,100,0,0,100};
+    assert(world_pond_plan(bad_shape,3,0,pond_probe,NULL,&centre,&span)==0 && pond_samples==0);
+    double degenerate[]={0,0,100,0,200,0};
+    assert(world_pond_plan(degenerate,3,0,pond_probe,NULL,&centre,&span)==0);
+    assert(world_pond_plan(pond_shape,4,2,pond_probe,NULL,&centre,&span)==0);
+
+    int nx=0,ny=0;
+    assert(world_pond_grid(1000,750,&nx,&ny));
+    assert(nx%2==0 && ny%2==0 && 2000.0/nx<=500 && 1500.0/ny<=500);
+    assert(world_pond_grid(1,1,&nx,&ny) && nx==2 && ny==2);
+    assert(world_pond_grid(16000,16000,&nx,&ny) && nx==64 && ny==64);
+    assert(!world_pond_grid(0,100,&nx,&ny));
+    assert(!world_pond_grid(-1,100,&nx,&ny));
+    assert(!world_pond_grid(INFINITY,100,&nx,&ny));
+    assert(!world_pond_grid(100,NAN,&nx,&ny));
+    assert(!world_pond_grid(16001,100,&nx,&ny));
+    assert(!world_pond_grid(100,100,NULL,&ny));
     int population=0;
     assert(world_wildlife_population(10,20,&population) && population==15);
     assert(world_wildlife_population(1,1,&population) && population==1);

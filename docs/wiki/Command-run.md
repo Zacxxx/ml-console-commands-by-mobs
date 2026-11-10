@@ -1,6 +1,6 @@
 # mobs.run
 
-Guide for **0.16.0-alpha.3**, game **0.8.117**.
+Guide for **0.16.1-alpha.5**, game **0.8.117**.
 
 Run up to 100 Mobs commands from a local Commands/*.txt file; no scripts, traversal or recursion; preview lists commands; stop on first error.
 

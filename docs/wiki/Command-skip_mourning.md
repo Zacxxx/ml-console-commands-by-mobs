@@ -1,6 +1,6 @@
 # mobs.skip_mourning
 
-Guide for **0.16.0-alpha.3**, game **0.8.117**.
+Guide for **0.16.1-alpha.5**, game **0.8.117**.
 
 Clear active mourning timers on owned buildings in the target region; preview lists the affected count.
 

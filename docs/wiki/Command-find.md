@@ -1,6 +1,6 @@
 # mobs.find
 
-Guide for **0.16.0-alpha.3**, game **0.8.117**.
+Guide for **0.16.1-alpha.5**, game **0.8.117**.
 
 Ranked multiword and typo-tolerant command search; read only.
 

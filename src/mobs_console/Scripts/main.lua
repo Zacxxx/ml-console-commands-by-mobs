@@ -19,7 +19,7 @@ local command_files = require('command_files')
 local categories = require('command_categories')
 local undo = {}
 local commands = {}
-local VERSION = "0.16.0-alpha.3"
+local VERSION = "0.16.1-alpha.5"
 
 local function valid(object)
     local ok, result = pcall(function() return object and object:IsValid() end)
@@ -66,8 +66,11 @@ local function notify(message)
     output(nil,message)
     pcall(function() helpers.GetPlayerController():ClientMessage('[Mobs] ' .. message,FName('None'),8.0) end)
 end
+local pond_preview = require('pond_preview').new(context,notify)
+local deposit_preview = require('deposit_preview').new(context,notify)
+local deposit_visuals = require('deposit_visuals').new(context)
 local parity = parity_tools.new(context,region_context,town.region_label,notify)
-parity.before_arm=function() delivery.cancel(); forest.cancel() end
+parity.before_arm=function() delivery.cancel(); forest.cancel(); pond_preview.cancel(); deposit_preview.cancel() end
 
 local underground = require('deposit_tools').new(context,parity.arm)
 
@@ -163,6 +166,7 @@ register("mobs.drop", "mobs.drop [item|id amount]", function(args)
     assert(#args == 0 or #args == 2, "Usage: mobs.drop <item|id> <amount>, or mobs.drop for status")
     if #args == 0 then return delivery.status() end
     forest.cancel()
+    pond_preview.cancel(); deposit_preview.cancel()
     parity.cancel()
     return delivery.arm(args[1], args[2])
 end, "Deliver to clicked owned storage or supply needed construction materials. No arguments shows status.")
@@ -170,6 +174,7 @@ end, "Deliver to clicked owned storage or supply needed construction materials. 
 register("mobs.pile", "mobs.pile <item|id> <amount>", function(args)
     assert(#args == 2, "Usage: mobs.pile <item|id> <amount>")
     forest.cancel()
+    pond_preview.cancel(); deposit_preview.cancel()
     parity.cancel()
     return delivery.arm_pile(args[1], args[2])
 end, "Experimental: enter native Supplies placement and fill the newly placed pile; owned region only.")
@@ -188,8 +193,12 @@ end, 'Add goods to EACH selected owned building, including production/housing (m
 register("mobs.cancel", "mobs.cancel", function(args)
     assert(#args == 0, "Usage: mobs.cancel")
     local cancelled = forest.cancel()
+    local pond_cancelled = pond_preview.cancel()
+    local deposit_cancelled = deposit_preview.cancel()
     local parity_cancelled = parity.cancel()
     local result = delivery.cancel()
+    if deposit_cancelled then return "Deposit preview cancelled; completed changes remain." end
+    if pond_cancelled then return "Pond preview cancelled; completed changes remain." end
     if parity_cancelled then return "Click tool cancelled; completed changes remain." end
     return cancelled and "Forestry cancelled; no further clicks or growth batches. Completed changes remain." or result
 end, "Cancel pending supply/forestry tools or further tree-growth batches; completed changes remain.")
@@ -237,7 +246,7 @@ stacked_perks.register(register)
 pile_tools.new(context, region_context, town.region_label).register(register)
 forest.register(function(name, usage, handler, description)
     register(name, usage, function(args)
-        if name ~= "mobs.grow_trees" and name ~= "mobs.grow_saplings" and name ~= "mobs.grow_stage" then delivery.cancel(); parity.cancel() end
+        if name ~= "mobs.grow_trees" and name ~= "mobs.grow_saplings" and name ~= "mobs.grow_stage" then delivery.cancel(); parity.cancel(); pond_preview.cancel(); deposit_preview.cancel() end
         return handler(args)
     end, description)
 end)
@@ -255,13 +264,20 @@ underground.register(function(name,usage,handler,description)
     end,description)
 end)
 soil_tools.new(context).register(register)
-require('world_tools').new(context,parity.arm).register(register)
+require('world_tools').new(context,parity.arm,{
+    run=require('world_tools').run,find=function(class) return FindAllOf(class) or {} end,
+    repair_deposit_visuals=deposit_visuals.refresh,
+    place_deposit=function(pawn,request)
+        delivery.cancel(); forest.cancel(); parity.cancel(); pond_preview.cancel(); deposit_preview.cancel()
+        return deposit_preview.start(pawn,request)
+    end,
+}).register(register)
 require('teleport_tools').register(function(name,usage,handler,description)
     register(name,usage,function(args) delivery.cancel(); forest.cancel(); return handler(args) end,description)
 end,context,parity.arm)
 require('game_ui_tools').register(register,context,parity.arm,function()
-    delivery.cancel(); forest.cancel(); parity.cancel()
-end)
+    delivery.cancel(); forest.cancel(); parity.cancel(); pond_preview.cancel(); deposit_preview.cancel()
+end,{preview=pond_preview})
 local mod_directory=debug.getinfo(1,'S').source:gsub('^@',''):gsub('\\','/'):match('^(.*)/Scripts/')
 command_files.register(register,commands,context,(mod_directory or '.') .. '/Commands')
 
@@ -293,10 +309,13 @@ RegisterHook("/Script/Engine.PlayerController:ClientRestart", function()
     forest.reset()
     stacked_perks.reset()
     parity.reset()
+    pond_preview.reset()
+    deposit_preview.reset()
     underground.reset()
     refresh_autocomplete()
 end)
 
 stacked_perks.start()
+deposit_visuals.start()
 refresh_autocomplete()
 print("[MobsConsole] " .. VERSION .. " loaded. Open F10 and enter mobs\n")

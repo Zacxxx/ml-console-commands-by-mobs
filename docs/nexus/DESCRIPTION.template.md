@@ -11,6 +11,27 @@ right command without memorizing everything.
 [All item IDs](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Item-IDs) ·
 [Bug report status](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Bug-report-status)
 
+## New in 0.16.1 — ponds and deposits
+
+- **Ponds place completed:** `mobs.pond place` shows a moving outline and a green
+  READY / red BLOCKED label. Close the console, choose a valid site and left-click.
+  No builders are needed. Use `mobs.pond_fish 500` separately to stock the pond.
+- **Much easier pond placement:** actual pond shape, no extra margin, 10m terrain
+  height tolerance and neighbouring regions you own. Add `strict` for the old rules.
+- **Deposits where you click:** `mobs.spawn_deposit iron 1000` shows a native material
+  preview, centre crosshair and mining-range ring. Clay, salt and optional `rich`
+  work the same way. The missing-mineral-template error is fixed.
+- **No mineral terrain imprint:** placed iron/clay/salt no longer project paper-map
+  artwork or extra mineral models onto terrain. Map icons/tooltips and reserves stay;
+  surface stones remain visible. Existing owned imprints repair automatically after
+  loading, or immediately with `mobs.refresh_resource_icons`.
+- Add `preview` to inspect without placing; blocked clicks keep the tool active.
+  Right-click or `mobs.cancel` cancels. Updated advice and wiki include full examples.
+
+Pond placement, mineral placement and imprint cleanup received successful user tests.
+Extended worker extraction, harvesting and save/reload results still need confirmation.
+Restart after updating and keep Native/State plus your custom Commands files.
+
 ## New in 0.15
 
 - `mobs.advice.pile`, `mobs.advice.spawn_resource`, `mobs.advice.soil` and a detailed
@@ -21,8 +42,8 @@ right command without memorizing everything.
   only after the full item-taking command. Windows response parsing is corrected.
 - Selected-building tools read the pawn-owned live selection instead of a temporary
   returned array. This addresses reported invalid-selection failures.
-- New mineral deposits use a ground-facing decal and a real finite surface clump,
-  plus separate underground reserves. Legacy empty markers can be removed.
+- New mineral deposits retain finite surface data plus separate underground reserves.
+  The 0.16.1 update hides their extra terrain artwork while keeping icons and amounts.
 - Includes earlier resource size/view and HUD icon/hover-list fixes that were not in 0.14.0.
 
 ## New in 0.16
@@ -125,14 +146,15 @@ is `mobs.complete give br`. Use `mobs.find` for typo-tolerant discovery.
 `mobs.spawn_resource berries 100 4 preview` — close the console and click owned
 land to preview four berry clumps of 100 each. Repeat without preview to create.
 
-`mobs.pond place` — start native Fishing Pond placement, close the console and
-place the preview. `mobs.place_fishing_pond` is not a registered command.
+`mobs.pond place` — close the console and click clear, fairly level owned ground.
+The pond is initialized already complete; no builders are needed. Stock fish separately. `mobs.place_fishing_pond` is not a registered command.
 
 `mobs.pond_fish 500` — close the console and click near a completed owned Fishing
 Pond. An unfinished pond is rejected; existing shoals use `mobs.refill_resources fish`.
 
 `mobs.spawn_deposit iron 1000 rich` — creates 1000 surface units PLUS 1000
-underground units. Rich deep reserves still follow the native endless-mining rules.
+underground units. Close the console, choose the exact centre with the preview and
+left-click a READY site. Rich deep reserves still follow the native endless-mining rules.
 `mobs.resource` edits/removes surface clumps; `mobs.deposit` edits underground
 reserves; `mobs.remove_deposit` removes the reserve/decal. Real surface clumps
 require their own explicit `mobs.resource remove iron` action. Preview first.
@@ -153,7 +175,8 @@ for fixed-in-source issues, old-save cleanup and reports that remain open.
 
 This is an **alpha release**, not a claim that every variant is gameplay-tested.
 Focused user tests confirmed construction, Supplies/pile placement and cleanup,
-and regional perk tools. Recent world/weather/soil/forestry variants, native Tab
+regional perk tools, pond placement, mineral placement and mineral-imprint repair.
+Recent world/weather/soil/forestry variants, native Tab
 completion and full save/load persistence still need broader confirmation.
 Offline checks pass; they do not replace testing every feature in a live save.
 

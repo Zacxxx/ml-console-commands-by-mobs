@@ -1,6 +1,6 @@
 # mobs.resource
 
-Guide for **0.16.0-alpha.3**, game **0.8.117**.
+Guide for **0.16.1-alpha.5**, game **0.8.117**.
 
 Click near an owned resource to add, change richness, refresh ground height/size/visibility without changing goods, or remove a group/clump. Refresh excludes fish/eel and attached clumps. Maximum distance 2500; no undo.
 

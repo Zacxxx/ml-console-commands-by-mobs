@@ -12,6 +12,11 @@ lua tests/console_ux/test_adapter.lua
 lua tests/console_ux/test_ux.lua
 lua tests/world_tools/test_commands.lua
 lua tests/world_tools/test_population.lua
+lua tests/world_tools/test_pond.lua
+lua tests/pond_preview/test_placement.lua
+lua tests/pond_preview/test_ghost.lua
+lua tests/deposit_preview/test_placement.lua
+lua tests/deposit_visuals/test_visibility.lua
 lua tests/parity_tools/test_commands.lua
 lua tests/parity_tools/test_files.lua
 lua tests/parity_tools/test_resources.lua

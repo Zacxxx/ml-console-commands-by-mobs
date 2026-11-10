@@ -244,7 +244,7 @@
         {
             "command": "k.placeFishingPond",
             "implemented_in_mobs": true,
-            "mobs_equivalent": "mobs.pond place [preview]",
+            "mobs_equivalent": "mobs.pond place [strict] [preview]",
             "group": "fishing",
             "status": "covered",
             "scope_note": "Native placement for reflected EBuildingType::FishingPond=39; validates loaded definition and respects placement rules."

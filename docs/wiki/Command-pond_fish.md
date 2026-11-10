@@ -1,6 +1,6 @@
 # mobs.pond_fish
 
-Guide for **0.16.0-alpha.3**, game **0.8.117**.
+Guide for **0.16.1-alpha.5**, game **0.8.117**.
 
 Add one fish shoal to the nearest completed owned Fishing Pond; rejects ponds already containing fish. Use refill_resources for existing shoals.
 
@@ -18,7 +18,7 @@ Run the command, close the console, then click the intended location in an owned
 
 ## Steps
 
-Finish the Fishing Pond first. Run the command, close the console and click close to that pond (within 1500 game units).
+Run the command, close the console and click near a completed owned Fishing Pond (within 1500 game units). New mobs.pond place ponds are already complete. Fish use a native pond placement transform rather than the building origin.
 
 ## Examples
 
@@ -32,7 +32,7 @@ mobs.refill_resources fish preview
 
 ## Limits and expected results
 
-Adds one shoal to the nearest completed owned Fishing Pond. Existing shoals are rejected to prevent duplicates; refill existing fish instead. Worker harvesting and save/load need live confirmation. No undo.
+Adds one shoal to the nearest completed owned Fishing Pond. Existing shoals are rejected to prevent duplicates; refill existing fish instead. Worker harvesting and save/load need live confirmation. No undo. 0.16.1 checks the native constructed state again at apply and uses the pond's generated fish anchor; missing anchors produce an explicit refusal.
 
 ## Related commands
 

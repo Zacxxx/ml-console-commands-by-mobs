@@ -1,6 +1,6 @@
 # mobs.soil
 
-Guide for **0.16.0-alpha.3**, game **0.8.117**.
+Guide for **0.16.1-alpha.5**, game **0.8.117**.
 
 Set baseline/current soil fertility or restore depletion for selected planted plots or limited work areas; 0..100%, preview and guarded undo.
 

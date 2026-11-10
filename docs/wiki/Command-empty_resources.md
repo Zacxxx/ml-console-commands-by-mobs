@@ -1,6 +1,6 @@
 # mobs.empty_resources
 
-Guide for **0.16.0-alpha.3**, game **0.8.117**.
+Guide for **0.16.1-alpha.5**, game **0.8.117**.
 
 Empty existing matching natural resource clumps in your target region, retaining actors; preview and guarded undo. Wildlife excluded.
 

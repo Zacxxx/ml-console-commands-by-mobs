@@ -94,7 +94,7 @@ Region IDs vary per save. Select actual owned buildings before opening the conso
 ## Common questions
 
 - **Berries:** `mobs.spawn_resource berries 100 4`, close console, click owned ground. This creates four clumps of 100 each. [Guide]({WIKI}/Command-spawn_resource).
-- **Pond fish:** finish the pond, then `mobs.pond_fish 500` and click near it. [Guide]({WIKI}/Command-pond_fish).
+- **Pond fish:** `mobs.pond place` creates a completed empty pond at your click; then `mobs.pond_fish 500` and click near it. [Guide]({WIKI}/Command-pond_fish).
 - **Remove rich fish/eel:** `mobs.resource remove fish preview` (or eel). Close console and click near the actual shoal; repeat without preview to apply. Exact kind and ownership matter. [Guide]({WIKI}/Command-resource).
 - **Underground vs surface:** `deposit` edits reserves; `resource` edits visible clumps. [Full explanation]({WIKI}/Tutorial#6-create-berriesminerals-understand-layers-and-remove-nodes).
 - **Wild animals:** `mobs.spawn_wildlife deer` or `hare` creates a native herd/node at your clicked location. Hunting/save-load checks are pending. `mobs.animal` creates individuals separately. [Guide]({WIKI}/Command-spawn_wildlife).

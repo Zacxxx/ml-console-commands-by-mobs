@@ -1,6 +1,6 @@
 # Full tutorial
 
-For **0.16.0-alpha.3**, game **0.8.117**. In game: `mobs.tutorial` lists chapters, `mobs.tutorial all` prints everything.
+For **0.16.1-alpha.5**, game **0.8.117**. In game: `mobs.tutorial` lists chapters, `mobs.tutorial all` prints everything.
 
 ## 1. Install, check versions and read command syntax
 
@@ -84,7 +84,7 @@ Kinds are iron, clay, salt, stone, berries, mushrooms, fish and eel. Deer/hares 
 
 There are TWO mineral layers: visible finite surface clumps and underground reserves for deep extraction. mobs.resource add iron 100 edits one existing surface clump. mobs.deposit add iron 100 edits an existing underground reserve. A surface icon alone does not prove an underground reserve exists.
 
-New mobs.spawn_deposit iron 1000 rich creates 1000 surface units PLUS 1000 underground units and a ground-facing decal. Rich deep reserves follow native endless/deep-mining rules. The finite amount shown in the resource tooltip comes from the surface clump. Legacy 0.14.0 placements could have only an empty marker, with no finite surface amount.
+New mobs.spawn_deposit iron 1000 rich creates 1000 surface units PLUS 1000 underground units and a ground-facing decal. Rich deep reserves follow native endless/deep-mining rules. The finite amount shown in the resource tooltip comes from the surface clump. Legacy 0.14.0 placements could have only an empty marker, with no finite surface amount. New mineral placement uses a moving native-material preview, centre crosshair and mining-radius ring. Close the console, move to READY owned ground and left-click the exact centre. Blocked clicks stay armed; right-click cancels. Add preview to inspect repeatedly without creating either layer.
 
 To remove surface fish: mobs.resource remove fish preview, close console and click close to the shoal. For eel use eel explicitly; fish never silently selects eel. Remove deletes the whole group; remove_clump deletes one clump. Matching distance is 2500 game units, and ownership still applies.
 
@@ -96,13 +96,13 @@ Spawned fish/eel still need suitable water, worker reachability and native seaso
 
 The 0.16 alpha adds mobs.repair_fishing eel preview for an existing shoal: click nearby, inspect the plan, repeat without preview, then check catches and save/reload. It restores native aquatic identity, seasonal behavior and regional availability without refilling goods. Fish use the explicit fish argument. Actual catches and persistence still need gameplay confirmation.
 
-Guides: [mobs.advice.spawn_resource](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-spawn_resource), [mobs.advice.resource](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-resource), [mobs.advice.spawn_deposit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-spawn_deposit), [mobs.advice.deposit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-deposit), [mobs.advice.remove_deposit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-remove_deposit), [mobs.advice.refresh_resource_icons](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-refresh_resource_icons), [mobs.advice.spawn_wildlife](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-spawn_wildlife), [mobs.advice.repair_fishing](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-repair_fishing)
+Guides: [mobs.advice.spawn_resource](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-spawn_resource), [mobs.advice.resource](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-resource), [mobs.advice.spawn_deposit New mineral placement uses a moving native-material preview, centre crosshair and mining-radius ring. Close the console, move to READY owned ground and left-click the exact centre. Blocked clicks stay armed; right-click cancels. Add preview to inspect repeatedly without creating either layer.](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-spawn_deposit New mineral placement uses a moving native-material preview, centre crosshair and mining-radius ring. Close the console, move to READY owned ground and left-click the exact centre. Blocked clicks stay armed; right-click cancels. Add preview to inspect repeatedly without creating either layer.), [mobs.advice.deposit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-deposit), [mobs.advice.remove_deposit](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-remove_deposit), [mobs.advice.refresh_resource_icons](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-refresh_resource_icons), [mobs.advice.spawn_wildlife](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-spawn_wildlife), [mobs.advice.repair_fishing](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Command-repair_fishing)
 
 ## 7. Fishing Ponds, natural fish and eel
 
 In game: `mobs.tutorial fishing` or `mobs.tutorial 7`.
 
-mobs.pond place starts native building placement. Close the console, place on valid owned ground and complete construction. An unfinished pond is not a valid pond_fish target.
+mobs.pond place opens a moving footprint preview with relaxed rules: the actual pond outline, no extra margin, up to 10 metres of height variation and neighbouring regions owned by your lord. Close the console and read green READY or red BLOCKED with the reason. Left-click a valid site for one completed empty pond; blocked clicks keep the tool active. Right-click or mobs.cancel cancels. mobs.pond place preview stays read-only. Add strict to restore the old rectangle, 1-metre margin, 2-metre height limit and single-region rule. No builders are needed; stock fish separately. Existing unfinished ponds are not reinitialized.
 
 Run mobs.pond_fish 500 preview, close the console and click within 1500 game units of the completed owned pond. Repeat without preview to add ONE shoal. Existing fish are rejected rather than duplicated; use mobs.refill_resources fish preview for an existing shoal.
 

@@ -1,6 +1,6 @@
 # ML Console Commands by Mobs
 
-Version 0.16.0-alpha.3 · alpha · Manor Lords 0.8.117 (Steam, pre_release branch)
+Version 0.16.1-alpha.5 · alpha · Manor Lords 0.8.117 (Steam, pre_release branch)
 
 Console tools for your settlement: construction, supplies and new piles,
 resources, forestry, regional perk cards, economy, weather and time, with
@@ -157,7 +157,7 @@ older DLL loaded. Preserve Native/State and custom Commands files.
 
 ## Eel repair and huntable wildlife
 
-After restarting, check `mobs.version` reports 0.16.0-alpha.3.
+After restarting, check `mobs.version` reports 0.16.1-alpha.5.
 
 - Existing eel shoal: `mobs.repair_fishing eel preview`, then repeat without
   preview. Close the console and click near the same owned shoal after each line.
@@ -186,3 +186,60 @@ does not force approval or advance the calendar. Enough completed, active,
 non-mourning housing is required for the whole request. Native failures stop and
 report actual changes without retrying; there is no undo. Live/save-load testing
 of this alpha is pending.
+
+## Prebuilt Fishing Ponds
+
+`mobs.pond place preview` opens a moving, read-only footprint guide. Close the
+console and move over owned terrain; click to report, right-click to cancel. Run
+`mobs.pond place` to use the same guide and left-click a READY site to create
+one completed empty pond without builders. Then use `mobs.pond_fish 500 preview` / `mobs.pond_fish 500`, each
+followed by its own click near the pond. Fish now use native pond anchors.
+
+Existing unfinished ponds are not automatically completed or reinitialized.
+Placement, water appearance, actual catches and save/load still need gameplay
+confirmation. Pond placement has received successful user testing; restart after upgrading.
+
+
+## Moving pond placement preview
+
+`mobs.pond place` now displays the actual pond footprint with relaxed rules: no
+extra margin, up to 10m of height variation and neighbouring owned regions. Add
+`strict` for the previous clearance rectangle, 2m limit and single-region rule. Close
+the console and move over terrain: green READY means the current check passes;
+red BLOCKED includes the reason. Left-click a valid site to create one completed
+empty pond. A blocked click keeps the preview active. Right-click or `mobs.cancel`
+cancels. `mobs.pond place preview` stays read-only for repeated checks.
+
+The outline previews size, not the final terrain/water deformation.
+The coloured label is always available; outline tint depends on the engine material.
+Stock the finished pond separately with `mobs.pond_fish 500`. Restart after updating;
+pond placement has received successful user testing; extended harvesting and persistence checks remain open.
+
+
+## Place deposits where you click
+
+Run `mobs.spawn_deposit iron 1000`, close the console and move the mouse. The
+preview shows the game's native deposit ground material, a centre crosshair and
+a mining-radius ring, with a green READY or red BLOCKED label. Left-click a READY
+location to create one mineral group at that centre. Native terrain snapping only
+changes height. Blocked clicks keep the tool active; right-click or `mobs.cancel`
+cancels. `mobs.spawn_deposit clay 2000 rich` and salt work the same way.
+
+Add `preview` to inspect repeatedly without creating anything. The native ring is
+20m normal / 25m rich on this build; it shows mining range, not an empty-clearance
+requirement. Each amount goes to both surface and underground layers. The screenshot
+error about an unavailable mineral template is fixed by using the native engine's
+mineral classes. Restart after updating the native helper. Placement has received successful user testing; extended mining and persistence
+checks remain open.
+
+
+## Remove leaked mineral terrain artwork
+
+Placed iron/clay/salt deposits now match the natural terrain appearance: no giant
+paper-map imprint or extra ore model. The separate HUD/paper-map icons and tooltip
+remain. Surface stones stay visible. Amounts, richness and mining data are retained.
+
+Existing Mobs deposits receive a visual-only repair shortly after loading. Run
+`mobs.refresh_resource_icons` to apply it immediately, or append `preview` for a
+read-only count. Restart after updating the native helper. There is no need to
+delete/recreate existing deposits. User testing confirmed the visual repair. Extended mining and persistence checks remain open.

@@ -1,6 +1,6 @@
 # Command reference
 
-Version 0.16.0-alpha.3 — 96 base names/aliases, plus detailed dotted advice shortcuts.
+Version 0.16.1-alpha.5 — 96 base names/aliases, plus detailed dotted advice shortcuts.
 
 Generated from the registered implementation without executing gameplay commands.
 
@@ -57,7 +57,7 @@ Preview/undo are available only where explicitly documented. Read KNOWN_ISSUES.m
 | `mobs.pile <item\|id> <amount>` | Experimental: enter native Supplies placement and fill the newly placed pile; owned region only. |
 | `mobs.pond_fish [amount] [rich] [preview]` | Add one fish shoal to the nearest completed owned Fishing Pond; rejects ponds already containing fish. Use refill_resources for existing shoals. |
 | `mobs.refill_resources [kind] [preview]` | Refill existing iron/clay/stone/salt/berries/mushrooms/fish/eel clumps to capacity; preview and guarded undo; no new nodes. |
-| `mobs.refresh_resource_icons [preview]` | Refresh the game HUD resource-node list for normal-map icons and paper-map hover details. No click required; resource quantities unchanged; preview available. |
+| `mobs.refresh_resource_icons [preview]` | Refresh normal-map icons and paper-map hover data, and hide leaked owned mineral terrain artwork while retaining reserves and surface stones. No click; quantities unchanged; preview available. |
 | `mobs.region [id\|current\|selected\|auto]` | Choose a region for wealth and regional construction commands; does not move the camera or alter map selection. |
 | `mobs.regions` | List your owned regions and their IDs for mobs.region. |
 | `mobs.regrow_trees [preview]` | Combined tool: click to replant one sapling and mature native growing trees in the target owned region; supports preview. |
@@ -71,7 +71,7 @@ Preview/undo are available only where explicitly documented. Read KNOWN_ISSUES.m
 | `mobs.respec_perks [1\|2\|all] [preview]` | Reset regional perk cards and rebuild active effects. Default both tiers; resetting Origins also resets Rural Foundations. |
 | `mobs.skip_mourning [preview]` | Clear active mourning timers on owned buildings in the target region; preview lists the affected count. |
 | `mobs.soil <set\|restore> <wheat\|flax\|barley\|all> [0..100] [selected\|area] [preview]` | Set baseline/current soil fertility or restore depletion for selected planted plots or limited work areas; 0..100%, preview and guarded undo. |
-| `mobs.spawn_deposit <iron\|clay\|salt> <amount> [rich] [preview]` | Click to create iron/clay/salt with the requested amount in one surface clump PLUS the same underground reserves; ground-facing decal and map node; maximum one million per layer; no undo. |
+| `mobs.spawn_deposit <iron\|clay\|salt> <amount> [rich] [preview]` | Preview native iron/clay/salt ground material, mining-radius ring and exact centre; left-click READY terrain to create one surface clump plus equal underground reserves. Blocked clicks keep preview; right-click cancels. Optional read-only preview; maximum one million per layer; no undo. |
 | `mobs.spawn_resource <kind> [amount per clump] [1..64 clumps] [rich] [preview]` | Click to create a registered surface resource group; amount is per clump, defaults to native capacity. Fish/eel require water; preview available. |
 | `mobs.spawn_wildlife <deer\|hare> [rich] [preview]` | Click clear owned ground to place one huntable deer/hare herd and its resource node there. Native normal/rich settings determine population; animals spread around the click. Preview available; no undo. |
 | `mobs.stock [search]` | Show target region stock through the native stock query, including reserved goods; optional name or ID filter. |
@@ -115,7 +115,7 @@ Preview/undo are available only where explicitly documented. Read KNOWN_ISSUES.m
 | `mobs.items [search]` | List supply item IDs and names from the loaded game's item table; optionally filter. |
 | `mobs.ping` | Check that this mod's console handler responds; works without a loaded settlement. |
 | `mobs.plants` | Inspect selected buildings planted crops: type, position, growth, yield and soil-cell index; read only, first 100 plants. |
-| `mobs.pond <place\|remove> [preview]` | Start the native Fishing Pond placement tool or click to remove an owned pond; supports preview. |
+| `mobs.pond <place\|remove> [strict] [preview]` | Preview the pond footprint and clearance with a moving READY/BLOCKED label, then click to create a completed empty pond; right-click cancels. Stock with pond_fish. Relaxed by default: actual outline, 10m height spread and neighbouring owned land; strict restores the old rectangle/2m rule. Read-only preview and owned pond removal supported. |
 | `mobs.recent [1..30]` | List recent successful Mobs commands without replaying them; keeps 30, cleared on mod reload. |
 | `mobs.run <filename.txt> [preview]` | Run up to 100 Mobs commands from a local Commands/*.txt file; no scripts, traversal or recursion; preview lists commands; stop on first error. |
 | `mobs.skip_day [1..30] [preview]` | Advance days through the native date update rather than overwrite the calendar; maximum 30, preview available. |

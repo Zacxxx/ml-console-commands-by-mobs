@@ -1,6 +1,6 @@
 # mobs.inventory_add
 
-Guide for **0.16.0-alpha.3**, game **0.8.117**.
+Guide for **0.16.1-alpha.5**, game **0.8.117**.
 
 Add goods to EACH selected owned building, including production/housing (maximum 32); bypass completed-building storage limits. Construction sites receive only needed materials; preview available.
 
