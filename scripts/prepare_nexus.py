@@ -246,7 +246,7 @@ def prepare(output):
         'archives': [main_name, source_name], 'zip_crc_verified': True,
         'reproducible_zip_metadata': True, 'upstream_binaries_included': False,
         'save_files_or_private_state_included': False, 'dependencies_bundled': False,
-        'in_game_confirmation': 'Focused user confirmations only: construction, Supplies/piles, regional perks.',
+        'in_game_confirmation': 'Focused user confirmations: construction, Supplies/piles, regional perks, improved pond placement, native mineral placement and mineral-imprint repair.',
         'remaining_gameplay_confirmation': 'Recent variants and native dropdown/Tab interactions, persistence and broader platform/other-mod combinations.',
         'automated_tests': 'Run scripts/test.sh; attach current evidence locally. Archive CRC/manifest checks run during preparation.',
         'uploaded': False, 'published': False,
