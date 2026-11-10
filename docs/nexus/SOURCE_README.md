@@ -7,8 +7,8 @@ research are excluded. This source archive is not the playable mod download.
 ## Build
 
 Work from this archive's root. You need Python 3, Lua 5.4/luac, a C compiler for tests,
-and x86_64-w64-mingw32-gcc for the Windows helpers. Pillow is needed only to regenerate
-the supplied promotional cover with scripts/create_nexus_cover.py.
+and x86_64-w64-mingw32-gcc for the Windows helpers. Pillow is needed only to export
+the approved promotional cover and header with scripts/create_nexus_cover.py.
 
 Run each adapter build script:
 
@@ -34,5 +34,5 @@ structures. They do not prove gameplay, native dropdown rendering or save persis
 A loaded-settlement integration check is still required for those behaviors.
 
 The generated upload kit includes a clean runtime ZIP and a separate source ZIP,
-English Nexus text, a French upload guide, an original promotional cover and checksums.
+English Nexus text, a French upload guide, promotional fan artwork and checksums.
 It does not publish or upload anything automatically.

@@ -103,7 +103,8 @@ def source_files():
     for folder, pattern in [('src/mobs_console/Scripts', '*.lua'), ('src/mobs_console/Commands', '*.txt'),
                             ('src/mobs_console/Native', '*.c'), ('src/mobs_console/Native', '*.h'),
                             ('src/mobs_console/Native', '*name.txt'), ('config', '*.json'),
-                            ('docs/nexus', '*'), ('assets/nexus', '*.png')]:
+                            ('docs/nexus', '*'), ('assets/nexus', '*.png'),
+                            ('assets/nexus', '*.md')]:
         for path in sorted((ROOT / folder).glob(pattern)):
             if path.is_file() and not path.is_symlink():
                 files.append((path.relative_to(ROOT).as_posix(), path.read_bytes()))
@@ -229,8 +230,9 @@ def prepare(output):
         'additional_tags_if_available': ['Cheats', 'Utilities', 'Gameplay'],
         'adult_content': False, 'permissions_file': 'PERMISSIONS.txt',
         'cover_image': 'images/cover-1600x900.png',
-        'cover_caption': 'Original promotional title card; not a gameplay screenshot. Version 0.14.0-alpha.1 for Manor Lords 0.8.117.',
-        'ai_disclosure': 'Generative AI produced code and release copy under Mobs direction; promotional title card drawn with original generated code.',
+        'header_image': 'images/header-1300x372.png',
+        'cover_caption': 'ML Console Commands by Mobs — medieval computer artwork (AI-generated promotional fan art; not gameplay).',
+        'ai_disclosure': 'Generative AI produced code and release copy under Mobs direction. Promotional fan artwork was generated using genuine Manor Lords key art as a visual reference; it is not a gameplay screenshot or official artwork.',
         'monetization_or_rewards_selected': False, 'uploaded': False, 'published': False,
     }
     (output / 'FIELDS.json').write_text(json.dumps(fields, ensure_ascii=False, indent=4) + '\n')

@@ -98,3 +98,6 @@ are not redistributed. The UE4SS team provides the separate loader and modding A
 
 Original project source and promotional graphics are available under [MIT](LICENSE).
 Third-party game/mod/loader content is not licensed by this repository.
+
+Promotional artwork uses built-in image generation with Manor Lords key art as a
+visual reference. See [artwork credits and prompt notes](assets/nexus/ARTWORK.md).
