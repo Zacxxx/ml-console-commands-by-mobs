@@ -1,6 +1,6 @@
 # Command reference
 
-Version 0.16.1-alpha.5 — 96 base names/aliases, plus detailed dotted advice shortcuts.
+Version 0.16.1-alpha.6 — 96 base names/aliases, plus detailed dotted advice shortcuts.
 
 Generated from the registered implementation without executing gameplay commands.
 

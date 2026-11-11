@@ -1,6 +1,6 @@
 # mobs.refill_resources
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Refill existing iron/clay/stone/salt/berries/mushrooms/fish/eel clumps to capacity; preview and guarded undo; no new nodes.
 

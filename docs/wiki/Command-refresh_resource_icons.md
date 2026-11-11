@@ -1,6 +1,6 @@
 # mobs.refresh_resource_icons
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Refresh normal-map icons and paper-map hover data, and hide leaked owned mineral terrain artwork while retaining reserves and surface stones. No click; quantities unchanged; preview available.
 

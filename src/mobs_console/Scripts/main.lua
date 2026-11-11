@@ -19,7 +19,7 @@ local command_files = require('command_files')
 local categories = require('command_categories')
 local undo = {}
 local commands = {}
-local VERSION = "0.16.1-alpha.5"
+local VERSION = "0.16.1-alpha.6"
 
 local function valid(object)
     local ok, result = pcall(function() return object and object:IsValid() end)
@@ -288,15 +288,15 @@ register("help", "help [search]", show_help, "Alias for mobs.help.")
 
 require('guidance').register(register,commands)
 
+local autocomplete_timer
 local function refresh_autocomplete()
-    if ExecuteWithDelay and ExecuteInGameThread then
-        ExecuteWithDelay(1500,function()
-            ExecuteInGameThread(function()
-                local ok,result=pcall(ux.refresh)
-                output(nil,ok and result or ('Autocomplete refresh failed: ' .. tostring(result)))
-            end)
-        end)
-    end
+    if not (ExecuteInGameThreadWithDelay and CancelDelayedAction) then return end
+    if autocomplete_timer then CancelDelayedAction(autocomplete_timer) end
+    autocomplete_timer = ExecuteInGameThreadWithDelay(1500, function()
+        autocomplete_timer = nil
+        local ok, result = pcall(ux.refresh)
+        output(nil, ok and result or ('Autocomplete refresh failed: ' .. tostring(result)))
+    end)
 end
 
 RegisterHook("/Script/Engine.PlayerController:ClientRestart", function()
@@ -315,7 +315,13 @@ RegisterHook("/Script/Engine.PlayerController:ClientRestart", function()
     refresh_autocomplete()
 end)
 
-stacked_perks.start()
-deposit_visuals.start()
+-- Register recurring callbacks once. They must never requeue from UE4SS's async thread.
+local perks_timer_ready = stacked_perks.start()
+local deposits_timer_ready = deposit_visuals.start()
+if perks_timer_ready and deposits_timer_ready then
+    output(nil, 'Background perk and deposit jobs use UE4SS game-thread timers.')
+else
+    output(nil, 'Some background jobs are unavailable. This UE4SS build lacks game-thread timers.')
+end
 refresh_autocomplete()
 print("[MobsConsole] " .. VERSION .. " loaded. Open F10 and enter mobs\n")

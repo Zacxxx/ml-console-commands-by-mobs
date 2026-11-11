@@ -301,26 +301,24 @@ function M.new(get_pawn,get_region,region_label,api)
     end
     function self.catalog() return api.catalog() end
     function self.reset() session=nil end
+    local timer
     function self.start()
-        if not ExecuteWithDelay then return end
-        local function loop()
-            ExecuteWithDelay(2000,function()
-                ExecuteInGameThread(function()
-                    local ok,err=pcall(self.tick)
-                    if not ok and last_error~=tostring(err) then
-                        last_error=tostring(err)
-                        -- No loaded save is normal at the menu; actual state/API
-                        -- failures remain visible without retry spam.
-                        if not last_error:find("Load a settlement",1,true) and
-                            not last_error:find("Load a saved game",1,true) then
-                            print("[MobsConsole] Extra perk restore paused: " .. last_error .. "\n")
-                        end
-                    elseif ok then last_error=nil end
-                end)
-                loop()
-            end)
-        end
-        loop()
+        if not LoopInGameThreadWithDelay then return false end
+        if timer then return true end
+        timer = LoopInGameThreadWithDelay(2000, function()
+            local ok, err = pcall(self.tick)
+            if not ok and last_error ~= tostring(err) then
+                last_error = tostring(err)
+                -- A missing settlement at the menu is expected. Log other errors once.
+                if not last_error:find("Load a settlement", 1, true) and
+                    not last_error:find("Load a saved game", 1, true) then
+                    print("[MobsConsole] Extra perk restore paused: " .. last_error .. "\n")
+                end
+            elseif ok then
+                last_error = nil
+            end
+        end)
+        return true
     end
     return self
 end

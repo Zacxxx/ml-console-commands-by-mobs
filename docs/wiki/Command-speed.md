@@ -1,6 +1,6 @@
 # mobs.speed
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Read or request game speed through the native game function; 0 pauses and 1 resumes normally.
 

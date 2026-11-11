@@ -1,6 +1,6 @@
 # mobs.claim
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Start a claim without influence cost, or finish your existing claim(s); explicit map selection/ID, supports preview.
 

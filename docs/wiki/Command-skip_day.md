@@ -1,6 +1,6 @@
 # mobs.skip_day
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Advance days through the native date update rather than overwrite the calendar; maximum 30, preview available.
 

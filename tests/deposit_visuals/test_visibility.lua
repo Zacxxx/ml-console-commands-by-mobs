@@ -20,11 +20,17 @@ local stone=actor(14,100,{Type=15,amt=100,capacity=100})
 local berries=actor(15,100,{Type=1,amt=8,capacity=8})
 local node=actor(16,100,{masterPtr=engine,resourceClumps={iron,stone,berries},PaperMapDecal=obj(17)})
 local natural=actor(18,100,{masterPtr=engine,resourceClumps={}})
-local queue,clock={},0
+local timers, next_handle = {}, 0
 local api={find=function(class)
     return class=='DepositDecal' and {reserve,foreign_reserve,other_reserve} or {node,natural}
 end,version=function() return 'Version 0.8.117' end,
-    defer=function(fn) queue[#queue+1]=fn end}
+    loop=function(delay, callback)
+        assert(delay == 2500)
+        next_handle = next_handle + 1
+        timers[next_handle] = callback
+        return next_handle
+    end,
+    cancel=function(handle) timers[handle] = nil end}
 local visuals=require('deposit_visuals').new(function() return pawn end,api)
 local count=visuals.refresh(true)
 assert(count==2 and next(hidden)==nil)
@@ -33,8 +39,15 @@ assert(not hidden[11] and not hidden[12] and not hidden[14] and not hidden[15] a
 assert(reserve.depositedGood.amt==1000 and reserve.bRichDeposit and iron.amt==1000 and iron.capacity==1000)
 assert(#node.resourceClumps==3 and node.PaperMapDecal:IsValid())
 -- Reapply after reload/map changes without depending on object addresses remaining stable.
-visuals.start();assert(#queue==1);table.remove(queue,1)();assert(hidden[10]==2 and hidden[13]==2)
-visuals.stop();table.remove(queue,1)();assert(#queue==0)
+assert(visuals.start() and visuals.start())
+assert(next_handle == 1, 'Automatic repair must use a single repeating game-thread timer')
+timers[1]()
+timers[1]()
+assert(hidden[10] == 3 and hidden[13] == 3 and next_handle == 1)
+visuals.stop()
+assert(next(timers) == nil)
+assert(visuals.start() and next_handle == 2)
+visuals.stop()
 api.version=function() return 'Version 9.9' end
 assert(not pcall(visuals.refresh,false))
 print('Deposit visual repair hides only owned mineral render actors; amounts, nodes, foreign deposits and surface stones remain')

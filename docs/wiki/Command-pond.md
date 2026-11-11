@@ -1,6 +1,6 @@
 # mobs.pond
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Preview the pond footprint and clearance with a moving READY/BLOCKED label, then click to create a completed empty pond; right-click cancels. Stock with pond_fish. Relaxed by default: actual outline, 10m height spread and neighbouring owned land; strict restores the old rectangle/2m rule. Read-only preview and owned pond removal supported.
 

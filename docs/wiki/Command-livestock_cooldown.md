@@ -1,6 +1,6 @@
 # mobs.livestock_cooldown
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Read or clear the target region's next livestock order cooldown; does not spawn or deliver animals.
 

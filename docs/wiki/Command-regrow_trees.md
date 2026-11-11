@@ -1,6 +1,6 @@
 # mobs.regrow_trees
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Combined tool: click to replant one sapling and mature native growing trees in the target owned region; supports preview.
 

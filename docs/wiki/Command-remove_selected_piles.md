@@ -1,6 +1,6 @@
 # mobs.remove_selected_piles
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Remove selected owned Supplies piles INCLUDING CONTENTS, even unfinished/bugged ones; supports preview. Ignores region pin; no undo.
 

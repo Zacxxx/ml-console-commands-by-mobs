@@ -1,6 +1,6 @@
 # mobs.autocomplete
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Refresh game-data suggestions, inspect status, or enable/disable only our native console suggestions.
 

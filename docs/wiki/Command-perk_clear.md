@@ -1,6 +1,6 @@
 # mobs.perk_clear
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Remove all extra cards in the target region, keeping normal primary cards.
 

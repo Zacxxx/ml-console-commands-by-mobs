@@ -1,6 +1,6 @@
 # mobs.perks_remove
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Alias for mobs.perk_remove; also accepts mobs.perks remove.
 

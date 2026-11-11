@@ -1,6 +1,6 @@
 # mobs.finish_constructions
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Finish construction work in the selected/current owned region and let the game finalize sites during simulation; preview lists the count.
 

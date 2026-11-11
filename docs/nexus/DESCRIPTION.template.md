@@ -11,6 +11,15 @@ right command without memorizing everything.
 [All item IDs](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Item-IDs) ·
 [Bug report status](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Bug-report-status)
 
+## New in 0.16.1-alpha.6 — background callback stability
+
+Automatic deposit visual repair and extra perk restoration now use repeating
+UE4SS game-thread timers. Autocomplete refresh also runs through a direct
+game-thread delay and replaces duplicate pending refreshes. This targets the
+reported UE4SS Lua callback crashes. The offline suite passes; extended in-game
+stability confirmation is still pending. Use a UE4SS build with game-thread timer
+APIs, such as 3.0.1-1152, and restart after updating.
+
 ## New in 0.16.1 — ponds and deposits
 
 - **Ponds place completed:** `mobs.pond place` shows a moving outline and a green

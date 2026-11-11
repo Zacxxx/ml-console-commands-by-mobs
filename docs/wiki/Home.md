@@ -1,6 +1,6 @@
 # ML Console Commands by Mobs wiki
 
-Documentation for **0.16.1-alpha.5**, targeting **Manor Lords 0.8.117**. This is an alpha; read the [report status](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Bug-report-status) for what is fixed in source and what still needs gameplay confirmation.
+Documentation for **0.16.1-alpha.6**, targeting **Manor Lords 0.8.117**. This is an alpha; read the [report status](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Bug-report-status) for what is fixed in source and what still needs gameplay confirmation.
 
 - [Start-to-finish tutorial](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Tutorial) — installation, syntax, selection, regions, click placement, construction, piles, resources, fishing, forestry, farming, perks and troubleshooting.
 - [All 96 base commands and aliases](https://github.com/Zacxxx/ml-console-commands-by-mobs/wiki/Commands) — every entry links to detailed advice, steps and copyable examples.

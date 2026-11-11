@@ -1,6 +1,6 @@
 # mobs.spawn_deposit
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Preview native iron/clay/salt ground material, mining-radius ring and exact centre; left-click READY terrain to create one surface clump plus equal underground reserves. Blocked clicks keep preview; right-click cancels. Optional read-only preview; maximum one million per layer; no undo.
 

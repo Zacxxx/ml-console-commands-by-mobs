@@ -1,6 +1,6 @@
 # mobs.items
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 List supply item IDs and names from the loaded game's item table; optionally filter.
 

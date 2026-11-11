@@ -7,11 +7,10 @@ function M.new(get_pawn,api)
     api=api or {
         find=function(class) return FindAllOf(class) or {} end,
         version=function() return require('UEHelpers').GetGameInstance():GetAppVersion():ToString() end,
-        defer=ExecuteWithDelay and ExecuteInGameThread and function(fn)
-            ExecuteWithDelay(2500,function() ExecuteInGameThread(fn) end)
-        end or nil,
+        loop=LoopInGameThreadWithDelay,
+        cancel=CancelDelayedAction,
     }
-    local self,generation={},0
+    local self, timer = {}, nil
     function self.refresh(preview)
         assert(api.version()=='Version 0.8.117','Deposit visuals support game 0.8.117')
         local pawn=get_pawn()
@@ -45,18 +44,19 @@ function M.new(get_pawn,api)
         end
         return count
     end
-    function self.stop() generation=generation+1 end
-    function self.start()
-        if not api.defer then return false end
-        generation=generation+1
-        local current=generation
-        local function tick()
-            if current~=generation then return end
-            -- Loading/menu transitions are expected; retry with fresh objects.
-            pcall(self.refresh,false)
-            api.defer(tick)
+    function self.stop()
+        if timer then
+            api.cancel(timer)
+            timer = nil
         end
-        api.defer(tick)
+    end
+    function self.start()
+        if not (api.loop and api.cancel) then return false end
+        if timer then return true end
+        timer = api.loop(2500, function()
+            -- Loading/menu transitions are expected; retry with fresh objects.
+            pcall(self.refresh, false)
+        end)
         return true
     end
     return self

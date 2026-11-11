@@ -1,6 +1,6 @@
 # All commands
 
-**0.16.1-alpha.5 — 96 documented base names/aliases.** Each command has a detailed advice page. Dotted advice shortcuts are omitted from the base list to keep it readable.
+**0.16.1-alpha.6 — 96 documented base names/aliases.** Each command has a detailed advice page. Dotted advice shortcuts are omitted from the base list to keep it readable.
 
 Required input uses `<...>`, optional input uses `[...]`; replace placeholders and omit brackets. Examples live on each linked guide.
 

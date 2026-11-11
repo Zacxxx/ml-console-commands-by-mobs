@@ -1,6 +1,6 @@
 # mobs.grow_trees
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Grow registered trees and untracked native young-tree stages to maturity in batches; excludes decorative bushes. Supports preview.
 

@@ -21,7 +21,28 @@ local reset
 Key = {LEFT_MOUSE_BUTTON = 1}
 RegisterKeyBind = function() end
 RegisterHook = function(_, fn) reset = fn end
+local background_timers, autocomplete_timers = {}, {}
+local pending_autocomplete = 0
+ExecuteWithDelay = function() error("Startup must not queue async Lua work") end
+ExecuteInGameThread = function() error("Startup must not hand async callbacks to the game thread") end
+LoopInGameThreadWithDelay = function(delay, callback)
+    assert(not background_timers[delay], "Background timer already registered")
+    background_timers[delay] = callback
+    return delay
+end
+ExecuteInGameThreadWithDelay = function(delay, callback)
+    assert(delay == 1500)
+    pending_autocomplete = pending_autocomplete + 1
+    autocomplete_timers[pending_autocomplete] = callback
+    return pending_autocomplete
+end
+CancelDelayedAction = function(handle)
+    assert(autocomplete_timers[handle], "Unknown autocomplete timer")
+    autocomplete_timers[handle] = nil
+end
 dofile("src/mobs_console/Scripts/main.lua")
+assert(background_timers[2000] and background_timers[2500])
+assert(autocomplete_timers[1])
 local device = {Log = function(_, message) logs[#logs + 1] = message end}
 local function run(name, args) assert(registry[name](name, args or {}, device)) end
 run("mobs.treasury", {"add", "25"})
@@ -41,6 +62,7 @@ region.ownerPawn = controller
 run("mobs.wealth", {"set", "1000"})
 assert(region.regionalWealth == 210 and logs[#logs]:find("owned"))
 reset()
+assert(not autocomplete_timers[1] and autocomplete_timers[2])
 run("mobs.undo")
 assert(logs[#logs]:find("No Mobs economy"))
 run("mobs.help", {"treasury"})

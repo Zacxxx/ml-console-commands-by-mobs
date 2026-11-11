@@ -1,6 +1,6 @@
 # mobs.perk_points
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Restore a regional card choice by resetting that tier; tier 1 also resets tier 2. One card per tier; settlement gates remain.
 

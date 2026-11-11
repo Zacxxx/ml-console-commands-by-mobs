@@ -1,3 +1,24 @@
+# 0.16.1-alpha.6 — Background callback stability
+
+- Run automatic mineral visual repair and extra perk restoration with repeating
+  UE4SS game-thread timers. Each job registers its callback once instead of
+  repeatedly handing callbacks from an asynchronous timer to the game thread.
+- Refresh autocomplete with a direct game-thread delay. Cancel a pending refresh
+  when another load/restart requests one, avoiding duplicate queued refreshes.
+- Keep background timers single-instance and allow the mineral repair timer to
+  be cancelled cleanly. Existing deposit visual repair and extra-card restoration
+  continue automatically on supported UE4SS builds.
+- Require the game-thread timer APIs for these automatic jobs. The installed
+  UE4SS 3.0.1-1152 build provides them. Older builds without these APIs report
+  unavailable background jobs at startup; manual commands remain available.
+- Add checks for async-free startup, repeating repair, cancellation and refresh
+  replacement. The complete offline suite passes. This targets the reported
+  UE4SS Lua callback access violations; extended in-game stability confirmation
+  is still pending.
+
+Restart the game after updating. Preserve Native/State and your custom Commands
+files. Target remains Manor Lords 0.8.117.
+
 # 0.16.1-alpha.5 — Pond and deposit placement fixes
 
 - Fishing Ponds now place already completed using the native map-initialization

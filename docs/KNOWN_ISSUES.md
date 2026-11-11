@@ -1,4 +1,10 @@
-# Compatibility and known limits — 0.16.1-alpha.5
+# Compatibility and known limits — 0.16.1-alpha.6
+
+- **Background callback stability:** automatic deposit repair, extra perk
+  restoration and autocomplete refresh use game-thread timers. This addresses a
+  suspected cause of reported UE4SS callback access violations. Extended in-game
+  stability testing remains pending. Automatic jobs need UE4SS game-thread timer
+  APIs, available in 3.0.1-1152; older builds report unavailable background jobs.
 
 - **Game target: Manor Lords 0.8.117 only.** The native helper guards target the
   Steam pre_release executable (PE timestamp 0x6836c1ba, image size 0x9dfd000).

@@ -1,6 +1,6 @@
 # mobs.bandits
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Ask the game to spawn a bandit camp at a valid random location; supports preview.
 

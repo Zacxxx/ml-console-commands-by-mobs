@@ -1,6 +1,6 @@
 # Full tutorial
 
-For **0.16.1-alpha.5**, game **0.8.117**. In game: `mobs.tutorial` lists chapters, `mobs.tutorial all` prints everything.
+For **0.16.1-alpha.6**, game **0.8.117**. In game: `mobs.tutorial` lists chapters, `mobs.tutorial all` prints everything.
 
 ## 1. Install, check versions and read command syntax
 

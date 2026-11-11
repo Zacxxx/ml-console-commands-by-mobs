@@ -1,6 +1,6 @@
 # mobs.rehouse
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Move a hovered/followed family to one selected completed house in the same owned region; checks capacity, supports preview.
 

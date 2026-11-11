@@ -1,6 +1,6 @@
 # mobs.usage
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Explain exact syntax, targeting, previews and click tools without running anything.
 

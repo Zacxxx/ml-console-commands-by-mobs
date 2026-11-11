@@ -1,6 +1,6 @@
 # mobs.help
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 List all commands; filter by army, lord, region, misc, or search usage/descriptions.
 

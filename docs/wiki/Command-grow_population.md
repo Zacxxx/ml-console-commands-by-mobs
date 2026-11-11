@@ -1,6 +1,6 @@
 # mobs.grow_population
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Add 1..10 human residents immediately through native family/housing creation; bypasses natural approval/arrival-day gates. Requires usable housing; status explains capacity; preview available; no undo.
 

@@ -1,6 +1,6 @@
 # mobs.resources
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Inspect existing mineral, berry, mushroom, fish and eel clumps in the target owned region; does not count stored goods.
 

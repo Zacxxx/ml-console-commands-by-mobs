@@ -1,6 +1,6 @@
 # ML Console Commands by Mobs
 
-Version 0.16.1-alpha.5 · alpha · Manor Lords 0.8.117 (Steam, pre_release branch)
+Version 0.16.1-alpha.6 · alpha · Manor Lords 0.8.117 (Steam, pre_release branch)
 
 Console tools for your settlement: construction, supplies and new piles,
 resources, forestry, regional perk cards, economy, weather and time, with
@@ -157,7 +157,7 @@ older DLL loaded. Preserve Native/State and custom Commands files.
 
 ## Eel repair and huntable wildlife
 
-After restarting, check `mobs.version` reports 0.16.1-alpha.5.
+After restarting, check `mobs.version` reports 0.16.1-alpha.6.
 
 - Existing eel shoal: `mobs.repair_fishing eel preview`, then repeat without
   preview. Close the console and click near the same owned shoal after each line.

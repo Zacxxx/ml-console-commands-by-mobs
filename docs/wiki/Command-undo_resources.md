@@ -1,6 +1,6 @@
 # mobs.undo_resources
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Undo the latest resource refill if no affected deposit has changed; holds five refills and clears on reload.
 

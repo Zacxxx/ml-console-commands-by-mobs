@@ -1,6 +1,6 @@
 # mobs.regions
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 List your owned regions and their IDs for mobs.region.
 

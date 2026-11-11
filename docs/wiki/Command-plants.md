@@ -1,6 +1,6 @@
 # mobs.plants
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Inspect selected buildings planted crops: type, position, growth, yield and soil-cell index; read only, first 100 plants.
 

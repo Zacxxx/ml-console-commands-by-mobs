@@ -1,6 +1,6 @@
 # mobs.tutorial
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Read the tutorial chapter index, a numbered/named chapter, or the complete tutorial with all.
 

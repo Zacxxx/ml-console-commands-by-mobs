@@ -1,6 +1,6 @@
 # mobs.pile
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Experimental: enter native Supplies placement and fill the newly placed pile; owned region only.
 

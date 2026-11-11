@@ -1,6 +1,6 @@
 # mobs.clear_empty_piles
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Remove empty owned Supplies piles in the target region; supports preview. Non-empty/unreadable piles are kept.
 

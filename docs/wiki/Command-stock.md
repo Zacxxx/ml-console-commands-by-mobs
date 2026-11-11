@@ -1,6 +1,6 @@
 # mobs.stock
 
-Guide for **0.16.1-alpha.5**, game **0.8.117**.
+Guide for **0.16.1-alpha.6**, game **0.8.117**.
 
 Show target region stock through the native stock query, including reserved goods; optional name or ID filter.
 
